@@ -36,20 +36,31 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
+	
+	<bean class="com.cjt.ssm.encrypt.GlobalPropertyConfigure">
+	   <property name="locations">
+	       <list>
+	           <value>classpath:jdbc.properties</value>
+	       </list>
+	   </property>
+	   <property name="fileEncoding">
+	       <value>UTF-8</value>
+	   </property>
+	</bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close">
         <property name="driverClassName">
-            <value>com.mysql.jdbc.Driver</value>
+            <value>${jdbc_driver}</value>
         </property>
         <property name="username">
-            <value>root</value>
+            <value>${jdbc_username}</value>
         </property>
         <property name="password">
-            <value>Cjt00382114.</value>
+            <value>${jdbc_password}</value>
         </property>
         <property name="url">
-            <value>jdbc:mysql://localhost:3306/ssm</value>
+            <value>${jdbc_url}</value>
         </property>
     </bean>
 

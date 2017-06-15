@@ -27,9 +27,9 @@
     
     <!-- spring需要的jar包 -->
     <dependency>  
-        <groupId>org.springframework</groupId>  
-        <artifactId>spring-context</artifactId>  
-        <version>${spring.version}</version>
+      <groupId>org.springframework</groupId>  
+      <artifactId>spring-context</artifactId>  
+      <version>${spring.version}</version>
     </dependency>
     
     <!-- mybatis需要的jar包 -->
