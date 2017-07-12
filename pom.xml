@@ -16,6 +16,7 @@
   	<commons-dbcp.version>1.2.2</commons-dbcp.version>
   	<jackson.version>1.9.13</jackson.version>
     <servlet-api.version>3.1.0</servlet-api.version>
+    <fastjson.version>1.2.13</fastjson.version>
   </properties>
   
   <dependencies>
@@ -73,17 +74,24 @@
         <version>${spring.version}</version>  
     </dependency>
     
-    <dependency>
+    <!--<dependency>
     	<groupId>org.codehaus.jackson</groupId>
     	<artifactId>jackson-mapper-asl</artifactId>
     	<version>${jackson.version}</version>
-    </dependency>
+    </dependency>-->
     
     <!-- servlet-api，非tomcat引入 -->
     <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
         <version>${servlet-api.version}</version>
+    </dependency>
+
+    <!-- 引入fastjson，页面转换 -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>${fastjson.version}</version>
     </dependency>
   </dependencies>
   <build>

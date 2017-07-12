@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://www.springframework.org/schema/beans" 
-    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns="http://www.springframework.org/schema/beans"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
    	xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="  
             http://www.springframework.org/schema/beans  
-            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
-            http://www.springframework.org/schema/aop  
-            http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		   	http://www.springframework.org/schema/context 
 		   	http://www.springframework.org/schema/context/spring-context-3.2.xsd
 		   	http://www.springframework.org/schema/mvc 
@@ -17,24 +14,31 @@
 	<mvc:annotation-driven>
 		<!-- 消息转换器 -->
 		<mvc:message-converters register-defaults="true">
-			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
-				<property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+			<!-- 配置Fastjson支持 -->
+			<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json</value>
+					</list>
+				</property>
+				<property name="features">
+					<list>
+						<value>WriteMapNullValue</value>
+						<value>QuoteFieldNames</value>
+						<value>WriteDateUseDateFormat</value>
+					</list>
+				</property>
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-	
-	<!-- <mvc:annotation-driven /> -->
 	
 	<context:component-scan base-package="com.cjt.ssm" />
 	
 	
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix">
-			<value>/</value>
-		</property>
-		<property name="suffix">
-			<value>.jsp</value>
-		</property>
+		<property name="prefix" value="/"/>
+		<property name="suffix" value=".jsp"/>
 	</bean>
 	
 	<bean class="com.cjt.ssm.encrypt.GlobalPropertyConfigure">
@@ -43,25 +47,15 @@
 	           <value>classpath:jdbc.properties</value>
 	       </list>
 	   </property>
-	   <property name="fileEncoding">
-	       <value>UTF-8</value>
-	   </property>
+	   <property name="fileEncoding" value="UTF-8"/>
 	</bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close">
-        <property name="driverClassName">
-            <value>${jdbc_driver}</value>
-        </property>
-        <property name="username">
-            <value>${jdbc_username}</value>
-        </property>
-        <property name="password">
-            <value>${jdbc_password}</value>
-        </property>
-        <property name="url">
-            <value>${jdbc_url}</value>
-        </property>
+        <property name="driverClassName" value="${jdbc_driver}"/>
+        <property name="username" value="${jdbc_username}"/>
+        <property name="password" value="${jdbc_password}"/>
+        <property name="url" value="${jdbc_url}"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -71,7 +65,7 @@
     
     <!-- DAO接口所在包名，Spring会自动查找其下的类（不用写注解） -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
-        <property name="basePackage" value="com.cjt.ssm.dao" />  
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
+        <property name="basePackage" value="com.cjt.ssm.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 </beans>
