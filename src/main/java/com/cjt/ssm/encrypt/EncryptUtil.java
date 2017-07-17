@@ -10,6 +10,11 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class EncryptUtil {
 
+    /**
+     * 加密
+     * @param value
+     * @return
+     */
     public static String encrypt(String value){
         try {
             value =  DatatypeConverter.printBase64Binary(value.getBytes("UTF-8"));
@@ -18,7 +23,12 @@ public class EncryptUtil {
         }
         return value;
     }
-    
+
+    /**
+     * 解密
+     * @param value
+     * @return
+     */
     public static String decrypt(String value){
         byte[] bytes = DatatypeConverter.parseBase64Binary(value);
         try {
