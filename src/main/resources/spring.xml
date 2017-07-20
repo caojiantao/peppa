@@ -1,85 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="http://www.springframework.org/schema/beans"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-   	xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="  
             http://www.springframework.org/schema/beans  
-            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-		   	http://www.springframework.org/schema/context 
-		   	http://www.springframework.org/schema/context/spring-context-3.2.xsd
-		   	http://www.springframework.org/schema/mvc 
-		   	http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <!-- fastJson转换配置 -->
-    <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
-        <!-- 序列化输出 -->
-        <property name="serializerFeatures">
-            <list>
-                <!-- key采用引号包裹 -->
-                <value>QuoteFieldNames</value>
-                <!-- 输出为null的字段 -->
-                <value>WriteMapNullValue</value>
-                <!-- date日期转换器 -->
-                <value>WriteDateUseDateFormat</value>
-            </list>
-        </property>
-    </bean>
-
-	<mvc:annotation-driven>
-		<!-- 消息转换器 -->
-		<mvc:message-converters register-defaults="true">
-			<!-- 配置Fastjson支持 -->
-			<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
-				<property name="supportedMediaTypes">
-					<list>
-						<value>text/html;charset=UTF-8</value>
-						<value>application/json</value>
-					</list>
-				</property>
-				<property name="fastJsonConfig" ref="fastJsonConfig"/>
-			</bean>
-		</mvc:message-converters>
-	</mvc:annotation-driven>
-
-    <!-- 注解扫描，基础包配置 -->
-	<context:component-scan base-package="com.cjt.ssm" />
-	
-	<!-- 视图解析器配置 -->
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/"/>
-		<property name="suffix" value=".jsp"/>
-	</bean>
-
-	<!-- 数据库配置文件（加密） -->
-	<bean class="com.cjt.ssm.encrypt.GlobalPropertyConfigure">
-	   <property name="locations">
-	       <list>
-	           <value>classpath:jdbc.properties</value>
-	       </list>
-	   </property>
-	   <property name="fileEncoding" value="UTF-8"/>
-	</bean>
-
-	<!-- 数据库连接基础属性 -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-        destroy-method="close">
-        <property name="driverClassName" value="${jdbc_driver}"/>
-        <property name="username" value="${jdbc_username}"/>
-        <property name="password" value="${jdbc_password}"/>
-        <property name="url" value="${jdbc_url}"/>
-    </bean>
-
-	<!-- mybatis基础配置文件地址 -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <!--<property name="configLocation" value="classpath:mybatis.xml" />-->
-        <property name="mapperLocations" value="classpath*:mapper/**/*.xml"/>
-    </bean>
-    
-    <!-- DAO接口所在包名，Spring会自动查找其下的类（不用写注解） -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
-        <property name="basePackage" value="com.cjt.ssm.dao" />
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-    </bean>
+	<import resource="classpath:spring/spring-*.xml"/>
 </beans>
