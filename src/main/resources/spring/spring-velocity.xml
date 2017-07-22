@@ -11,7 +11,7 @@
         <property name="configLocation" value="classpath:properties/velocity.properties" />
     </bean>
 
-    <!-- 配置前后缀，解析编码 -->
+    <!-- 配置前后缀，解析编码（注意VelocityLayoutViewResolver的特性） -->
     <bean class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"/>
         <property name="layoutUrl" value="layout/empty.vm"/>

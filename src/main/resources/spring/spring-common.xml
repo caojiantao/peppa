@@ -52,7 +52,7 @@
     <bean class="com.cjt.ssm.encrypt.GlobalPropertyConfigure">
         <property name="locations">
             <list>
-                <value>classpath:jdbc.properties</value>
+                <value>classpath:properties/jdbc.properties</value>
             </list>
         </property>
         <property name="fileEncoding" value="UTF-8"/>

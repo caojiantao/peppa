@@ -1,6 +1,6 @@
 package com.cjt.ssm.service;
 
-import com.cjt.ssm.model.User;
+import com.cjt.ssm.entity.User;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.cjt.ssm.service.impl;
 
 import com.cjt.ssm.dao.UserDao;
-import com.cjt.ssm.model.User;
+import com.cjt.ssm.entity.User;
 import com.cjt.ssm.service.UserService;
 import org.springframework.stereotype.Service;
 

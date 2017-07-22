@@ -1,6 +1,7 @@
 package com.cjt.ssm.controller;
 
-import com.cjt.ssm.model.User;
+import com.cjt.ssm.dto.ResultMsg;
+import com.cjt.ssm.entity.User;
 import com.cjt.ssm.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,19 +12,25 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
-@RequestMapping(value="/")
-public class TestController {
+@RequestMapping("/")
+public class TestController extends BaseController {
 
 	@Resource
 	private UserService userService;
 	
-	@RequestMapping(value="/test")
+	@RequestMapping("/test")
 	@ResponseBody
-	public List<User> test(){
-        return userService.listAllUsers();
+	public ResultMsg test(){
+	    try {
+            List<User> users = userService.listAllUsers();
+            throw new Exception("fuck");
+//            return initSuccessMsg(users);
+        } catch (Exception e){
+	        return initFailedMsg(e.getMessage());
+        }
 	}
 
-	@RequestMapping(value="/vm")
+	@RequestMapping("/vm")
 	public String vm(Model model){
 	    model.addAttribute("name", "曹建涛");
 		return "test";

@@ -1,9 +1,8 @@
 package com.cjt.ssm.dao;
 
-import java.util.List;
+import com.cjt.ssm.entity.User;
 
-import com.cjt.ssm.model.User;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 public interface UserDao {
 

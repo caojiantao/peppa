@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.ssm.dao.UserDao">
-    <select id="findAll" resultType="com.cjt.ssm.model.User">
+    <select id="findAll" resultType="com.cjt.ssm.entity.User">
         select * from user
     </select>
 </mapper>
