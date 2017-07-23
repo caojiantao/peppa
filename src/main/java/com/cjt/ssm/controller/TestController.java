@@ -1,11 +1,12 @@
 package com.cjt.ssm.controller;
 
-import com.cjt.ssm.dto.ResultMsg;
 import com.cjt.ssm.entity.User;
 import com.cjt.ssm.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -17,17 +18,20 @@ public class TestController extends BaseController {
 
 	@Resource
 	private UserService userService;
+
+	@RequestMapping("login")
+    public String login(){
+	    return "login";
+    }
 	
-	@RequestMapping("/test")
+	@RequestMapping("test")
 	@ResponseBody
-	public ResultMsg test(){
-	    try {
-            List<User> users = userService.listAllUsers();
-            throw new Exception("fuck");
-//            return initSuccessMsg(users);
-        } catch (Exception e){
-	        return initFailedMsg(e.getMessage());
-        }
+	public void test(){
+		List<User> users = userService.listAllUsers();
+		for(int i = 0; i < 2; i++){
+			users.get(i).setAge(i);
+		}
+		userService.updateUsers(users.subList(0, 2));
 	}
 
 	@RequestMapping("/vm")
@@ -35,4 +39,10 @@ public class TestController extends BaseController {
 	    model.addAttribute("name", "曹建涛");
 		return "test";
 	}
+
+	@RequestMapping(value = "a/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public String getA(@PathVariable("id") String id){
+	    return "get";
+    }
 }

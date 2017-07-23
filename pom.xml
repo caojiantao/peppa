@@ -99,6 +99,13 @@
       <artifactId>velocity-tools</artifactId>
       <version>${velocity-tools.version}</version>
     </dependency>
+
+    <!-- 日志管理 -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>ssm</finalName>

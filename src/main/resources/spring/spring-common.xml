@@ -41,10 +41,16 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
-    <!-- 静态资源访问 -->
-    <mvc:default-servlet-handler />
-
+    
+    <!-- 拦截器配置 -->
+    <!-- <mvc:interceptors>
+    	<mvc:interceptor>
+    		<mvc:mapping path="/**"/>
+    		<mvc:exclude-mapping path="/login" />
+    		<bean class="com.cjt.ssm.interceptor.LoginInterceptor"/>
+    	</mvc:interceptor>
+    </mvc:interceptors> -->
+    
     <!-- 注解扫描，基础包配置 -->
     <context:component-scan base-package="com.cjt.ssm" />
 

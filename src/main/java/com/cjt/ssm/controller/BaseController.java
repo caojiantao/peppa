@@ -1,8 +1,10 @@
 package com.cjt.ssm.controller;
 
-import com.cjt.ssm.dto.ResultMsg;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author caojiantao
@@ -11,11 +13,21 @@ import java.util.List;
  */
 public class BaseController {
 
-    public <T> ResultMsg initSuccessMsg(List<T> data){
-        return new ResultMsg<T>(true, data);
-    }
+    public HttpServletRequest request;
 
-    public ResultMsg initFailedMsg(String msg){
-        return new ResultMsg(false, msg);
+    public HttpServletResponse response;
+
+    public HttpSession session;
+
+    /**
+     * 该注释表示每个该类及子类的请求调用之前都回执行该方法
+     * @param request
+     * @param response
+     */
+    @ModelAttribute
+    public void initReqResSession(HttpServletRequest request, HttpServletResponse response){
+        this.request = request;
+        this.response = response;
+        this.session = request.getSession();
     }
 }

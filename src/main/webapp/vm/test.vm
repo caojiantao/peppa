@@ -1,1 +1,19 @@
 我的名字是${name}
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(function(){
+        $.ajax({
+            url: '/a/100',
+            type: 'delete',
+            success: function(data, status, xhr){
+                alert(data);
+            },
+            // 请求失败处理
+            error: function(xhr, status, error){
+            	alert(error);
+            }
+        });
+    });
+</script>
