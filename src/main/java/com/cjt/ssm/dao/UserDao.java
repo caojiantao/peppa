@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface UserDao {
 
-	List<User> findAll();
-	
-	void saveUser(User user);
-	
-	void saveUserBatch(List<User> users);
+  List<User> findAll();
 
-	void updateUserBatch(@Param("users")List<User> users, @Param("ids")List<Integer> ids);
+  void saveUser(User user);
+
+  void saveUserBatch(List<User> users);
+
+  void updateUserBatch(@Param("users")List<User> users, @Param("ids")List<Integer> ids);
 }

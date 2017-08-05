@@ -1,6 +1,7 @@
 package com.cjt.ssm.controller;
 
 import com.cjt.ssm.entity.User;
+import com.cjt.ssm.exception.MyException;
 import com.cjt.ssm.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,33 +17,34 @@ import java.util.List;
 @RequestMapping("/")
 public class TestController extends BaseController {
 
-	@Resource
-	private UserService userService;
+  @Resource
+  private UserService userService;
 
-	@RequestMapping("login")
-    public String login(){
-	    return "login";
+  @RequestMapping("login")
+  public String login() {
+    return "login";
+  }
+
+  @RequestMapping("test")
+  @ResponseBody
+  public void test() throws MyException {
+    List<User> users = userService.listAllUsers();
+    for (int i = 0; i < 2; i++) {
+      users.get(i).setAge(i);
     }
-	
-	@RequestMapping("test")
-	@ResponseBody
-	public void test(){
-		List<User> users = userService.listAllUsers();
-		for(int i = 0; i < 2; i++){
-			users.get(i).setAge(i);
-		}
-		userService.updateUsers(users.subList(0, 2));
-	}
+    userService.updateUsers(users.subList(0, 2));
+    throw new MyException("这是一个一场测试，兄弟");
+  }
 
-	@RequestMapping("/vm")
-	public String vm(Model model){
-	    model.addAttribute("name", "曹建涛");
-		return "test";
-	}
+  @RequestMapping("/vm")
+  public String vm(Model model) {
+    model.addAttribute("name", "曹建涛");
+    return "test";
+  }
 
-	@RequestMapping(value = "a/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public String getA(@PathVariable("id") String id){
-	    return "get";
-    }
+  @RequestMapping(value = "a/{id}", method = RequestMethod.GET)
+  @ResponseBody
+  public String getA(@PathVariable("id") String id) {
+    return "get" + id;
+  }
 }

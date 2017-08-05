@@ -15,33 +15,32 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Resource
-    private UserDao userDao;
+  @Resource
+  private UserDao userDao;
 
-    public List<User> listAllUsers() {
-        return userDao.findAll();
+  public List<User> listAllUsers() {
+    return userDao.findAll();
+  }
+
+  @Transactional
+  public void saveUser(User user) {
+    try {
+      userDao.saveUser(user);
+    } catch (Exception e) {
+      // 只有显式抛出runtime exception异常或者未被try catch包裹，事务才能回滚，因而这里采取手动回滚
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
+  }
 
-    @Transactional
-	public void saveUser(User user) {
-    	try{
-    		userDao.saveUser(user);
-//    		throw new Exception();
-        } catch (Exception e){
-        	// 只有显式抛出runtime exception异常或者未被try catch包裹，事务才能回滚，因而这里采取手动回滚
-        	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        }
-	}
+  public void saveUsers(List<User> users) {
+    userDao.saveUserBatch(users);
+  }
 
-	public void saveUsers(List<User> users) {
-		userDao.saveUserBatch(users);
-	}
-
-	public void updateUsers(List<User> users) {
-		List<Integer> ids = new ArrayList<Integer>();
-		for (User user : users) {
-			ids.add(user.getId());
-		}
-		userDao.updateUserBatch(users, ids);
-	}
+  public void updateUsers(List<User> users) {
+    List<Integer> ids = new ArrayList<Integer>();
+    for (User user : users) {
+      ids.add(user.getId());
+    }
+    userDao.updateUserBatch(users, ids);
+  }
 }
