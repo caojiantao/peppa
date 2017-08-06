@@ -18,13 +18,13 @@ maven
 ```
     Java
     |--com.cjt.ssm
-    |  |---controller (所有请求的集中处理)
-    |  |---dao (数据持久层操作的包)
-    |  |---encrypt (一些加密解密的工具类)
-    |  |---entity (数据模型层，与表的字段有所对应)
-    |  |---exception (自定义的异常集合)
-    |  |---interceptor (自定义拦截器)
-    |  |---service (业务逻辑处理)
+    |  |--controller (所有请求的集中处理)
+    |  |--dao (数据持久层操作的包)
+    |  |--encrypt (一些加密解密的工具类)
+    |  |--entity (数据模型层，与表的字段有所对应)
+    |  |--exception (自定义的异常集合)
+    |  |--interceptor (自定义拦截器)
+    |  |--service (业务逻辑处理)
 ```
 
 ```
