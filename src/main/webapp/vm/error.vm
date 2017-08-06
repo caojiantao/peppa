@@ -8,6 +8,6 @@
   <title>Document</title>
 </head>
 <body>
-错误信息：$ex.msg
+错误信息：${ex}
 </body>
 </html>
