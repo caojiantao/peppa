@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -33,7 +34,8 @@ public class TestController extends BaseController {
       users.get(i).setAge(i);
     }
     userService.updateUsers(users.subList(0, 2));
-    throw new MyException("这是一个一场测试，兄弟");
+    String str = null;
+    str.indexOf('|');
   }
 
   @RequestMapping("/vm")
@@ -44,7 +46,7 @@ public class TestController extends BaseController {
 
   @RequestMapping(value = "a/{id}", method = RequestMethod.GET)
   @ResponseBody
-  public String getA(@PathVariable("id") String id) {
-    return "get" + id;
+  public String a(@PathVariable String id) throws IOException {
+    return id;
   }
 }

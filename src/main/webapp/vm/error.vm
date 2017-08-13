@@ -8,6 +8,8 @@
   <title>Document</title>
 </head>
 <body>
-错误信息：${ex}
+错误信息：${error}
+<br>
+测试：${test}
 </body>
 </html>

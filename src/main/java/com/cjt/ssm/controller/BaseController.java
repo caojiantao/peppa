@@ -1,5 +1,6 @@
 package com.cjt.ssm.controller;
 
+import com.cjt.ssm.util.ExceptionUtil;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -42,7 +43,8 @@ public class BaseController {
    */
   @ExceptionHandler
   public String handleException(HttpServletRequest request, Exception ex) {
-    request.setAttribute("ex", ex);
+    request.setAttribute("error", ExceptionUtil.toDetailStr(ex));
+    request.setAttribute("test", "00000");
     return "error";
   }
 }

@@ -6,61 +6,61 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-		   	http://www.springframework.org/schema/context
-		   	http://www.springframework.org/schema/context/spring-context-3.2.xsd
-		   	http://www.springframework.org/schema/mvc
-		   	http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.2.xsd
+            http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-    <!-- fastJson转换配置 -->
-    <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
-        <!-- 序列化输出 -->
-        <property name="serializerFeatures">
-            <list>
-                <!-- key采用引号包裹 -->
-                <value>QuoteFieldNames</value>
-                <!-- 输出为null的字段 -->
-                <value>WriteMapNullValue</value>
-                <!-- date日期转换器 -->
-                <value>WriteDateUseDateFormat</value>
-            </list>
+  <!-- fastJson转换配置 -->
+  <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
+    <!-- 序列化输出 -->
+    <property name="serializerFeatures">
+      <list>
+        <!-- key采用引号包裹 -->
+        <value>QuoteFieldNames</value>
+        <!-- 输出为null的字段 -->
+        <value>WriteMapNullValue</value>
+        <!-- date日期转换器 -->
+        <value>WriteDateUseDateFormat</value>
+      </list>
+    </property>
+  </bean>
+
+  <mvc:annotation-driven>
+    <!-- 消息转换器 -->
+    <mvc:message-converters>
+      <!-- 配置Fastjson支持 -->
+      <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+        <property name="supportedMediaTypes">
+          <list>
+            <value>text/html;charset=UTF-8</value>
+            <value>application/json</value>
+          </list>
         </property>
-    </bean>
+        <property name="fastJsonConfig" ref="fastJsonConfig"/>
+      </bean>
+    </mvc:message-converters>
+  </mvc:annotation-driven>
 
-    <mvc:annotation-driven>
-        <!-- 消息转换器 -->
-        <mvc:message-converters>
-            <!-- 配置Fastjson支持 -->
-            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
-                <property name="supportedMediaTypes">
-                    <list>
-                        <value>text/html;charset=UTF-8</value>
-                        <value>application/json</value>
-                    </list>
-                </property>
-                <property name="fastJsonConfig" ref="fastJsonConfig"/>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
-    
-    <!-- 拦截器配置 -->
-    <!-- <mvc:interceptors>
-    	<mvc:interceptor>
-    		<mvc:mapping path="/**"/>
-    		<mvc:exclude-mapping path="/login" />
-    		<bean class="com.cjt.ssm.interceptor.LoginInterceptor"/>
-    	</mvc:interceptor>
-    </mvc:interceptors> -->
-    
-    <!-- 注解扫描，基础包配置 -->
-    <context:component-scan base-package="com.cjt.ssm" />
+  <!-- 拦截器配置 -->
+  <!-- <mvc:interceptors>
+      <mvc:interceptor>
+          <mvc:mapping path="/**"/>
+          <mvc:exclude-mapping path="/login" />
+          <bean class="com.cjt.ssm.interceptor.LoginInterceptor"/>
+      </mvc:interceptor>
+  </mvc:interceptors> -->
 
-    <!-- 配置文件加载（密码加密处理） -->
-    <bean class="com.cjt.ssm.encrypt.GlobalPropertyConfigure">
-        <property name="locations">
-            <list>
-                <value>classpath:properties/jdbc.properties</value>
-            </list>
-        </property>
-        <property name="fileEncoding" value="UTF-8"/>
-    </bean>
+  <!-- 注解扫描，基础包配置 -->
+  <context:component-scan base-package="com.cjt.ssm"/>
+
+  <!-- 配置文件加载（密码加密处理） -->
+  <bean class="com.cjt.ssm.encrypt.GlobalPropertyConfigure">
+    <property name="locations">
+      <list>
+        <value>classpath:properties/jdbc.properties</value>
+      </list>
+    </property>
+    <property name="fileEncoding" value="UTF-8"/>
+  </bean>
 </beans>
