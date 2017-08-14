@@ -32,7 +32,6 @@ maven
     |--mapper (数据库sql编写的xml)
     |--properties (项目的配置资源文件，类似数据库的连接信息，页面定向跳转的相关url)
     |--spring (spring的相关配置，注解，包扫描，数据源的配置，页面渲染，等等)
-    |--log4j.properties (控制日志输出的文件)
 ```
 
 ```
