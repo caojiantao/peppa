@@ -3,6 +3,7 @@ package com.cjt.ssm.controller;
 import com.cjt.ssm.entity.User;
 import com.cjt.ssm.exception.MyException;
 import com.cjt.ssm.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +39,7 @@ public class TestController extends BaseController {
     str.indexOf('|');
   }
 
-  @RequestMapping("/vm")
+  @RequestMapping("vm")
   public String vm(Model model) {
     model.addAttribute("name", "曹建涛");
     return "test";
@@ -48,5 +49,13 @@ public class TestController extends BaseController {
   @ResponseBody
   public String a(@PathVariable String id) throws IOException {
     return id;
+  }
+
+  @Value("${session_interval}")
+  private long sessionInterval;
+
+  @RequestMapping("doLogin")
+  public void doLogin(){
+    System.out.println(sessionInterval);
   }
 }

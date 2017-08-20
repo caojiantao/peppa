@@ -12,11 +12,8 @@ public class GlobalPropertyConfigure extends
 
   /**
    * 判断该属性值是否需要加密处理
-   *
-   * @param propertyName
-   * @return
    */
-  public boolean isEncryptProp(String propertyName) {
+  private boolean isEncryptProp(String propertyName) {
     return propertyName.endsWith("password");
   }
 }

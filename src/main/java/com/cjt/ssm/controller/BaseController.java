@@ -23,9 +23,6 @@ public class BaseController {
 
   /**
    * 该注释表示每个该类及子类的请求调用之前都回执行该方法
-   *
-   * @param request
-   * @param response
    */
   @ModelAttribute
   public void initReqResSession(HttpServletRequest request, HttpServletResponse response) {
@@ -36,10 +33,6 @@ public class BaseController {
 
   /**
    * 采用注解方式统一处理异常
-   *
-   * @param request
-   * @param ex
-   * @return
    */
   @ExceptionHandler
   public String handleException(HttpServletRequest request, Exception ex) {

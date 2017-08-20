@@ -53,14 +53,4 @@
 
   <!-- 注解扫描，基础包配置 -->
   <context:component-scan base-package="com.cjt.ssm"/>
-
-  <!-- 配置文件加载（密码加密处理） -->
-  <bean class="com.cjt.ssm.encrypt.GlobalPropertyConfigure">
-    <property name="locations">
-      <list>
-        <value>classpath:properties/jdbc.properties</value>
-      </list>
-    </property>
-    <property name="fileEncoding" value="UTF-8"/>
-  </bean>
 </beans>
