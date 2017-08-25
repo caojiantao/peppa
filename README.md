@@ -25,6 +25,7 @@ maven
     |  |--exception (自定义的异常集合)
     |  |--interceptor (自定义拦截器)
     |  |--service (业务逻辑处理)
+    |  |--util (工具类集合包)
 ```
 
 ```
@@ -51,3 +52,7 @@ maven
 4. mybatis批量insert，批量update代码完善；
 
 5. spring mvc 异常统一处理；
+
+6. 采用spring的profiles机制，分环境读取配置文件；
+
+7. 支持图片上传，采用高效率的filechannel机制；
