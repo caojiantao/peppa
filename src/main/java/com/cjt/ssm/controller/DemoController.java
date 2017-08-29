@@ -1,26 +1,33 @@
 package com.cjt.ssm.controller;
 
 import com.cjt.ssm.entity.User;
-import com.cjt.ssm.exception.MyException;
 import com.cjt.ssm.service.UserService;
+import com.cjt.ssm.util.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
-public class TestController extends BaseController {
+@RequestMapping("/demo/")
+public class DemoController extends BaseController {
 
   @Resource
   private UserService userService;
+
+  @RequestMapping("")
+  public String demo(){
+    return "demo";
+  }
 
   @RequestMapping("login")
   public String login() {
@@ -29,20 +36,13 @@ public class TestController extends BaseController {
 
   @RequestMapping("test")
   @ResponseBody
-  public void test() throws MyException {
+  public void test() {
     List<User> users = userService.listAllUsers();
     for (int i = 0; i < 2; i++) {
       users.get(i).setAge(i);
     }
     userService.updateUsers(users.subList(0, 2));
     String str = null;
-    str.indexOf('|');
-  }
-
-  @RequestMapping("vm")
-  public String vm(Model model) {
-    model.addAttribute("name", "曹建涛");
-    return "test";
   }
 
   @RequestMapping(value = "a/{id}", method = RequestMethod.GET)
@@ -51,11 +51,20 @@ public class TestController extends BaseController {
     return id;
   }
 
-  @Value("${session_interval}")
-  private long sessionInterval;
+  @RequestMapping("cjt")
+  public void cjt(String str, MultipartFile file){
+    System.out.println(request.getParameter("str"));
+    System.out.println(str);
+  }
 
-  @RequestMapping("doLogin")
-  public void doLogin(){
-    System.out.println(sessionInterval);
+  @Value("${upload_path}")
+  private String uploadPath;
+
+  @RequestMapping("uploadFile")
+  @ResponseBody
+  public String uploadFile(MultipartFile file) throws IOException {
+    File tarFile = new File(uploadPath, file.getOriginalFilename());
+    FileUtil.copyFileByChannel((FileInputStream) file.getInputStream(), tarFile);
+    return "上传成功";
   }
 }

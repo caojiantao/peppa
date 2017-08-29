@@ -1,0 +1,28 @@
+<div>
+  <input type="file">
+  <button class="js-upload">上传</button>
+</div>
+
+<script>
+  $(function () {
+
+    $('.js-upload').click(function () {
+      var $file =
+      $(this).siblings('[type="file"]');
+      var formData = new FormData();
+      formData.append("file", $file[0].files[0]);
+      $.ajax({
+        url: '/demo/uploadFile',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function (result, a, b) {
+          alert(result.msg);
+        }
+      })
+    });
+  });
+</script>

@@ -1,12 +1,16 @@
 package com.cjt.ssm.controller;
 
 import com.cjt.ssm.util.ExceptionUtil;
+import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * @author caojiantao
@@ -14,6 +18,8 @@ import javax.servlet.http.HttpSession;
  * @desc controller的基类
  */
 public class BaseController {
+
+  public Logger logger = Logger.getRootLogger();
 
   public HttpServletRequest request;
 
@@ -32,12 +38,13 @@ public class BaseController {
   }
 
   /**
-   * 采用注解方式统一处理异常
+   * 采用注解方式统一处理服务器未捕获异常（500：服务器内部错误）
    */
   @ExceptionHandler
-  public String handleException(HttpServletRequest request, Exception ex) {
-    request.setAttribute("error", ExceptionUtil.toDetailStr(ex));
-    request.setAttribute("test", "00000");
-    return "error";
+  @ResponseBody
+  public void handleException(HttpServletRequest request, Exception ex) throws IOException {
+    // 将错误具体信息打印日志，返回500状态码
+    logger.error(ExceptionUtil.toDetailStr(ex));
+    response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
   }
 }

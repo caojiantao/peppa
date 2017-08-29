@@ -1,1 +1,20 @@
 <h1>这里是登陆页面</h1>
+<form id="form" enctype="multipart/form-data">
+  <input type="file" />
+</form>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  $(function(){
+    var d = new FormData($('#form')[0]);
+    d.append('str', 'cjt');
+//    d.append('file', $('[type="file"]')[0].files[0]);
+    $.ajax({
+      url: '/cjt',
+      type: 'POST',
+      data: d,
+      cache: false,
+      processData: false,
+      contentType: false
+    })
+  });
+</script>
