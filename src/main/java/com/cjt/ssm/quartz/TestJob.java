@@ -1,11 +1,7 @@
 package com.cjt.ssm.quartz;
 
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.Job;
 
-public class TestJob extends AbstractScheduleJob {
-  @Override
-  public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+public class TestJob extends ScheduleJob implements Job {
 
-  }
 }

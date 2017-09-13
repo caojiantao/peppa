@@ -1,6 +1,9 @@
 package com.cjt.ssm.controller;
 
 import com.cjt.ssm.entity.User;
+import com.cjt.ssm.quartz.QuartzJobManager;
+import com.cjt.ssm.quartz.TestJob;
+import com.cjt.ssm.service.QuartzService;
 import com.cjt.ssm.service.UserService;
 import com.cjt.ssm.util.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +27,9 @@ public class DemoController extends BaseController {
   @Resource
   private UserService userService;
 
+  @Resource
+  private QuartzService quartzService;
+
   @RequestMapping("")
   public String demo(){
     return "demo";
@@ -31,6 +37,12 @@ public class DemoController extends BaseController {
 
   @RequestMapping("login")
   public String login() {
+    TestJob job = new TestJob();
+    job.setGroup("group");
+    job.setName("cjt");
+    job.setDesc("定时任务");
+    job.setCronExpre("0/10 * * * * ?");
+    quartzService.saveQuartz(job);
     return "login";
   }
 
