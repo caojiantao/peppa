@@ -1,3 +1,5 @@
+<h2>这里是DEMO页面~</h2>
+
 <div>
   <input type="file">
   <button class="js-upload">上传</button>

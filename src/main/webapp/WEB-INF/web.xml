@@ -59,10 +59,33 @@
     <servlet-name>default</servlet-name>
     <url-pattern>*.png</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.html</url-pattern>
+  </servlet-mapping>
 
   <!-- springmvc请求处理 -->
   <servlet-mapping>
     <servlet-name>springmvc</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>/demo</url-pattern>
+  </servlet-mapping>
+
+  <!-- 首页配置 -->
+  <welcome-file-list>
+    <welcome-file>demo</welcome-file>
+  </welcome-file-list>
+
+  <!-- 错误页面 -->
+  <error-page>
+    <error-code>404</error-code>
+    <location>/404.html</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/500.html</location>
+  </error-page>
 </web-app>

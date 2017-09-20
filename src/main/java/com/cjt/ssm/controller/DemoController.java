@@ -1,8 +1,9 @@
 package com.cjt.ssm.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.cjt.ssm.dto.BasePageDto;
 import com.cjt.ssm.entity.User;
-import com.cjt.ssm.quartz.QuartzJobManager;
-import com.cjt.ssm.quartz.TestJob;
+import com.cjt.ssm.quartz.jobs.BaseJob;
 import com.cjt.ssm.service.QuartzService;
 import com.cjt.ssm.service.UserService;
 import com.cjt.ssm.util.FileUtil;
@@ -21,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/demo/")
+@RequestMapping("/demo")
 public class DemoController extends BaseController {
 
   @Resource
@@ -32,21 +33,31 @@ public class DemoController extends BaseController {
 
   @RequestMapping("")
   public String demo(){
-    return "demo";
+    return "demo/demo";
+  }
+
+  @RequestMapping("/quartz")
+  public String quartz(){
+    return "demo/quartz";
+  }
+
+  @ResponseBody
+  @RequestMapping(value = "/quartz/jobs", method = RequestMethod.GET)
+  public JSONObject listQuartzJobs(BasePageDto dto){
+    JSONObject object = new JSONObject();
+    List<BaseJob> jobs = quartzService.listJobs(dto);
+    int count = quartzService.countJobs(dto);
+    object.put("result", jobs);
+    object.put("count", count);
+    return object;
   }
 
   @RequestMapping("login")
   public String login() {
-    TestJob job = new TestJob();
-    job.setGroup("group");
-    job.setName("cjt");
-    job.setDesc("定时任务");
-    job.setCronExpre("0/10 * * * * ?");
-    quartzService.saveQuartz(job);
     return "login";
   }
 
-  @RequestMapping("test")
+  @RequestMapping("/test")
   @ResponseBody
   public void test() {
     List<User> users = userService.listAllUsers();
@@ -55,6 +66,7 @@ public class DemoController extends BaseController {
     }
     userService.updateUsers(users.subList(0, 2));
     String str = null;
+    str.length();
   }
 
   @RequestMapping(value = "a/{id}", method = RequestMethod.GET)
@@ -78,5 +90,10 @@ public class DemoController extends BaseController {
     File tarFile = new File(uploadPath, file.getOriginalFilename());
     FileUtil.copyFileByChannel((FileInputStream) file.getInputStream(), tarFile);
     return "上传成功";
+  }
+
+  @RequestMapping("/error/ajax")
+  public String ajaxError(){
+    return "demo/ajaxError";
   }
 }

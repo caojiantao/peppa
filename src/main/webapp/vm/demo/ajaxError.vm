@@ -4,15 +4,10 @@
 <script>
   $(function () {
     $.ajax({
-      url: '/a/100',
-      type: 'delete',
+      url: '/demo/test',
       success: function (data, status, xhr) {
         alert(data);
       },
-      // 请求失败处理
-      error: function (xhr, status, error) {
-        alert(error);
-      }
     });
   });
 </script>

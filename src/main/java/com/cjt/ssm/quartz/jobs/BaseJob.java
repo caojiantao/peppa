@@ -1,4 +1,4 @@
-package com.cjt.ssm.quartz;
+package com.cjt.ssm.quartz.jobs;
 
 import org.apache.log4j.Logger;
 import org.quartz.Job;
@@ -10,7 +10,7 @@ import org.quartz.JobExecutionException;
 /**
  * 定时计划基本信息
  */
-public class ScheduleJob implements Job{
+public class BaseJob implements Job{
 
   Logger logger = Logger.getLogger(getClass());
 

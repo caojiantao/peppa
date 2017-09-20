@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,10 +40,11 @@ public class BaseController {
    * 采用注解方式统一处理服务器未捕获异常（500：服务器内部错误）
    */
   @ExceptionHandler
-  @ResponseBody
   public void handleException(HttpServletRequest request, Exception ex) throws IOException {
     // 将错误具体信息打印日志，返回500状态码
-    logger.error(ExceptionUtil.toDetailStr(ex));
-    response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    String errorMsg = ExceptionUtil.toDetailStr(ex);
+    logger.error(errorMsg);
+    // 注意setStatus和sendError的区别
+    response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
   }
 }

@@ -1,12 +1,15 @@
 package com.cjt.ssm.dao;
 
-import com.cjt.ssm.quartz.ScheduleJob;
+import com.cjt.ssm.dto.BasePageDto;
+import com.cjt.ssm.quartz.jobs.BaseJob;
 
 import java.util.List;
 
 public interface QuartzDao {
 
-  List<ScheduleJob> listJobs();
+  List<BaseJob> listJobs(BasePageDto dto);
 
-  <T extends ScheduleJob> int  saveScheduleJob(T job);
+  int countJobs(BasePageDto dto);
+
+  <T extends BaseJob> int saveJob(T job);
 }
