@@ -3,8 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cjt.ssm</groupId>
   <artifactId>ssm</artifactId>
-  <packaging>war</packaging>
+  <packaging>pom</packaging>
   <version>0.0.1-SNAPSHOT</version>
+  <modules>
+    <module>dao</module>
+    <module>service</module>
+    <module>backend</module>
+    <module>common</module>
+  </modules>
   <name>ssm Maven Webapp</name>
   <url>http://maven.apache.org</url>
 
@@ -102,6 +108,7 @@
       <version>${velocity-tools.version}</version>
     </dependency>
 
+    <!-- 文件上传 -->
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
@@ -122,6 +129,7 @@
       <version>${quartz.version}</version>
     </dependency>
   </dependencies>
+
   <build>
     <finalName>ssm</finalName>
     <plugins>

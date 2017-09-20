@@ -17,7 +17,7 @@ maven
 ### 目录结构
 ```
     Java
-    |--com.cjt.ssm
+    |--com.cjt.common
     |  |--controller (所有请求的集中处理)
     |  |--dao (数据持久层操作的包)
     |  |--encrypt (一些加密解密的工具类)
