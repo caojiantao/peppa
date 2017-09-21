@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>web</artifactId>
   <packaging>war</packaging>
-  <name>web Maven Webapp</name>
+  <name>web</name>
   <url>http://maven.apache.org</url>
 
   <dependencies>
