@@ -55,10 +55,10 @@ public class QuartzServiceImpl implements QuartzService,InitializingBean {
    */
   @Override
   public void afterPropertiesSet() throws Exception {
-    /*logger.info("====================【开始初始化定时任务】====================");
+    logger.info("====================【开始初始化定时任务】====================");
     List<BaseJob> tasks = listJobs();
     for (BaseJob task : tasks) {
       quartzJobManager.addJob(task);
-    }*/
+    }
   }
 }

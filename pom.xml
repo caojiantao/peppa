@@ -10,6 +10,7 @@
     <module>service</module>
     <module>backend</module>
     <module>common</module>
+    <module>web</module>
   </modules>
   <name>ssm Maven Webapp</name>
   <url>http://maven.apache.org</url>

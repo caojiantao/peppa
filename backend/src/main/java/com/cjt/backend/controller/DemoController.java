@@ -1,12 +1,12 @@
 package com.cjt.backend.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cjt.backend.jobs.BaseJob;
 import com.cjt.backend.service.QuartzService;
-import com.cjt.backend.service.UserService;
 import com.cjt.common.dto.BasePageDto;
 import com.cjt.common.entity.User;
-import com.cjt.backend.jobs.BaseJob;
 import com.cjt.common.util.FileUtil;
+import com.cjt.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,10 +86,9 @@ public class DemoController extends BaseController {
 
   @RequestMapping("uploadFile")
   @ResponseBody
-  public String uploadFile(MultipartFile file) throws IOException {
+  public boolean uploadFile(MultipartFile file) throws IOException {
     File tarFile = new File(uploadPath, file.getOriginalFilename());
-    FileUtil.copyFileByChannel((FileInputStream) file.getInputStream(), tarFile);
-    return "上传成功";
+    return FileUtil.copyFileByChannel((FileInputStream) file.getInputStream(), tarFile);
   }
 
   @RequestMapping("/error/ajax")

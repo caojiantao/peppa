@@ -1,6 +1,6 @@
-package com.cjt.backend.service.impl;
+package com.cjt.service.impl;
 
-import com.cjt.backend.service.UserService;
+import com.cjt.service.UserService;
 import com.cjt.dao.UserDao;
 import com.cjt.common.entity.User;
 import org.springframework.stereotype.Service;

@@ -8,9 +8,10 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>backend</artifactId>
   <packaging>war</packaging>
-  <name>backend Maven Webapp</name>
 
+  <name>backend</name>
   <url>http://maven.apache.org</url>
+
   <dependencies>
     <dependency>
       <groupId>com.cjt.ssm</groupId>
