@@ -1,12 +1,13 @@
 package com.cjt.backend.service.impl;
 
 import com.cjt.backend.dao.QuartzDao;
+import com.cjt.backend.jobs.BaseJob;
 import com.cjt.backend.quartz.QuartzJobManager;
 import com.cjt.backend.service.QuartzService;
 import com.cjt.common.dto.BasePageDto;
-import com.cjt.backend.jobs.BaseJob;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,6 +49,15 @@ public class QuartzServiceImpl implements QuartzService,InitializingBean {
     }
     quartzJobManager.addJob(job);
     return true;
+  }
+
+  @Cacheable("quartzCache")
+  @Override
+  public BaseJob getQuartz(String name) {
+    System.out.println("操作");
+    BaseJob job = new BaseJob();
+    job.setName(name);
+    return job;
   }
 
   /**

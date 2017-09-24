@@ -75,10 +75,11 @@ public class DemoController extends BaseController {
     return id;
   }
 
-  @RequestMapping("cjt")
-  public void cjt(String str, MultipartFile file) {
-    System.out.println(request.getParameter("str"));
-    System.out.println(str);
+  @RequestMapping("/cache")
+  @ResponseBody
+  public  BaseJob cache(String name) {
+    BaseJob t = quartzService.getQuartz(name);
+    return t;
   }
 
   @Value("${upload_path}")

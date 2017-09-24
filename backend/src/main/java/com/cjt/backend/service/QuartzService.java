@@ -14,4 +14,6 @@ public interface QuartzService {
   int countJobs(BasePageDto dto);
 
   <T extends BaseJob> boolean saveQuartz(T job);
+
+  BaseJob getQuartz(String name);
 }

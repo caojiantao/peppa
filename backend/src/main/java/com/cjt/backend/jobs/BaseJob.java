@@ -1,18 +1,17 @@
 package com.cjt.backend.jobs;
 
-import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.io.Serializable;
+
 
 /**
  * 定时计划基本信息
  */
-public class BaseJob implements Job{
-
-  private Logger logger = Logger.getLogger(getClass());
+public class BaseJob implements Job, Serializable{
 
   /** 任务id */
   private Integer id;
@@ -95,7 +94,7 @@ public class BaseJob implements Job{
   public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
     JobDetail jobDetail = jobExecutionContext.getJobDetail();
     if (jobDetail != null){
-      logger.info(jobDetail.getDescription() + ":执行");
+      System.out.println(jobDetail.getDescription() + ":执行");
     }
   }
 }
