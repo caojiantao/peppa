@@ -1,0 +1,32 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app>
+  <!-- 动态配置加载log4j.xml文件路径 -->
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>classpath:properties/${spring.profiles.active}/log4j.properties</param-value>
+  </context-param>
+
+  <!-- 自定义log4j路径必须配置 -->
+  <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
+
+  <!-- spring配置文件加载（包含了spring mvc和mybatis的配置） -->
+  <servlet>
+    <servlet-name>hessian</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath*:spring/spring-*.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!-- springmvc请求处理 -->
+  <servlet-mapping>
+    <servlet-name>hessian</servlet-name>
+    <url-pattern>/remote/*</url-pattern>
+  </servlet-mapping>
+</web-app>

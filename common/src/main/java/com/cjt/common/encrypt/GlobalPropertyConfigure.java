@@ -1,4 +1,4 @@
-package com.cjt.backend.encrypt;
+package com.cjt.common.encrypt;
 
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 

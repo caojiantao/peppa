@@ -1,12 +1,13 @@
 package com.cjt.backend.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cjt.api.HelloHessian;
 import com.cjt.backend.jobs.BaseJob;
 import com.cjt.backend.service.QuartzService;
 import com.cjt.common.dto.BasePageDto;
 import com.cjt.common.entity.User;
 import com.cjt.common.util.FileUtil;
-import com.cjt.service.UserService;
+import com.cjt.api.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +32,12 @@ public class DemoController extends BaseController {
   @Resource
   private QuartzService quartzService;
 
+  @Resource
+  private HelloHessian helloHessian;
+
   @RequestMapping("")
   public String demo() {
+    helloHessian.say("你好啊");
     return "demo/demo";
   }
 

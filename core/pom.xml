@@ -6,27 +6,26 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>backend</artifactId>
+  <artifactId>core</artifactId>
   <packaging>war</packaging>
-
-  <name>backend</name>
+  <name>core</name>
   <url>http://maven.apache.org</url>
 
   <dependencies>
     <dependency>
       <groupId>com.cjt.ssm</groupId>
-      <artifactId>service</artifactId>
+      <artifactId>api</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.cjt.ssm</groupId>
-      <artifactId>api</artifactId>
+      <artifactId>common</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
 
   <build>
-    <finalName>backend</finalName>
+    <finalName>core</finalName>
   </build>
 </project>

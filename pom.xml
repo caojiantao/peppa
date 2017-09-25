@@ -11,6 +11,8 @@
     <module>backend</module>
     <module>common</module>
     <module>web</module>
+    <module>api</module>
+    <module>core</module>
   </modules>
   <name>ssm Maven Webapp</name>
   <url>http://maven.apache.org</url>
@@ -29,8 +31,9 @@
     <velocity-tools.version>2.0</velocity-tools.version>
     <fileupload.version>1.3.3</fileupload.version>
     <quartz.version>2.2.1</quartz.version>
-    <spring-data-redis.version>1.6.1.RELEASE</spring-data-redis.version>
+    <spring-data-redis.version>1.6.2.RELEASE</spring-data-redis.version>
     <jedis.version>2.7.3</jedis.version>
+    <hessian.version>4.0.7</hessian.version>
   </properties>
 
   <dependencies>
@@ -142,6 +145,13 @@
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
       <version>${jedis.version}</version>
+    </dependency>
+
+    <!-- spring结合hessian -->
+    <dependency>
+      <groupId>com.caucho</groupId>
+      <artifactId>hessian</artifactId>
+      <version>${hessian.version}</version>
     </dependency>
   </dependencies>
 

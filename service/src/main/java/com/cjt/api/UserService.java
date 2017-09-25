@@ -1,4 +1,4 @@
-package com.cjt.service;
+package com.cjt.api;
 
 import com.cjt.common.entity.User;
 
