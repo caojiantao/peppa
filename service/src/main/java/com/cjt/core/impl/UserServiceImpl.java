@@ -1,7 +1,7 @@
 package com.cjt.core.impl;
 
 import com.cjt.api.UserService;
-import com.cjt.dao.UserDao;
+import com.cjt.dao.IUserDao;
 import com.cjt.common.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
   @Resource
-  private UserDao userDao;
+  private IUserDao userDao;
 
   public List<User> listAllUsers() {
     return userDao.findAll();

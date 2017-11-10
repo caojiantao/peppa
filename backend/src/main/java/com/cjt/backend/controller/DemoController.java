@@ -3,7 +3,7 @@ package com.cjt.backend.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.api.HelloHessian;
 import com.cjt.backend.jobs.BaseJob;
-import com.cjt.backend.service.QuartzService;
+import com.cjt.backend.service.IQuartzService;
 import com.cjt.common.dto.BasePageDto;
 import com.cjt.common.entity.User;
 import com.cjt.common.util.FileUtil;
@@ -22,6 +22,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * @author caojiantao
+ * 后台演示的各种demo
+ */
 @Controller
 @RequestMapping("/demo")
 public class DemoController extends BaseController {
@@ -30,16 +34,12 @@ public class DemoController extends BaseController {
   private UserService userService;
 
   @Resource
-  private QuartzService quartzService;
+  private IQuartzService IQuartzService;
 
   @Resource
   private HelloHessian helloHessian;
 
-  @RequestMapping("")
-  public String demo() {
-    helloHessian.say("你好啊");
-    return "demo/demo";
-  }
+
 
   @RequestMapping("/quartz")
   public String quartz() {
@@ -50,8 +50,8 @@ public class DemoController extends BaseController {
   @RequestMapping(value = "/quartz/jobs", method = RequestMethod.GET)
   public JSONObject listQuartzJobs(BasePageDto dto) {
     JSONObject object = new JSONObject();
-    List<BaseJob> jobs = quartzService.listJobs(dto);
-    int count = quartzService.countJobs(dto);
+    List<BaseJob> jobs = IQuartzService.listJobs(dto);
+    int count = IQuartzService.countJobs(dto);
     object.put("result", jobs);
     object.put("count", count);
     return object;
@@ -83,7 +83,7 @@ public class DemoController extends BaseController {
   @RequestMapping("/cache")
   @ResponseBody
   public  BaseJob cache(String name) {
-    BaseJob t = quartzService.getQuartz(name);
+    BaseJob t = IQuartzService.getQuartz(name);
     return t;
   }
 

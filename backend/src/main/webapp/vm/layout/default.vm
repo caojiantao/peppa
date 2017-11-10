@@ -1,15 +1,13 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Demo</title>
-  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-</head>
-<body>
-  ${screen_content}
+#parse("/common/head.vm")
+<body class="hold-transition skin-blue sidebar-mini">
+  <div class="wrapper">
+    #parse("/common/header.vm")
+    #parse("/common/sidebar.vm")
+    #parse("/common/content.vm")
+    #parse("/common/footer.vm")
+  </div>
 
 <script src="/common/js/common-init.js"></script>
 </body>

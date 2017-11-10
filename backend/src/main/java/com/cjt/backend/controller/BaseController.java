@@ -13,8 +13,6 @@ import java.io.IOException;
 
 /**
  * @author caojiantao
- * @create 2017-07-22 18:41:02
- * @desc controller的基类
  */
 public class BaseController {
 

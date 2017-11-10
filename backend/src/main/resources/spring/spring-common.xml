@@ -11,6 +11,8 @@
             http://www.springframework.org/schema/mvc
             http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
+  <mvc:default-servlet-handler/>
+
   <!-- fastJson转换配置 -->
   <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
     <!-- 序列化输出 -->

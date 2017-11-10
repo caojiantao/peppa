@@ -43,7 +43,7 @@
   </servlet>
 
   <!-- 静态资源默认处理（restFul与拦截器冲突） -->
-  <servlet-mapping>
+  <!--<servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>*.js</url-pattern>
   </servlet-mapping>
@@ -62,7 +62,7 @@
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>*.html</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
 
   <!-- springmvc请求处理 -->
   <servlet-mapping>
