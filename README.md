@@ -1,4 +1,4 @@
-# Java Web后台快速开发框架
+# Java Web快速开发框架
 
 从事java web开发工程师一年有余，吸收借鉴并完善了一个略微好用的一套网站开发框架，权当个人学习总结。
 
@@ -6,7 +6,7 @@
 
 spring + spring mvc + mybatis
 
-### 页面渲染
+### 渲染引擎
 
 velocity
 
@@ -15,31 +15,25 @@ velocity
 maven
 
 ### 目录结构
-```
-    Java
-    |--com.cjt.common
-    |  |--controller (所有请求的集中处理)
-    |  |--dao (数据持久层操作的包)
-    |  |--encrypt (一些加密解密的工具类)
-    |  |--entity (数据模型层，与表的字段有所对应)
-    |  |--exception (自定义的异常集合)
-    |  |--interceptor (自定义拦截器)
-    |  |--service (业务逻辑处理)
-    |  |--util (工具类集合包)
-```
+
+根据业务职责划分多module，通过maven进行管理。
 
 ```
-    resources
-    |--mapper (数据库sql编写的xml)
-    |--properties (项目的配置资源文件，类似数据库的连接信息，页面定向跳转的相关url)
-    |--spring (spring的相关配置，注解，包扫描，数据源的配置，页面渲染，等等)
+  ├── admin                      // 管理后台
+  ├── api                        // 对外服务接口（纯接口） 
+  ├── common                     // 公共模块（工具类）
+  ├── core                       // 对外接口服务（Hessian）
+  ├── dao                        // 数据持久层
+  ├── entity                     // 数据表对应实体类
+  ├── service                    // 业务逻辑层
+  └── web                        // 网站主体
 ```
 
-```
-    webapp
-    |--vm (所有velocity动态页面存放的根目录)
-    |--WEB-INF (网站配置文件web.xml)
-```
+其中admin、core和web是war包形式，可以对外发布，其他则都是jar包形式，提供依赖。
+
+依赖图：
+
+![image](https://github.com/caojiantao/ssm/raw/dependencies.png)
 
 ### 特性支持
 

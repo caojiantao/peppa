@@ -14,4 +14,12 @@
   <build>
     <finalName>api</finalName>
   </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cjt.ssm</groupId>
+      <artifactId>entity</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>

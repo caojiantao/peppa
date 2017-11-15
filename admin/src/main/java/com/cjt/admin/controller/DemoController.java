@@ -1,11 +1,10 @@
 package com.cjt.admin.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjt.api.HelloHessian;
 import com.cjt.common.dto.BasePageDto;
-import com.cjt.common.entity.User;
 import com.cjt.common.util.FileUtil;
 import com.cjt.entity.admin.Quartz;
+import com.cjt.entity.demo.User;
 import com.cjt.service.IQuartzService;
 import com.cjt.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,9 +34,6 @@ public class DemoController extends BaseController {
 
   @Resource
   private IQuartzService quartzService;
-
-  @Resource
-  private HelloHessian helloHessian;
 
   @RequestMapping("/quartz")
   public String quartz() {

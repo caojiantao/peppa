@@ -12,7 +12,13 @@
   <url>http://maven.apache.org</url>
 
   <dependencies>
+    <dependency>
+      <groupId>com.cjt.ssm</groupId>
+      <artifactId>service</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
+
   <build>
     <finalName>web</finalName>
   </build>

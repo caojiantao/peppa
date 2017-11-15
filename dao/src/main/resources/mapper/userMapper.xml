@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
-<mapper namespace="com.cjt.dao.IUserDao">
-  <select id="findAll" resultType="com.cjt.common.entity.User">
+<mapper namespace="com.cjt.dao.demo.IUserDao">
+  <select id="findAll" resultType="com.cjt.entity.demo.User">
         select * from user
     </select>
 
   <!-- 想要获取最后一次插入的主键id，注意mybatis和ibatis的区别 -->
-  <insert id="saveUser" parameterType="com.cjt.common.entity.User">
+  <insert id="saveUser" parameterType="com.cjt.entity.demo.User">
     	insert into user (name, age) values (#{name}, #{age})
     </insert>
 
   <!-- 批量新增数据 -->
-  <insert id="saveUserBatch" parameterType="com.cjt.common.entity.User">
+  <insert id="saveUserBatch" parameterType="com.cjt.entity.demo.User">
     insert into user (name, age) values
     <foreach collection="list" item="item" separator=",">
       (#{item.name}, #{item.age})
@@ -20,7 +20,7 @@
   </insert>
 
   <!-- 批量修改数据 -->
-  <update id="updateUser" parameterType="com.cjt.common.entity.User">
+  <update id="updateUser" parameterType="com.cjt.entity.demo.User">
     update user
     <trim prefix="set" suffixOverrides="," suffix="where id = #{id}">
       <if test="name != null">name=#{name},</if>
@@ -29,7 +29,7 @@
   </update>
 
   <!-- 批量修改数据（特别注意where限制条件，避免更新到其他的数据行） -->
-  <update id="updateUserBatch" parameterType="com.cjt.common.entity.User">
+  <update id="updateUserBatch" parameterType="com.cjt.entity.demo.User">
     update user set
     age =
     <foreach collection="users" item="user" open="case id" close="end">

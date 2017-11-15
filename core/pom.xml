@@ -20,7 +20,7 @@
 
     <dependency>
       <groupId>com.cjt.ssm</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>service</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

@@ -1,8 +1,8 @@
 package com.cjt.service.impl;
 
+import com.cjt.entity.demo.User;
 import com.cjt.service.UserService;
-import com.cjt.dao.IUserDao;
-import com.cjt.common.entity.User;
+import com.cjt.dao.demo.IUserDao;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;

@@ -1,6 +1,6 @@
-package com.cjt.dao;
+package com.cjt.dao.demo;
 
-import com.cjt.common.entity.User;
+import com.cjt.entity.demo.User;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

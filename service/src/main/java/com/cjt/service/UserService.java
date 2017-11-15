@@ -1,6 +1,6 @@
 package com.cjt.service;
 
-import com.cjt.common.entity.User;
+import com.cjt.entity.demo.User;
 
 import java.util.List;
 

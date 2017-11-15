@@ -1,4 +1,4 @@
-package com.cjt.common.entity;
+package com.cjt.entity.demo;
 
 public class User {
 

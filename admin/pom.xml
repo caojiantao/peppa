@@ -18,12 +18,6 @@
       <artifactId>service</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>com.cjt.ssm</groupId>
-      <artifactId>api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
   </dependencies>
 
   <build>
