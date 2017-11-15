@@ -8,11 +8,12 @@
   <modules>
     <module>dao</module>
     <module>service</module>
-    <module>backend</module>
+    <module>admin</module>
     <module>common</module>
     <module>web</module>
     <module>api</module>
     <module>core</module>
+    <module>entity</module>
   </modules>
   <name>ssm Maven Webapp</name>
   <url>http://maven.apache.org</url>
