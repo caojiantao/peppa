@@ -1,4 +1,4 @@
-package com.cjt.core.impl;
+package com.cjt.service.impl;
 
 import com.cjt.api.HelloHessian;
 import org.springframework.stereotype.Service;
