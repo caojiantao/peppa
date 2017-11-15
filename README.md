@@ -33,7 +33,7 @@ maven
 
 依赖图：
 
-![image](https://github.com/caojiantao/ssm/raw/dependencies.png)
+![image](https://github.com/caojiantao/ssm/blob/master/dependencies.png?raw=true)
 
 ### 特性支持
 
