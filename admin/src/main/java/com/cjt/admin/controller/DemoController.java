@@ -5,6 +5,7 @@ import com.cjt.common.dto.BasePageDto;
 import com.cjt.common.util.FileUtil;
 import com.cjt.entity.admin.Quartz;
 import com.cjt.entity.demo.User;
+import com.cjt.service.IMailService;
 import com.cjt.service.IQuartzService;
 import com.cjt.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,8 +36,13 @@ public class DemoController extends BaseController {
   @Resource
   private IQuartzService quartzService;
 
+  @Resource
+  private IMailService mailService;
+
   @RequestMapping("/quartz")
   public String quartz() {
+    mailService.sendEmailByVelocityEngine("会议", new String[]{"caojiantao@jd.com"}, null);
+
     return "demo/quartz";
   }
 
@@ -76,7 +82,7 @@ public class DemoController extends BaseController {
 
   @RequestMapping("/cache")
   @ResponseBody
-  public  Quartz cache(String name) {
+  public Quartz cache(String name) {
     Quartz t = quartzService.getQuartz(name);
     return t;
   }

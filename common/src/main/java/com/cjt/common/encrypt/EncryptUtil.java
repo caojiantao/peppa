@@ -12,9 +12,6 @@ public class EncryptUtil {
 
   /**
    * 加密
-   *
-   * @param value
-   * @return
    */
   public static String encrypt(String value) {
     try {
@@ -27,9 +24,6 @@ public class EncryptUtil {
 
   /**
    * 解密
-   *
-   * @param value
-   * @return
    */
   public static String decrypt(String value) {
     byte[] bytes = DatatypeConverter.parseBase64Binary(value);
@@ -42,7 +36,7 @@ public class EncryptUtil {
   }
 
   public static void main(String[] args) {
-    String str = "Cjt00382114.";
+    String str = "Cjt00382114";
     System.err.println(encrypt(str));
   }
 }
