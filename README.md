@@ -50,3 +50,7 @@ maven
 6. 采用spring的profiles机制，分环境读取配置文件；
 
 7. 支持图片上传，采用高效率的filechannel机制；
+
+8. Spring结合Redis，完美解决数据缓存；
+
+9. 支持邮件通知，可采用vm模板渲染；
