@@ -11,7 +11,8 @@
             http://www.springframework.org/schema/mvc
             http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-  <mvc:default-servlet-handler/>
+  <!--这个配置结合.do .action完美，但是restFul无后缀的请求会被拦截器拦截，通过web.xml配置解决-->
+  <!--<mvc:default-servlet-handler/>-->
 
   <!-- fastJson转换配置 -->
   <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">

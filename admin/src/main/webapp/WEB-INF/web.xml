@@ -1,7 +1,10 @@
-<!DOCTYPE web-app PUBLIC
-        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-        "http://java.sun.com/dtd/web-app_2_3.dtd" >
-<web-app>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--注意web.xml版本的差别-->
+<web-app version="3.0"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+         http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
   <!-- 动态配置加载log4j.xml文件路径 -->
   <context-param>
     <param-name>log4jConfigLocation</param-name>
@@ -43,26 +46,14 @@
   </servlet>
 
   <!-- 静态资源默认处理（restFul与拦截器冲突） -->
-  <!--<servlet-mapping>
+  <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>*.js</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
     <url-pattern>*.css</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
     <url-pattern>*.jpg</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
     <url-pattern>*.png</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
     <url-pattern>*.html</url-pattern>
-  </servlet-mapping>-->
+  </servlet-mapping>
 
   <!-- springmvc请求处理 -->
   <servlet-mapping>
@@ -79,4 +70,9 @@
     <error-code>500</error-code>
     <location>/500.html</location>
   </error-page>
+
+  <!--首页配置-->
+  <welcome-file-list>
+    <welcome-file>/</welcome-file>
+  </welcome-file-list>
 </web-app>
