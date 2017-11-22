@@ -39,6 +39,15 @@ public class DemoController extends BaseController {
   @Resource
   private IMailService mailService;
 
+  @RequestMapping("/")
+  public String demo(){
+    User user = new User();
+    user.setName("曹建涛");
+    userService.saveUser(user);
+
+    return "demo/index";
+  }
+
   @RequestMapping("/quartz")
   public String quartz() {
     mailService.sendEmailByVelocityEngine("会议", new String[]{"caojiantao@jd.com"}, null);

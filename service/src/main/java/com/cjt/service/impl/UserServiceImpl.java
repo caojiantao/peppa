@@ -21,14 +21,12 @@ public class UserServiceImpl implements UserService {
     return userDao.findAll();
   }
 
+  /**
+   * 若发生checked exception(IOException且抛出)不会发生回滚，可以采用setRollbackOnly
+   */
   @Transactional
   public void saveUser(User user) {
-    try {
-      userDao.saveUser(user);
-    } catch (Exception e) {
-      // 只有显式抛出runtime exception异常或者未被try catch包裹，事务才能回滚，因而这里采取手动回滚
-      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-    }
+    userDao.saveUser(user);
   }
 
   public void saveUsers(List<User> users) {

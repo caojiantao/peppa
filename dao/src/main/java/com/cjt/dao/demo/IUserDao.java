@@ -3,6 +3,7 @@ package com.cjt.dao.demo;
 import com.cjt.entity.demo.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IUserDao {

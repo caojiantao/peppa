@@ -5,6 +5,11 @@
   <button class="js-upload">上传</button>
 </div>
 
+<div>
+  事务回滚
+  <button class="">回滚</button>
+</div>
+
 <script>
   $(function () {
 

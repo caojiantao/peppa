@@ -31,10 +31,10 @@
   </bean>
 
   <!-- 声明事务管理器 -->
-  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+  <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
     <property name="dataSource" ref="dataSource"/>
   </bean>
 
-  <!-- 启用注释事务 -->
-  <tx:annotation-driven/>
+  <!-- 启用注解事务 -->
+  <tx:annotation-driven transaction-manager="txManager"/>
 </beans>
