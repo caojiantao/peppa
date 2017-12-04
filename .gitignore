@@ -1,9 +1,3 @@
-/target
-/.git
-/.settings
-/workspace
-/.classpath
-/.project
+**/target
 /.idea
 *.iml
-bin/

@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.cjt.ssm</groupId>
-  <artifactId>ssm</artifactId>
+  <groupId>com.cjt.peppa</groupId>
+  <artifactId>peppa</artifactId>
   <packaging>pom</packaging>
   <version>0.0.1-SNAPSHOT</version>
   <modules>
@@ -15,13 +15,13 @@
     <module>core</module>
     <module>entity</module>
   </modules>
-  <name>ssm Maven Webapp</name>
+  <name>peppa Maven Webapp</name>
   <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
-    <spring.version>3.2.4.RELEASE</spring.version>
+    <spring.version>4.3.10.RELEASE</spring.version>
     <mybatis.version>3.1.1</mybatis.version>
     <log4j.version>1.2.17</log4j.version>
     <mysql.version>5.1.33</mysql.version>
@@ -165,7 +165,7 @@
   </dependencies>
 
   <build>
-    <finalName>ssm</finalName>
+    <finalName>peppa</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
