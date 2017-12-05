@@ -6,6 +6,10 @@ import java.util.List;
 
 public interface UserService {
 
+  boolean login(String account, String password);
+
+  boolean existAccount(String account);
+
   List<User> listAllUsers();
 
   void saveUser(User user);

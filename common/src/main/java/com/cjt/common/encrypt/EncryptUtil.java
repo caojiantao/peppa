@@ -36,7 +36,7 @@ public class EncryptUtil {
   }
 
   public static void main(String[] args) {
-    String str = "Cjt00382114";
-    System.err.println(encrypt(str));
+    String str = "Q2p0MDAzODIxMTQu";
+    System.err.println(decrypt(str));
   }
 }

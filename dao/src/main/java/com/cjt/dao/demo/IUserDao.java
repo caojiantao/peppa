@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface IUserDao {
 
+  boolean existAccount(String account);
+
+  boolean login(@Param("account") String account, @Param("password") String password);
+
   List<User> findAll();
 
   void saveUser(User user);

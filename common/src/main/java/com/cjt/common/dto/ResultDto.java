@@ -6,13 +6,21 @@ public class ResultDto {
 
   private int code;
 
-  private List data;
+  private List datas;
+
+  private Object data;
 
   private String desc;
 
-  public ResultDto(int code, List data, String desc) {
+  public ResultDto(int code, Object data, String desc) {
     this.code = code;
     this.data = data;
+    this.desc = desc;
+  }
+
+  public ResultDto(int code, List datas, String desc) {
+    this.code = code;
+    this.datas = datas;
     this.desc = desc;
   }
 
@@ -24,11 +32,19 @@ public class ResultDto {
     this.code = code;
   }
 
-  public List getData() {
+  public List getDatas() {
+    return datas;
+  }
+
+  public void setDatas(List datas) {
+    this.datas = datas;
+  }
+
+  public Object getData() {
     return data;
   }
 
-  public void setData(List data) {
+  public void setData(Object data) {
     this.data = data;
   }
 

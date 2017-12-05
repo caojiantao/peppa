@@ -44,4 +44,29 @@
       #{id}
     </foreach>
   </update>
+
+  <select id="login" resultType="boolean">
+    SELECT
+      EXISTS (
+        SELECT
+          `name`
+        FROM
+          `user`
+        WHERE
+          `account` = #{account}
+          AND `password` = #{password}
+      )
+  </select>
+
+  <select id="existAccount" resultType="boolean">
+    SELECT
+      EXISTS (
+        SELECT
+          `name`
+        FROM
+          `user`
+        WHERE
+          `account` = #{account}
+      )
+  </select>
 </mapper>

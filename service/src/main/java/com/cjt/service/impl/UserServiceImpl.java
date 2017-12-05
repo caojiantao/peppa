@@ -1,5 +1,6 @@
 package com.cjt.service.impl;
 
+import com.cjt.common.encrypt.EncryptUtil;
 import com.cjt.entity.demo.User;
 import com.cjt.service.UserService;
 import com.cjt.dao.demo.IUserDao;
@@ -16,6 +17,16 @@ public class UserServiceImpl implements UserService {
 
   @Resource
   private IUserDao userDao;
+
+  @Override
+  public boolean login(String account, String password) {
+    return userDao.login(account, EncryptUtil.encrypt(password));
+  }
+
+  @Override
+  public boolean existAccount(String account) {
+    return userDao.existAccount(account);
+  }
 
   public List<User> listAllUsers() {
     return userDao.findAll();
