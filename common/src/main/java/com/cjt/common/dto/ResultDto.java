@@ -1,27 +1,19 @@
 package com.cjt.common.dto;
 
-import java.util.List;
+import java.util.Map;
 
 public class ResultDto {
 
   private int code;
 
-  private List datas;
+  private Map<String, Object> data;
 
-  private Object data;
+  private String msg;
 
-  private String desc;
-
-  public ResultDto(int code, Object data, String desc) {
+  public ResultDto(int code, Map<String, Object> data, String msg) {
     this.code = code;
     this.data = data;
-    this.desc = desc;
-  }
-
-  public ResultDto(int code, List datas, String desc) {
-    this.code = code;
-    this.datas = datas;
-    this.desc = desc;
+    this.msg = msg;
   }
 
   public int getCode() {
@@ -32,27 +24,19 @@ public class ResultDto {
     this.code = code;
   }
 
-  public List getDatas() {
-    return datas;
-  }
-
-  public void setDatas(List datas) {
-    this.datas = datas;
-  }
-
   public Object getData() {
     return data;
   }
 
-  public void setData(Object data) {
+  public void setData(Map<String, Object> data) {
     this.data = data;
   }
 
-  public String getDesc() {
-    return desc;
+  public String getMsg() {
+    return msg;
   }
 
-  public void setDesc(String desc) {
-    this.desc = desc;
+  public void setMsg(String msg) {
+    this.msg = msg;
   }
 }

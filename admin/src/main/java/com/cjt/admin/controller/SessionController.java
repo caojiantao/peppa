@@ -1,6 +1,7 @@
 package com.cjt.admin.controller;
 
 import com.cjt.common.dto.ResultDto;
+import com.cjt.common.util.TokenUtil;
 import com.cjt.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/session")
@@ -22,24 +25,27 @@ public class SessionController extends BaseController {
   @RequestMapping(value = "", method = RequestMethod.POST)
   private ResultDto login(String account, String password){
     int code;
+    Map<String, Object> map  = new HashMap<>();
+    String msg;
     boolean isLogin;
-    String desc;
+    String token = "";
     if (userService.existAccount(account)){
       if (userService.login(account, password)){
         code = HttpStatus.OK.value();
         isLogin = true;
-        desc = "登录成功";
+        msg = "登录成功";
       } else {
         code = HttpStatus.UNAUTHORIZED.value();
         isLogin = false;
-        desc = "密码不正确";
+        msg = "密码不正确";
       }
     } else {
       code = HttpStatus.NO_CONTENT.value();
       isLogin = false;
-      desc = "该账号不存在";
+      msg = "该账号不存在";
     }
-    return new ResultDto(code, isLogin, desc);
+    map.put("isLogin", isLogin);
+    return new ResultDto(code, map, msg);
   }
 
   @RequestMapping(value = "", method = RequestMethod.DELETE)
