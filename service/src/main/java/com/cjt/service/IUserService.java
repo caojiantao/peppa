@@ -1,12 +1,15 @@
 package com.cjt.service;
 
+import com.cjt.common.dto.UserDto;
 import com.cjt.entity.demo.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface IUserService {
 
-  boolean login(String account, String password);
+  Long login(String account, String password);
+
+  User getUserByDto(UserDto userDto);
 
   boolean existAccount(String account);
 

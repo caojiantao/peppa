@@ -2,7 +2,7 @@ package com.cjt.entity.demo;
 
 public class User {
 
-  private Integer id;
+  private Long id;
 
   private String account;
 
@@ -38,11 +38,11 @@ public class User {
     this.age = age;
   }
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

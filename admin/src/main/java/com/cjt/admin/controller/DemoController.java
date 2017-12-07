@@ -7,7 +7,7 @@ import com.cjt.entity.admin.Quartz;
 import com.cjt.entity.demo.User;
 import com.cjt.service.IMailService;
 import com.cjt.service.IQuartzService;
-import com.cjt.service.UserService;
+import com.cjt.service.IUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +31,7 @@ import java.util.List;
 public class DemoController extends BaseController {
 
   @Resource
-  private UserService userService;
+  private IUserService IUserService;
 
   @Resource
   private IQuartzService quartzService;
@@ -43,7 +43,7 @@ public class DemoController extends BaseController {
   public String demo(){
     User user = new User();
     user.setName("曹建涛");
-    userService.saveUser(user);
+    IUserService.saveUser(user);
 
     return "demo/index";
   }
@@ -74,11 +74,11 @@ public class DemoController extends BaseController {
   @RequestMapping("/test")
   @ResponseBody
   public void test() {
-    List<User> users = userService.listAllUsers();
+    List<User> users = IUserService.listAllUsers();
     for (int i = 0; i < 2; i++) {
       users.get(i).setAge(i);
     }
-    userService.updateUsers(users.subList(0, 2));
+    IUserService.updateUsers(users.subList(0, 2));
     String str = null;
     str.length();
   }

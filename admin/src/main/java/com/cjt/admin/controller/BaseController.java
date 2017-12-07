@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class BaseController {
 
-  public Logger logger = Logger.getRootLogger();
+  private Logger logger = Logger.getLogger(BaseController.class);
 
   public HttpServletRequest request;
 

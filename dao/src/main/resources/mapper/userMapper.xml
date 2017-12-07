@@ -45,17 +45,14 @@
     </foreach>
   </update>
 
-  <select id="login" resultType="boolean">
+  <select id="login" resultType="long">
     SELECT
-      EXISTS (
-        SELECT
-          `name`
-        FROM
-          `user`
-        WHERE
-          `account` = #{account}
-          AND `password` = #{password}
-      )
+      id
+    FROM
+      `user`
+    WHERE
+      `account` = #{account}
+      AND `password` = #{password}
   </select>
 
   <select id="existAccount" resultType="boolean">
@@ -68,5 +65,19 @@
         WHERE
           `account` = #{account}
       )
+  </select>
+
+  <select id="getUserByDto" resultType="com.cjt.entity.demo.User">
+    SELECT
+      id,
+      `account`,
+      `name`
+    FROM
+      `user`
+    <trim prefix="where">
+      <if test="userId!=0">id = #{userId}</if>
+      <if test="account!=null">`account` = #{account}</if>
+      <if test="password!=null">`password` = #{password}</if>
+    </trim>
   </select>
 </mapper>

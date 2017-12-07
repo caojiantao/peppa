@@ -1,26 +1,31 @@
 package com.cjt.service.impl;
 
+import com.cjt.common.dto.UserDto;
 import com.cjt.common.encrypt.EncryptUtil;
 import com.cjt.entity.demo.User;
-import com.cjt.service.UserService;
+import com.cjt.service.IUserService;
 import com.cjt.dao.demo.IUserDao;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class IUserServiceImpl implements IUserService {
 
   @Resource
   private IUserDao userDao;
 
   @Override
-  public boolean login(String account, String password) {
+  public Long login(String account, String password) {
     return userDao.login(account, EncryptUtil.encrypt(password));
+  }
+
+  @Override
+  public User getUserByDto(UserDto userDto) {
+    return userDao.getUserByDto(userDto);
   }
 
   @Override
@@ -45,7 +50,7 @@ public class UserServiceImpl implements UserService {
   }
 
   public void updateUsers(List<User> users) {
-    List<Integer> ids = new ArrayList<Integer>();
+    List<Long> ids = new ArrayList<>();
     for (User user : users) {
       ids.add(user.getId());
     }

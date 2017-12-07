@@ -1,11 +1,10 @@
 package com.cjt.admin.controller;
 
-import com.cjt.common.dto.ResultDto;
 import com.cjt.common.util.TokenUtil;
-import com.cjt.service.UserService;
+import com.cjt.service.IUserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -17,39 +16,29 @@ import java.util.Map;
 public class SessionController extends BaseController {
 
   @Resource
-  private UserService userService;
+  private IUserService IUserService;
 
   /**
    * 登录创建会话
    */
-  @RequestMapping(value = "", method = RequestMethod.POST)
-  private ResultDto login(String account, String password){
-    int code;
-    Map<String, Object> map  = new HashMap<>();
-    String msg;
-    boolean isLogin;
-    String token = "";
-    if (userService.existAccount(account)){
-      if (userService.login(account, password)){
-        code = HttpStatus.OK.value();
-        isLogin = true;
-        msg = "登录成功";
+  @PostMapping("")
+  private Object login(String account, String password) {
+    Map<String, Object> map = new HashMap<>();
+    if (IUserService.existAccount(account)) {
+      Long userId = IUserService.login(account, password);
+      if (userId != null) {
+        response.setStatus(HttpStatus.OK.value());
+        // 用户登录成功采用jwt生成token
+        map.put("token", TokenUtil.getToken(userId));
+        map.put("userId", userId);
       } else {
-        code = HttpStatus.UNAUTHORIZED.value();
-        isLogin = false;
-        msg = "密码不正确";
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        return "密码不正确";
       }
     } else {
-      code = HttpStatus.NO_CONTENT.value();
-      isLogin = false;
-      msg = "该账号不存在";
+      response.setStatus(HttpStatus.NOT_FOUND.value());
+      return "该账号不存在";
     }
-    map.put("isLogin", isLogin);
-    return new ResultDto(code, map, msg);
-  }
-
-  @RequestMapping(value = "", method = RequestMethod.DELETE)
-  private void logout(String account){
-    System.out.println(account);
+    return map;
   }
 }
