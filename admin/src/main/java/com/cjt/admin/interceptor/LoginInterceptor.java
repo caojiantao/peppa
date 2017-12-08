@@ -1,7 +1,6 @@
 package com.cjt.admin.interceptor;
 
 import com.cjt.common.util.TokenUtil;
-import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
