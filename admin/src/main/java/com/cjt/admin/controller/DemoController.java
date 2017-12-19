@@ -30,84 +30,84 @@ import java.util.List;
 @RequestMapping("/demo")
 public class DemoController extends BaseController {
 
-  @Resource
-  private IUserService IUserService;
+    @Resource
+    private IUserService userService;
 
-  @Resource
-  private IQuartzService quartzService;
+    @Resource
+    private IQuartzService quartzService;
 
-  @Resource
-  private IMailService mailService;
+    @Resource
+    private IMailService mailService;
 
-  @RequestMapping("/")
-  public String demo(){
-    User user = new User();
-    user.setName("曹建涛");
-    IUserService.saveUser(user);
+    @RequestMapping("/")
+    public String demo() {
+        User user = new User();
+        user.setName("曹建涛");
+        userService.saveUser(user);
 
-    return "demo/index";
-  }
-
-  @RequestMapping("/quartz")
-  public String quartz() {
-    mailService.sendEmailByVelocityEngine("会议", new String[]{"caojiantao@jd.com"}, null);
-
-    return "demo/quartz";
-  }
-
-  @ResponseBody
-  @RequestMapping(value = "/quartz/jobs", method = RequestMethod.GET)
-  public JSONObject listQuartzJobs(BasePageDto dto) {
-    JSONObject object = new JSONObject();
-    List<Quartz> jobs = quartzService.listJobs(dto);
-    int count = quartzService.countJobs(dto);
-    object.put("result", jobs);
-    object.put("count", count);
-    return object;
-  }
-
-  @RequestMapping("login")
-  public String login() {
-    return "login";
-  }
-
-  @RequestMapping("/test")
-  @ResponseBody
-  public void test() {
-    List<User> users = IUserService.listAllUsers();
-    for (int i = 0; i < 2; i++) {
-      users.get(i).setAge(i);
+        return "demo/index";
     }
-    IUserService.updateUsers(users.subList(0, 2));
-    String str = null;
-    str.length();
-  }
 
-  @RequestMapping(value = "a/{id}", method = RequestMethod.GET)
-  @ResponseBody
-  public String a(@PathVariable String id) throws IOException {
-    return id;
-  }
+    @RequestMapping("/quartz")
+    public String quartz() {
+        mailService.sendEmailByVelocityEngine("会议", new String[]{"caojiantao@jd.com"}, null);
 
-  @RequestMapping("/cache")
-  @ResponseBody
-  public Quartz cache(String name) {
-    Quartz t = quartzService.getQuartz(name);
-    return t;
-  }
+        return "demo/quartz";
+    }
 
-  @Value("${upload_path}")
-  private String uploadPath;
+    @ResponseBody
+    @RequestMapping(value = "/quartz/jobs", method = RequestMethod.GET)
+    public JSONObject listQuartzJobs(BasePageDto dto) {
+        JSONObject object = new JSONObject();
+        List<Quartz> jobs = quartzService.listJobs(dto);
+        int count = quartzService.countJobs(dto);
+        object.put("result", jobs);
+        object.put("count", count);
+        return object;
+    }
 
-  @RequestMapping("uploadFile")
-  @ResponseBody
-  public boolean uploadFile(MultipartFile file) throws IOException {
-    File tarFile = new File(uploadPath, file.getOriginalFilename());
-    return FileUtil.copyFileByChannel((FileInputStream) file.getInputStream(), tarFile);
-  }
+    @RequestMapping("login")
+    public String login() {
+        return "login";
+    }
 
-  @RequestMapping("/error/ajax")
-  public String ajaxError() {
-    return "demo/ajaxError";
-  }
+    @RequestMapping("/test")
+    @ResponseBody
+    public void test() {
+        List<User> users = userService.listAllUsers();
+        for (int i = 0; i < 2; i++) {
+            users.get(i).setAge(i);
+        }
+        userService.updateUsers(users.subList(0, 2));
+        String str = null;
+        str.length();
+    }
+
+    @RequestMapping(value = "a/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public String a(@PathVariable String id) throws IOException {
+        return id;
+    }
+
+    @RequestMapping("/cache")
+    @ResponseBody
+    public Quartz cache(String name) {
+        Quartz t = quartzService.getQuartz(name);
+        return t;
+    }
+
+    @Value("${upload_path}")
+    private String uploadPath;
+
+    @RequestMapping("uploadFile")
+    @ResponseBody
+    public boolean uploadFile(MultipartFile file) throws IOException {
+        File tarFile = new File(uploadPath, file.getOriginalFilename());
+        return FileUtil.copyFileByChannel((FileInputStream) file.getInputStream(), tarFile);
+    }
+
+    @RequestMapping("/error/ajax")
+    public String ajaxError() {
+        return "demo/ajaxError";
+    }
 }

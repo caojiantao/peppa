@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface IUserService {
 
-  Long login(String account, String password);
+    Long login(String account, String password);
 
-  User getUserByDto(UserDto userDto);
+    User getUserByDto(UserDto userDto);
 
-  boolean existAccount(String account);
+    boolean existAccount(String account);
 
-  List<User> listAllUsers();
+    List<User> listAllUsers();
 
-  void saveUser(User user);
+    void saveUser(User user);
 
-  void saveUsers(List<User> users);
+    void saveUsers(List<User> users);
 
-  void updateUsers(List<User> users);
+    void updateUsers(List<User> users);
 }

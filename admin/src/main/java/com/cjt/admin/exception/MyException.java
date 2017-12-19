@@ -7,24 +7,24 @@ package com.cjt.admin.exception;
  */
 public class MyException extends Exception {
 
-  private String msg;
+    private String msg;
 
-  public MyException(String msg) {
-    this.msg = msg;
-  }
+    public MyException(String msg) {
+        this.msg = msg;
+    }
 
-  public String getMsg() {
-    return msg;
-  }
+    public String getMsg() {
+        return msg;
+    }
 
-  public void setMsg(String msg) {
-    this.msg = msg;
-  }
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
-  @Override
-  public String toString() {
-    return "MyException{" +
-            "msg='" + msg + '\'' +
-            '}';
-  }
+    @Override
+    public String toString() {
+        return "MyException{" +
+                "msg='" + msg + '\'' +
+                '}';
+    }
 }

@@ -5,7 +5,8 @@ import com.cjt.dao.admin.IQuartzDao;
 import com.cjt.entity.admin.Quartz;
 import com.cjt.service.IQuartzService;
 import com.cjt.service.QuartzJobManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,12 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- *
+ * @author caojiantao
  */
 @Service
 public class IQuartzServiceImpl implements IQuartzService,InitializingBean {
 
-  private Logger logger = Logger.getLogger(getClass());
+  private Logger logger = LogManager.getLogger(getClass());
 
   @Resource
   private QuartzJobManager quartzJobManager;

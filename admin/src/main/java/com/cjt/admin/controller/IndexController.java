@@ -9,17 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 @Controller
 @RequestMapping("")
 public class IndexController extends BaseController {
 
-  @Resource
-  private IMenuService menuService;
+    @Resource
+    private IMenuService menuService;
 
-  @RequestMapping("/")
-  public String index(Model model){
-    List<Menu> menus = menuService.listMenus();
-    model.addAttribute("menus", menus);
-    return "index";
-  }
+    @RequestMapping("/")
+    public String index(Model model) {
+        List<Menu> menus = menuService.listMenus();
+        model.addAttribute("menus", menus);
+        return "index";
+    }
 }

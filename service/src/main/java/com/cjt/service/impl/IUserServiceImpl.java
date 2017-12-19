@@ -15,45 +15,49 @@ import java.util.List;
 @Service
 public class IUserServiceImpl implements IUserService {
 
-  @Resource
-  private IUserDao userDao;
+    @Resource
+    private IUserDao userDao;
 
-  @Override
-  public Long login(String account, String password) {
-    return userDao.login(account, EncryptUtil.encrypt(password));
-  }
-
-  @Override
-  public User getUserByDto(UserDto userDto) {
-    return userDao.getUserByDto(userDto);
-  }
-
-  @Override
-  public boolean existAccount(String account) {
-    return userDao.existAccount(account);
-  }
-
-  public List<User> listAllUsers() {
-    return userDao.findAll();
-  }
-
-  /**
-   * 若发生checked exception(IOException且抛出)不会发生回滚，可以采用setRollbackOnly
-   */
-  @Transactional
-  public void saveUser(User user) {
-    userDao.saveUser(user);
-  }
-
-  public void saveUsers(List<User> users) {
-    userDao.saveUserBatch(users);
-  }
-
-  public void updateUsers(List<User> users) {
-    List<Long> ids = new ArrayList<>();
-    for (User user : users) {
-      ids.add(user.getId());
+    @Override
+    public Long login(String account, String password) {
+        return userDao.login(account, EncryptUtil.encrypt(password));
     }
-    userDao.updateUserBatch(users, ids);
-  }
+
+    @Override
+    public User getUserByDto(UserDto userDto) {
+        return userDao.getUserByDto(userDto);
+    }
+
+    @Override
+    public boolean existAccount(String account) {
+        return userDao.existAccount(account);
+    }
+
+    @Override
+    public List<User> listAllUsers() {
+        return userDao.findAll();
+    }
+
+    /**
+     * 若发生checked exception(IOException且抛出)不会发生回滚，可以采用setRollbackOnly
+     */
+    @Override
+    @Transactional
+    public void saveUser(User user) {
+        userDao.saveUser(user);
+    }
+
+    @Override
+    public void saveUsers(List<User> users) {
+        userDao.saveUserBatch(users);
+    }
+
+    @Override
+    public void updateUsers(List<User> users) {
+        List<Long> ids = new ArrayList<>();
+        for (User user : users) {
+            ids.add(user.getId());
+        }
+        userDao.updateUserBatch(users, ids);
+    }
 }

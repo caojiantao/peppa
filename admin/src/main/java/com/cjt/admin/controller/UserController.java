@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * @author caojiantao
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
