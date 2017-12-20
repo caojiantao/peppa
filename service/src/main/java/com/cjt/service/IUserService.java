@@ -5,6 +5,9 @@ import com.cjt.entity.demo.User;
 
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 public interface IUserService {
 
     Long login(String account, String password);

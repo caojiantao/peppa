@@ -7,9 +7,14 @@
             http://www.springframework.org/schema/util
             http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <!-- 用户登录权限控制 -->
+    <bean id="jdbcRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <!-- shiro管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <!--<property name="realm" ref="userRealm"/>-->
+        <property name="realm" ref="jdbcRealm"/>
         <!--<property name="cacheManager" ref="cacheManager"/>-->
         <!--<property name="rememberMeManager" ref="rememberMeManager"/>-->
     </bean>
@@ -23,8 +28,8 @@
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login"/>
-        <property name="successUrl" value="/"/>
+        <property name="loginUrl" value="/demo/login"/>
+        <!-- 没有权限跳转页面 -->
         <property name="unauthorizedUrl" value="/unauthorized"/>
         <property name="filters">
             <util:map>
@@ -33,20 +38,9 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /reg/** = anon    <!-- 注册相关  -->
-                /login = authc
-                /logout = logout
-                /authenticated = authc
-                /loginController = anon
-                /js/** = anon
-                /css/** = anon
-                /img/** = anon
-                /html/** = anon
-                /font-awesome/** = anon
-                <!-- /** = anon
-                     /user/modifyPassword = perms["user:update", "user:select"]
-                -->
-                /** = user
+                /demo/** = anon
+                /session/** = anon
+                /** = authc, roles[admin]
             </value>
         </property>
     </bean>
