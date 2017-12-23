@@ -1,2 +1,16 @@
 <h1>这里是登陆页面</h1>
-${name}
+<input type="text" id="name">
+<input type="password" id="password">
+<button onclick="login()">登录</button>
+
+<script type="text/javascript">
+    function login() {
+        var obj = new XMLHttpRequest();
+        obj.open("POST", '/session', true);
+        obj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  // 添加http头，发送信息至服务器时内容编码类型
+        obj.onreadystatechange = function() {
+            console.log(obj);
+        };
+        obj.send('username=caojiantao&password=Cjt00382114.');
+    }
+</script>

@@ -7,16 +7,41 @@
             http://www.springframework.org/schema/util
             http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <!--  rememberMe 管理器  -->
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <!-- 记住30天 -->
+        <property name="maxAge" value="2592000"/>
+    </bean>
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <!--<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>-->
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+
+    <!-- Session 管理器 -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="sid"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="-1"/>
+    </bean>
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+    </bean>
+
     <!-- 用户登录权限控制 -->
     <bean id="jdbcRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!-- shiro管理器 -->
+    <!-- Shiro 管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="jdbcRealm"/>
+        <!-- session管理器，用于替代servlet容器session -->
+        <property name="sessionManager" ref="sessionManager"/>
         <!--<property name="cacheManager" ref="cacheManager"/>-->
-        <!--<property name="rememberMeManager" ref="rememberMeManager"/>-->
+        <!-- 记住我cookie管理设置 -->
+        <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
 
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
@@ -40,7 +65,7 @@
             <value>
                 /demo/** = anon
                 /session/** = anon
-                /** = authc, roles[admin]
+                /** = user
             </value>
         </property>
     </bean>

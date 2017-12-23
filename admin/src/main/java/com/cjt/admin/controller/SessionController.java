@@ -5,6 +5,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,10 @@ public class SessionController extends BaseController {
     @Resource
     private IUserService userService;
 
+    public static void main(String[] args) {
+        System.out.println("hello");
+    }
+
     /**
      * 登录创建会话
      */
@@ -30,14 +35,12 @@ public class SessionController extends BaseController {
     private Object login(String username, String password) {
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            token.setRememberMe(true);
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.login(token);
-        } catch (UnknownAccountException e1) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return "该账号不存在";
-        } catch (IncorrectCredentialsException e2) {
+        } catch (UnknownAccountException | IncorrectCredentialsException e1) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return "密码不正确";
+            return "用户名或密码不正确";
         } catch (Exception ex) {
             ex.printStackTrace();
             return "未知错误";
