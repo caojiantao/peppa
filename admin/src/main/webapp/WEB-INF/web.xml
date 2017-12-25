@@ -39,7 +39,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- spring mvc加载 -->
+    <!-- spring mvc加载（注意spring和springmvc容器的差异与联系，若整合建议统一配置在springmvc下） -->
     <servlet>
         <servlet-name>springmvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -55,19 +55,6 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
-    <!-- 静态资源默认处理（restFul与拦截器冲突） -->
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.js</url-pattern>
-        <url-pattern>*.css</url-pattern>
-        <url-pattern>*.jpg</url-pattern>
-        <url-pattern>*.png</url-pattern>
-        <url-pattern>*.html</url-pattern>
-        <url-pattern>*.woff</url-pattern>
-        <url-pattern>*.woff2</url-pattern>
-        <url-pattern>*.ttf</url-pattern>
-    </servlet-mapping>
 
     <!-- springmvc请求处理 -->
     <servlet-mapping>

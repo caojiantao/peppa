@@ -10,10 +10,33 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2017-11-10 17:58:27
+Date: 2017-12-25 16:51:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for code_set
+-- ----------------------------
+DROP TABLE IF EXISTS `code_set`;
+CREATE TABLE `code_set` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '字典集code，不重复（方便代码英文语义化）',
+  `name` varchar(255) DEFAULT NULL COMMENT '字典集名称',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code_idx` (`code`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for code_value
+-- ----------------------------
+DROP TABLE IF EXISTS `code_value`;
+CREATE TABLE `code_value` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
+  `code_set_id` int(11) NOT NULL COMMENT '字典集ID',
+  `name` varchar(255) DEFAULT NULL COMMENT '字典名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for menu
@@ -26,16 +49,7 @@ CREATE TABLE `menu` (
   `href` varchar(50) DEFAULT NULL,
   `icon_class` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of menu
--- ----------------------------
-INSERT INTO `menu` VALUES ('1', '菜单管理', '0', null, 'fa-th-list');
-INSERT INTO `menu` VALUES ('2', '定时任务管理', '0', null, 'fa-th-list');
-INSERT INTO `menu` VALUES ('3', 'demo示例', '0', null, 'fa-th-list');
-INSERT INTO `menu` VALUES ('4', '定时任务管理', '2', null, null);
-INSERT INTO `menu` VALUES ('5', '测试', '4', '', null);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for quartz
@@ -50,30 +64,48 @@ CREATE TABLE `quartz` (
   `desc` varchar(255) DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of quartz
+-- Table structure for role
 -- ----------------------------
-INSERT INTO `quartz` VALUES ('6', 'cjt', 'group', '0', '0/10 * * * * ?', '我的定时任务', '0');
-
--- ----------------------------
--- Table structure for user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `age` int(11) DEFAULT NULL,
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
+  `name` varchar(255) DEFAULT NULL COMMENT '角色名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of user
+-- Table structure for roles_permissions
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '曹建涛', '0');
-INSERT INTO `user` VALUES ('2', '2', '1');
-INSERT INTO `user` VALUES ('4', '', null);
-INSERT INTO `user` VALUES ('5', '', null);
-INSERT INTO `user` VALUES ('6', '', null);
-INSERT INTO `user` VALUES ('7', 'test', '18');
+DROP TABLE IF EXISTS `roles_permissions`;
+CREATE TABLE `roles_permissions` (
+  `id` int(11) NOT NULL,
+  `role_name` varchar(255) DEFAULT NULL,
+  `permission` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
+  `username` varchar(20) DEFAULT NULL COMMENT '用户名',
+  `password` varchar(100) DEFAULT NULL COMMENT '密码',
+  `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for user_roles
+-- ----------------------------
+DROP TABLE IF EXISTS `user_roles`;
+CREATE TABLE `user_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` int(11) NOT NULL COMMENT '用户ID',
+  `role_name` int(11) NOT NULL COMMENT '角色ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
