@@ -23,7 +23,7 @@
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
         <spring.version>4.3.10.RELEASE</spring.version>
         <mybatis.version>3.1.1</mybatis.version>
-        <log4j.version>2.10.0</log4j.version>
+        <log4j.version>1.2.17</log4j.version>
         <mysql.version>5.1.33</mysql.version>
         <commons-dbcp.version>1.2.2</commons-dbcp.version>
         <servlet-api.version>3.1.0</servlet-api.version>
@@ -37,6 +37,8 @@
         <hessian.version>4.0.7</hessian.version>
         <mail.version>1.4.7</mail.version>
         <jwt.version>2.2.0</jwt.version>
+        <shiro-spring.version>1.2.1</shiro-spring.version>
+        <slf4j-log4j12.version>1.7.21</slf4j-log4j12.version>
     </properties>
 
     <dependencies>
@@ -126,10 +128,11 @@
 
         <!-- 日志管理 -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-web</artifactId>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
             <version>${log4j.version}</version>
         </dependency>
+
 
         <!-- 动态定时任务 -->
         <dependency>
@@ -175,8 +178,16 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
-            <version>1.2.1</version>
+            <version>${shiro-spring.version}</version>
         </dependency>
+
+        <!-- slf和log4j冲突解决jar -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-log4j12.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

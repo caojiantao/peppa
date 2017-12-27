@@ -39,6 +39,11 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
     <!-- spring mvc加载（注意spring和springmvc容器的差异与联系，若整合建议统一配置在springmvc下） -->
     <servlet>
         <servlet-name>springmvc</servlet-name>

@@ -1,15 +1,13 @@
 package com.cjt.admin.controller;
 
 import com.cjt.common.util.ExceptionUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -17,13 +15,11 @@ import java.io.IOException;
  */
 public class BaseController {
 
-    private Logger logger = LogManager.getLogger(BaseController.this);
+    private Logger logger = LogManager.getLogger(BaseController.class);
 
     public HttpServletRequest request;
 
     public HttpServletResponse response;
-
-    public HttpSession session;
 
     /**
      * 该注释表示每个该类及子类的请求调用之前都回执行该方法
@@ -32,7 +28,6 @@ public class BaseController {
     public void initReqResSession(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
-        this.session = request.getSession();
     }
 
     /**
@@ -44,6 +39,6 @@ public class BaseController {
         String errorMsg = ExceptionUtil.toDetailStr(ex);
         logger.error(errorMsg);
         // 注意setStatus和sendError的区别
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 }

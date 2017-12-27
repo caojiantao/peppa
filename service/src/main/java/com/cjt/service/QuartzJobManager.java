@@ -1,8 +1,8 @@
 package com.cjt.service;
 
 import com.cjt.entity.admin.Quartz;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.springframework.stereotype.Component;
 
