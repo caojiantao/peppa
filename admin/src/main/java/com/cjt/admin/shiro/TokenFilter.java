@@ -28,10 +28,10 @@ public class TokenFilter extends UserFilter {
         if (isLoginRequest(request, response)) {
             return true;
         } else {
-            SimpleCookie cookie = new SimpleCookie("token");
-            cookie.readValue((HttpServletRequest) request, (HttpServletResponse) response);
-            String username = tokenUtil.parseToken(cookie.getValue(), "username", String.class);
-            return StringUtils.isNotBlank(username);
+            SimpleCookie token = new SimpleCookie("token");
+            String tokenStr = token.readValue((HttpServletRequest) request, (HttpServletResponse) response);
+            Object username = tokenUtil.parseToken(tokenStr, "username");
+            return username != null && StringUtils.isNotBlank(username.toString());
         }
     }
 
