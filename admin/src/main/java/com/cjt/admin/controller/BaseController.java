@@ -35,9 +35,7 @@ public class BaseController {
      */
     @ExceptionHandler
     public void handleException(HttpServletRequest request, Exception ex) throws IOException {
-        // 将错误具体信息打印日志，返回500状态码
-        String errorMsg = ExceptionUtil.toDetailStr(ex);
-        logger.error(errorMsg);
+        logger.error(ExceptionUtil.toDetailStr(ex));
         // 注意setStatus和sendError的区别
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }

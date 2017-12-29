@@ -35,7 +35,7 @@ public class SessionController extends BaseController {
     /**
      * 登录创建会话
      */
-    @PostMapping("")
+    @PostMapping(value = {"", "/"})
     private Object login(String username, String password, boolean rememberMe) {
         try {
             password = passwordUtil.encryptPassword(password);
