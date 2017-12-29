@@ -5,13 +5,17 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans
-            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
             http://www.springframework.org/schema/context
-            http://www.springframework.org/schema/context/spring-context-3.2.xsd
+            http://www.springframework.org/schema/context/spring-context-4.3.xsd
             http://www.springframework.org/schema/mvc
-            http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+            http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
     <mvc:resources mapping="/static/**" location="/static/"/>
+
+    <mvc:cors>
+        <mvc:mapping path="/**" allowed-origins="*" allowed-methods="*" allow-credentials="true"/>
+    </mvc:cors>
 
     <!-- fastJson转换配置 -->
     <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
