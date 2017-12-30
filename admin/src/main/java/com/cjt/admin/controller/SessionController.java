@@ -3,11 +3,10 @@ package com.cjt.admin.controller;
 import com.cjt.service.IUserService;
 import com.cjt.service.TokenService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +29,7 @@ public class SessionController extends BaseController {
     /**
      * 登录创建会话
      */
-    @GetMapping(value = {"", "/"})
+    @PostMapping(value = {"", "/"})
     private Object login(String username, String password, boolean rememberMe) {
         if (userService.login(username, password)){
             String token = tokenService.getToken(username, rememberMe);
@@ -39,6 +38,7 @@ public class SessionController extends BaseController {
             resultMap.put("username", username);
             return resultMap;
         } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "用户名或密码错误！";
         }
     }
