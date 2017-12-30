@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface IUserService {
 
-    Long login(String account, String password);
+    boolean login(String username, String password);
 
     User getUserByDto(UserDto userDto);
 

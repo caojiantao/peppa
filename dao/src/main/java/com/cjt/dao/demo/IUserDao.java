@@ -11,7 +11,7 @@ public interface IUserDao {
 
   boolean existAccount(String account);
 
-  Long login(@Param("account") String account, @Param("password") String password);
+  boolean login(@Param("username") String username, @Param("password") String password);
 
   User getUserByDto(UserDto userDto);
 

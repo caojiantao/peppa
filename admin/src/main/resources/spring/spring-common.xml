@@ -17,6 +17,16 @@
         <mvc:mapping path="/**" allowed-origins="*" allowed-methods="*" allow-credentials="true"/>
     </mvc:cors>
 
+    <bean id="permissionFilter" class="com.cjt.admin.filter.PermissionFilter">
+        <property name="excludePaths">
+            <list>
+                <value>/</value>
+                <value>/static/**</value>
+                <value>/session/**</value>
+            </list>
+        </property>
+    </bean>
+
     <!-- fastJson转换配置 -->
     <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
         <!-- 序列化输出 -->

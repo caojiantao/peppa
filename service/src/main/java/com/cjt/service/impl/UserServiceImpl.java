@@ -1,26 +1,47 @@
 package com.cjt.service.impl;
 
+import com.auth0.jwt.algorithms.Algorithm;
 import com.cjt.common.dto.UserDto;
-import com.cjt.common.encrypt.EncryptUtil;
+import com.cjt.common.util.ExceptionUtil;
+import com.cjt.dao.demo.IUserDao;
 import com.cjt.entity.demo.User;
 import com.cjt.service.IUserService;
-import com.cjt.dao.demo.IUserDao;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.lang.CharEncoding.UTF_8;
+
 @Service
-public class IUserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService {
+
+    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
     @Resource
     private IUserDao userDao;
 
+    @Value("${password_secret}")
+    private String passwordSecret;
+
     @Override
-    public Long login(String account, String password) {
-        return userDao.login(account, EncryptUtil.encrypt(password));
+    public boolean login(String username, String password) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(passwordSecret);
+            byte[] bytes = algorithm.sign(password.getBytes(UTF_8));
+            password = Hex.encodeHexString(bytes);
+            return userDao.login(username, password);
+        } catch (UnsupportedEncodingException e) {
+            logger.error(ExceptionUtil.toDetailStr(e));
+            return false;
+        }
     }
 
     @Override

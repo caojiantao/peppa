@@ -45,14 +45,17 @@
     </foreach>
   </update>
 
-  <select id="login" resultType="long">
+  <select id="login" resultType="boolean">
     SELECT
-      id
-    FROM
-      `user`
-    WHERE
-      `account` = #{account}
-      AND `password` = #{password}
+      EXISTS (
+        SELECT
+          *
+        FROM
+          `user`
+        WHERE
+          `username` = #{username}
+          AND `password` = #{password}
+      )
   </select>
 
   <select id="existAccount" resultType="boolean">
