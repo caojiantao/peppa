@@ -13,10 +13,6 @@
 
     <mvc:resources mapping="/static/**" location="/static/"/>
 
-    <mvc:cors>
-        <mvc:mapping path="/**" allowed-origins="*" allowed-methods="*" allow-credentials="true"/>
-    </mvc:cors>
-
     <bean id="permissionFilter" class="com.cjt.admin.filter.PermissionFilter">
         <property name="excludePaths">
             <list>

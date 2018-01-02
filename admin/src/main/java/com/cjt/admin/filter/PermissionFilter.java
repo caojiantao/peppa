@@ -3,6 +3,7 @@ package com.cjt.admin.filter;
 import com.cjt.service.TokenService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
@@ -33,7 +34,7 @@ public class PermissionFilter implements Filter {
     private List<String> excludePaths;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -41,28 +42,11 @@ public class PermissionFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        if (isExcluded(httpRequest)) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        String tokenStr = "";
-        Cookie cookies[] = httpRequest.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(tokenName)) {
-                    tokenStr = cookie.getValue();
-                    break;
-                }
-            }
-        } else {
-            tokenStr = httpRequest.getHeader(tokenHeaderName);
-        }
-        String username = tokenService.parseToken(tokenStr);
-        if (StringUtils.isNotBlank(username)) {
+        setCors(httpRequest, httpResponse);
+        if (isExcluded(httpRequest) || isPreflight(httpRequest) || isValidRequest(httpRequest)) {
             chain.doFilter(request, response);
         } else {
-            String errorMsg = "未登录";
+            String errorMsg = "无权访问";
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpResponse.setContentType("application/json;charset=utf-8");
             httpResponse.getWriter().write(errorMsg);
@@ -74,6 +58,17 @@ public class PermissionFilter implements Filter {
 
     }
 
+    /**
+     * 根绝CORE规范设置跨域资源共享
+     */
+    private void setCors(HttpServletRequest request, HttpServletResponse response) {
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "X-Token");
+    }
+
+    /**
+     * 是否不进行处理
+     */
     private boolean isExcluded(HttpServletRequest request) {
         if (excludePaths != null && !excludePaths.isEmpty()) {
             String requestUrl = request.getRequestURI();
@@ -86,6 +81,29 @@ public class PermissionFilter implements Filter {
             }
         }
         return false;
+    }
+
+    /**
+     * 是否为AJAX预请求
+     */
+    private boolean isPreflight(HttpServletRequest request) {
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
+    }
+
+    private boolean isValidRequest(HttpServletRequest request) {
+        String tokenStr = "";
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(tokenName)) {
+                    tokenStr = cookie.getValue();
+                    break;
+                }
+            }
+        } else {
+            tokenStr = request.getHeader(tokenHeaderName);
+        }
+        return StringUtils.isNotBlank(tokenService.parseToken(tokenStr));
     }
 
     public List<String> getExcludePaths() {
