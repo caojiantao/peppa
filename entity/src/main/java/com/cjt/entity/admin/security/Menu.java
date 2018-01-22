@@ -1,4 +1,4 @@
-package com.cjt.entity.admin;
+package com.cjt.entity.admin.security;
 
 import java.util.List;
 

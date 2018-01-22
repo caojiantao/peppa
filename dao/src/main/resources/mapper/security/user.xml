@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.admin.security.IUserDAO">
+  <resultMap id="userMap" type="com.cjt.entity.admin.security.User">
+    <id column="id" property="id"/>
+    <result column="username" property="username"/>
+    <result column="password" property="password"/>
+    <result column="nickname" property="nickname"/>
+  </resultMap>
+
+  <select id="listUser" resultMap="userMap" parameterType="com.cjt.common.dto.UserDTO">
+    SELECT id, username, password, nickname
+    FROM user
+    <trim prefix="WHERE" prefixOverrides="AND">
+      <if test="id!=0">AND id = #{id}</if>
+      <if test="username!=null">AND `username` = #{username}</if>
+      <if test="password!=null">AND `password` = #{password}</if>
+      <if test="offset!=0">LIMIT #{start}, #{offset}</if>
+    </trim>
+  </select>
+
+  <select id="countUser" resultType="int" parameterType="com.cjt.common.dto.UserDTO">
+    SELECT COUNT(*)
+    FROM user
+    <trim prefix="WHERE" prefixOverrides="AND">
+      <if test="id!=0">AND id = #{id}</if>
+      <if test="username!=null">AND `username` = #{username}</if>
+      <if test="password!=null">AND `password` = #{password}</if>
+    </trim>
+  </select>
+
+  <!-- 想要获取最后一次插入的主键id，注意mybatis和ibatis的区别 -->
+  <insert id="saveUser" parameterType="com.cjt.entity.admin.security.User">
+    INSERT INTO user (username, password, nickname)
+    VALUES (#{username}, #{password}, #{nickname})
+  </insert>
+
+  <select id="login" resultType="boolean">
+    SELECT EXISTS(
+            SELECT *
+            FROM
+              `user`
+            WHERE
+              `username` = #{username}
+              AND `password` = #{password}
+    )
+  </select>
+
+  <select id="getUserByDto" resultMap="userMap">
+    SELECT
+    id, `username`, `password`, `nickname`
+    FROM
+    `user`
+    <trim prefix="WHERE" prefixOverrides="AND">
+      <if test="id!=0">AND id = #{id}</if>
+      <if test="username!=null">AND `username` = #{username}</if>
+      <if test="password!=null">AND `password` = #{password}</if>
+    </trim>
+  </select>
+
+  <delete id="removeUserById" parameterType="long">
+    DELETE FROM user
+    WHERE id = #{id}
+  </delete>
+
+  <update id="updateUser" parameterType="com.cjt.entity.admin.security.User">
+    UPDATE user
+    <trim prefix="SET" suffix="WHERE id = #{id}">
+      `username` = #{username},
+      `password` = #{password},
+      `nickname` = #{nickname}
+    </trim>
+  </update>
+</mapper>

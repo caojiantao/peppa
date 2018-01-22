@@ -1,7 +1,8 @@
+/*
 package com.cjt.admin.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjt.common.dto.BasePageDto;
+import com.cjt.common.dto.BasePageDTO;
 import com.cjt.common.util.FileUtil;
 import com.cjt.entity.admin.Quartz;
 import com.cjt.entity.demo.User;
@@ -22,10 +23,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
+*/
 /**
  * @author caojiantao
  * 后台演示的各种demo
- */
+ *//*
+
 @Controller
 @RequestMapping("/demo")
 public class DemoController extends BaseController {
@@ -57,7 +60,7 @@ public class DemoController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/quartz/jobs", method = RequestMethod.GET)
-    public JSONObject listQuartzJobs(BasePageDto dto) {
+    public JSONObject listQuartzJobs(BasePageDTO dto) {
         JSONObject object = new JSONObject();
         List<Quartz> jobs = quartzService.listJobs(dto);
         int count = quartzService.countJobs(dto);
@@ -110,4 +113,4 @@ public class DemoController extends BaseController {
     public String ajaxError() {
         return "demo/ajaxError";
     }
-}
+}*/

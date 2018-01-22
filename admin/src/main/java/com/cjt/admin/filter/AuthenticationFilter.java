@@ -1,13 +1,15 @@
 package com.cjt.admin.filter;
 
+import com.cjt.entity.admin.security.User;
+import com.cjt.service.IUserService;
 import com.cjt.service.TokenService;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
-import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +18,11 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * 权限过滤器
+ * 登录鉴权
  *
  * @author caojiantao
  */
-public class PermissionFilter implements Filter {
+public class AuthenticationFilter implements Filter {
 
     @Value("${token_name}")
     private String tokenName;
@@ -28,8 +30,11 @@ public class PermissionFilter implements Filter {
     @Value("${token_header_name}")
     private String tokenHeaderName;
 
-    @Resource
+    @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private IUserService userService;
 
     private List<String> excludePaths;
 
@@ -103,7 +108,15 @@ public class PermissionFilter implements Filter {
         } else {
             tokenStr = request.getHeader(tokenHeaderName);
         }
-        return StringUtils.isNotBlank(tokenService.parseToken(tokenStr));
+        String username = tokenService.parseToken(tokenStr);
+        if (StringUtils.isNotBlank(username)) {
+            // 当登录鉴权成功后将user设置到request中
+            User user = userService.getUserByUsername(username);
+            request.setAttribute("user", user);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<String> getExcludePaths() {

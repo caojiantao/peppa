@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.admin.security.IMenuDAO">
+
+  <resultMap id="menuMap" type="com.cjt.entity.admin.security.Menu">
+    <id column="id" property="id"/>
+    <result column="name" property="name"/>
+    <result column="parent_id" property="parentId"/>
+    <result column="href" property="href"/>
+    <result column="icon_class" property="iconClass"/>
+  </resultMap>
+
+  <select id="listMenus" resultMap="menuMap">
+    SELECT
+      `id`,
+      `name`,
+      parent_id,
+      href,
+      icon_class
+    FROM menu
+  </select>
+
+  <select id="listMenuByRoles" resultMap="menuMap" parameterType="list">
+    SELECT `id`, `name`, parent_id, href, icon_class
+    FROM menu
+    WHERE id IN
+    (
+    SELECT DISTINCT menu_id FROM role_menus
+    WHERE role_id IN
+    <foreach collection="list" item="role" open="(" close=")" separator=",">
+      #{role.id}
+    </foreach>
+    )
+  </select>
+</mapper>

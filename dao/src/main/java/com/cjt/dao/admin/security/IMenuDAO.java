@@ -1,5 +1,4 @@
-package com.cjt.service;
-
+package com.cjt.dao.admin.security;
 
 import com.cjt.entity.admin.security.Menu;
 import com.cjt.entity.admin.security.Role;
@@ -9,7 +8,9 @@ import java.util.List;
 /**
  * @author caojiantao
  */
-public interface IMenuService {
+public interface IMenuDAO {
+
+    List<Menu> listMenus();
 
     /**
      * 根据角色列表，获取菜单集合

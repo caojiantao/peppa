@@ -1,7 +1,7 @@
 package com.cjt.service.impl;
 
-import com.cjt.common.dto.BasePageDto;
-import com.cjt.dao.admin.IQuartzDao;
+import com.cjt.common.dto.BasePageDTO;
+import com.cjt.dao.admin.IQuartzDAO;
 import com.cjt.entity.admin.Quartz;
 import com.cjt.service.IQuartzService;
 import com.cjt.service.QuartzJobManager;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author caojiantao
  */
 @Service
-public class IQuartzServiceImpl implements IQuartzService,InitializingBean {
+public class QuartzServiceImpl implements IQuartzService,InitializingBean {
 
   private Logger logger = LogManager.getLogger(getClass());
 
@@ -26,7 +26,7 @@ public class IQuartzServiceImpl implements IQuartzService,InitializingBean {
   private QuartzJobManager quartzJobManager;
 
   @Resource
-  private IQuartzDao quartzDao;
+  private IQuartzDAO quartzDao;
 
   @Override
   public List<Quartz> listJobs() {
@@ -34,12 +34,12 @@ public class IQuartzServiceImpl implements IQuartzService,InitializingBean {
   }
 
   @Override
-  public List<Quartz> listJobs(BasePageDto dto) {
+  public List<Quartz> listJobs(BasePageDTO dto) {
     return quartzDao.listJobs(dto);
   }
 
   @Override
-  public int countJobs(BasePageDto dto) {
+  public int countJobs(BasePageDTO dto) {
     return quartzDao.countJobs(dto);
   }
 

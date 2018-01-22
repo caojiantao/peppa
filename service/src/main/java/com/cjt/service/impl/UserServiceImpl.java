@@ -1,32 +1,46 @@
 package com.cjt.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.cjt.common.dto.UserDto;
+import com.cjt.common.dto.UserDTO;
 import com.cjt.common.util.ExceptionUtil;
-import com.cjt.dao.demo.IUserDao;
-import com.cjt.entity.demo.User;
+import com.cjt.dao.admin.security.IMenuDAO;
+import com.cjt.dao.admin.security.IRoleDAO;
+import com.cjt.dao.admin.security.IUserDAO;
+import com.cjt.entity.admin.security.Menu;
+import com.cjt.entity.admin.security.Role;
+import com.cjt.entity.admin.security.User;
 import com.cjt.service.IUserService;
+import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.apache.commons.lang.CharEncoding.UTF_8;
-
+/**
+ * 用户业务处理service
+ *
+ * @author caojiantao
+ */
 @Service
 public class UserServiceImpl implements IUserService {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
-    @Resource
-    private IUserDao userDao;
+    @Autowired
+    private IUserDAO userDAO;
+
+    @Autowired
+    private IRoleDAO roleDAO;
+
+    @Autowired
+    private IMenuDAO menuDAO;
 
     @Value("${password_secret}")
     private String passwordSecret;
@@ -35,9 +49,9 @@ public class UserServiceImpl implements IUserService {
     public boolean login(String username, String password) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(passwordSecret);
-            byte[] bytes = algorithm.sign(password.getBytes(UTF_8));
+            byte[] bytes = algorithm.sign(password.getBytes(CharEncoding.UTF_8));
             password = Hex.encodeHexString(bytes);
-            return userDao.login(username, password);
+            return userDAO.login(username, password);
         } catch (UnsupportedEncodingException e) {
             logger.error(ExceptionUtil.toDetailStr(e));
             return false;
@@ -45,40 +59,42 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User getUserByDto(UserDto userDto) {
-        return userDao.getUserByDto(userDto);
+    public User getUserByUsername(String username) {
+        UserDTO.Builder builder = new UserDTO.Builder();
+        return this.getUserByDto(builder.username(username).build());
     }
 
     @Override
-    public boolean existAccount(String account) {
-        return userDao.existAccount(account);
+    public User getUserByDto(UserDTO userDto) {
+        User user = userDAO.getUserByDto(userDto);
+        List<Role> roles = roleDAO.listRoleByUserId(user.getId());
+        user.setRoles(roles);
+        return user;
     }
 
     @Override
-    public List<User> listAllUsers() {
-        return userDao.findAll();
-    }
-
-    /**
-     * 若发生checked exception(IOException且抛出)不会发生回滚，可以采用setRollbackOnly
-     */
-    @Override
-    @Transactional
-    public void saveUser(User user) {
-        userDao.saveUser(user);
+    public JSONObject listUserByPage(UserDTO userDTO) {
+        JSONObject object = new JSONObject();
+        List<User> users = userDAO.listUser(userDTO);
+        object.put("data", users);
+        int total = userDAO.countUser(userDTO);
+        object.put("total", total);
+        return object;
     }
 
     @Override
-    public void saveUsers(List<User> users) {
-        userDao.saveUserBatch(users);
+    public boolean saveUser(User user) {
+        userDAO.saveUser(user);
+        return user.getId() > 0;
     }
 
     @Override
-    public void updateUsers(List<User> users) {
-        List<Long> ids = new ArrayList<>();
-        for (User user : users) {
-            ids.add(user.getId());
-        }
-        userDao.updateUserBatch(users, ids);
+    public boolean updateUser(User user) {
+        return userDAO.updateUser(user) > 0;
+    }
+
+    @Override
+    public boolean removeUserById(Long id) {
+        return userDAO.removeUserById(id) > 0;
     }
 }
