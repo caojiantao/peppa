@@ -6,6 +6,7 @@ import com.cjt.entity.admin.security.Role;
 import com.cjt.entity.admin.security.User;
 import com.cjt.service.IMenuService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -36,6 +37,12 @@ public class MenuServiceImpl implements IMenuService {
     public List<Menu> listAllMenu() {
         List<Menu> menus = menuDAO.listAllMenu();
         return formatMenuList(menus);
+    }
+
+    @Override
+    public boolean saveMenu(Menu menu) {
+        menuDAO.saveMenu(menu);
+        return menu.getId() > 0;
     }
 
     /**

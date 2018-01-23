@@ -32,7 +32,8 @@
     WHERE id = #{id}
   </select>
 
-  <insert id="saveMenu" parameterType="com.cjt.entity.admin.security.Menu">
+  <insert id="saveMenu" parameterType="com.cjt.entity.admin.security.Menu"
+          useGeneratedKeys="true" keyProperty="id">
     INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`)
     VALUES (#{name}, #{parentId}, #{href}, #{iconClass})
   </insert>

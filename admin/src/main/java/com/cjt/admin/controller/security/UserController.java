@@ -22,9 +22,6 @@ public class UserController extends BaseController {
     @Autowired
     private IUserService userService;
 
-    @Autowired
-    private IMenuService menuService;
-
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") Long id) {
         UserDTO.Builder builder = new UserDTO.Builder();
@@ -46,7 +43,7 @@ public class UserController extends BaseController {
             response.setStatus(HttpServletResponse.SC_CREATED);
             return user;
         } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            internalError();
             return "创建用户失败";
         }
     }

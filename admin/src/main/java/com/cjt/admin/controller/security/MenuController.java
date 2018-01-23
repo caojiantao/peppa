@@ -8,6 +8,7 @@ import com.cjt.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,5 +34,15 @@ public class MenuController extends BaseController {
         }
         User user = userService.getUserByUsername(username);
         return menuService.listMenuByUser(user);
+    }
+
+    @PostMapping("")
+    public Object insertMenu(Menu menu){
+        if (menuService.saveMenu(menu)){
+            return menu;
+        } else {
+            internalError();
+            return "新增菜单失败";
+        }
     }
 }

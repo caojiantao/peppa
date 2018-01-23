@@ -39,4 +39,11 @@ public class BaseController {
         // 注意setStatus和sendError的区别
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
+
+    /**
+     * 未知错误
+     */
+    public void internalError() {
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    }
 }

@@ -1,22 +1,24 @@
 /*
-Navicat MySQL Data Transfer
+ Navicat Premium Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50528
-Source Host           : localhost:3306
-Source Database       : ssm
+ Source Server         : 本地
+ Source Server Type    : MySQL
+ Source Server Version : 50718
+ Source Host           : localhost
+ Source Database       : ssm
 
-Target Server Type    : MYSQL
-Target Server Version : 50528
-File Encoding         : 65001
+ Target Server Type    : MySQL
+ Target Server Version : 50718
+ File Encoding         : utf-8
 
-Date: 2017-12-25 16:51:53
+ Date: 01/24/2018 01:03:37 AM
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for code_set
+--  Table structure for `code_set`
 -- ----------------------------
 DROP TABLE IF EXISTS `code_set`;
 CREATE TABLE `code_set` (
@@ -28,7 +30,7 @@ CREATE TABLE `code_set` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for code_value
+--  Table structure for `code_value`
 -- ----------------------------
 DROP TABLE IF EXISTS `code_value`;
 CREATE TABLE `code_value` (
@@ -39,7 +41,7 @@ CREATE TABLE `code_value` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for menu
+--  Table structure for `menu`
 -- ----------------------------
 DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu` (
@@ -49,10 +51,17 @@ CREATE TABLE `menu` (
   `href` varchar(50) DEFAULT NULL,
   `icon_class` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for quartz
+--  Records of `menu`
+-- ----------------------------
+BEGIN;
+INSERT INTO `menu` VALUES ('1', '权限模块', '0', null, null), ('2', '菜单管理', '1', 'Menus', null), ('3', '角色管理', '1', 'Roles', null), ('4', '用户管理', '1', 'Users', null), ('5', '随便爬爬', '0', null, null), ('6', '酷狗', '5', null, null), ('7', '歌曲下载', '6', 'Songs', null);
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `quartz`
 -- ----------------------------
 DROP TABLE IF EXISTS `quartz`;
 CREATE TABLE `quartz` (
@@ -67,45 +76,75 @@ CREATE TABLE `quartz` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for role
+--  Table structure for `role`
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
   `name` varchar(255) DEFAULT NULL COMMENT '角色名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for roles_permissions
+--  Records of `role`
 -- ----------------------------
-DROP TABLE IF EXISTS `roles_permissions`;
-CREATE TABLE `roles_permissions` (
-  `id` int(11) NOT NULL,
-  `role_name` varchar(255) DEFAULT NULL,
-  `permission` varchar(255) DEFAULT NULL,
+BEGIN;
+INSERT INTO `role` VALUES ('1', '超级管理员');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `role_menus`
+-- ----------------------------
+DROP TABLE IF EXISTS `role_menus`;
+CREATE TABLE `role_menus` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(10) NOT NULL,
+  `menu_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for users
+--  Records of `role_menus`
 -- ----------------------------
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
+BEGIN;
+INSERT INTO `role_menus` VALUES ('1', '1', '1'), ('2', '1', '2'), ('3', '1', '3'), ('4', '1', '4'), ('5', '1', '5'), ('6', '1', '6'), ('7', '1', '7');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `user`
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
   `username` varchar(20) DEFAULT NULL COMMENT '用户名',
   `password` varchar(100) DEFAULT NULL COMMENT '密码',
   `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for user_roles
+--  Records of `user`
+-- ----------------------------
+BEGIN;
+INSERT INTO `user` VALUES ('1', 'caojiantao', '69f50b2ff3918d3d973492fa72796449640954834347be24c23058dd8840591d', '曹建涛');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `user_roles`
 -- ----------------------------
 DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE `user_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` int(11) NOT NULL COMMENT '用户ID',
-  `role_name` int(11) NOT NULL COMMENT '角色ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `role_id` int(11) NOT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `user_roles`
+-- ----------------------------
+BEGIN;
+INSERT INTO `user_roles` VALUES ('1', '1', '1');
+COMMIT;
+
+SET FOREIGN_KEY_CHECKS = 1;

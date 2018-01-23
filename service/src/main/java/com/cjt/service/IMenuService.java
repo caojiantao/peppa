@@ -26,4 +26,12 @@ public interface IMenuService {
      * @return 菜单集合
      */
     List<Menu> listAllMenu();
+
+    /**
+     * 新增菜单
+     *
+     * @param menu 菜单
+     * @return 成功与否
+     */
+    boolean saveMenu(Menu menu);
 }
