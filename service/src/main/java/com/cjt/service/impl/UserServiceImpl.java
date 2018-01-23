@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.cjt.common.dto.UserDTO;
 import com.cjt.common.util.ExceptionUtil;
-import com.cjt.dao.admin.security.IMenuDAO;
-import com.cjt.dao.admin.security.IRoleDAO;
-import com.cjt.dao.admin.security.IUserDAO;
-import com.cjt.entity.admin.security.Menu;
+import com.cjt.dao.security.IMenuDAO;
+import com.cjt.dao.security.IRoleDAO;
+import com.cjt.dao.security.IUserDAO;
 import com.cjt.entity.admin.security.Role;
 import com.cjt.entity.admin.security.User;
 import com.cjt.service.IUserService;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -62,6 +60,12 @@ public class UserServiceImpl implements IUserService {
     public User getUserByUsername(String username) {
         UserDTO.Builder builder = new UserDTO.Builder();
         return this.getUserByDto(builder.username(username).build());
+    }
+
+    @Override
+    public User getUserByUserId(long userId) {
+        UserDTO.Builder builder = new UserDTO.Builder();
+        return this.getUserByDto(builder.id(userId).build());
     }
 
     @Override

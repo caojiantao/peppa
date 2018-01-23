@@ -1,4 +1,4 @@
-package com.cjt.dao.admin;
+package com.cjt.dao;
 
 import com.cjt.common.dto.BasePageDTO;
 import com.cjt.entity.admin.Quartz;

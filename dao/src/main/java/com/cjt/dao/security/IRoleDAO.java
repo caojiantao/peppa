@@ -1,4 +1,4 @@
-package com.cjt.dao.admin.security;
+package com.cjt.dao.security;
 
 import com.cjt.entity.admin.security.Role;
 

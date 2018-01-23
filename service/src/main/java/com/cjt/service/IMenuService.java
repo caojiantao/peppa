@@ -3,6 +3,7 @@ package com.cjt.service;
 
 import com.cjt.entity.admin.security.Menu;
 import com.cjt.entity.admin.security.Role;
+import com.cjt.entity.admin.security.User;
 
 import java.util.List;
 
@@ -12,10 +13,17 @@ import java.util.List;
 public interface IMenuService {
 
     /**
-     * 根据角色列表，获取菜单集合
+     * 获取用户对应菜单集合
      *
-     * @param roles 角色列表
+     * @param user 用户
      * @return 菜单集合
      */
-    List<Menu> listMenuByRoles(List<Role> roles);
+    List<Menu> listMenuByUser(User user);
+
+    /**
+     * 获取所有菜单集合
+     *
+     * @return 菜单集合
+     */
+    List<Menu> listAllMenu();
 }

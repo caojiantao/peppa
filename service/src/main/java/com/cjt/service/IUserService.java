@@ -27,6 +27,14 @@ public interface IUserService {
     User getUserByUsername(String username);
 
     /**
+     * 通过userId获取用户
+     *
+     * @param userId 用户ID
+     * @return 用户信息
+     */
+    User getUserByUserId(long userId);
+
+    /**
      * 通过dto获取用户
      *
      * @param userDTO 用户DTO

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
-<mapper namespace="com.cjt.dao.admin.security.IMenuDAO">
+<mapper namespace="com.cjt.dao.security.IMenuDAO">
 
   <resultMap id="menuMap" type="com.cjt.entity.admin.security.Menu">
     <id column="id" property="id"/>
@@ -11,7 +11,7 @@
     <result column="icon_class" property="iconClass"/>
   </resultMap>
 
-  <select id="listMenus" resultMap="menuMap">
+  <select id="listAllMenu" resultMap="menuMap">
     SELECT
       `id`,
       `name`,
@@ -20,6 +20,37 @@
       icon_class
     FROM menu
   </select>
+
+  <select id="getMenuById" resultMap="menuMap">
+    SELECT
+      `id`,
+      `name`,
+      parent_id,
+      href,
+      icon_class
+    FROM menu
+    WHERE id = #{id}
+  </select>
+
+  <insert id="saveMenu" parameterType="com.cjt.entity.admin.security.Menu">
+    INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`)
+    VALUES (#{name}, #{parentId}, #{href}, #{iconClass})
+  </insert>
+
+  <update id="updateMenu" parameterType="com.cjt.entity.admin.security.Menu">
+    UPDATE menu
+    <trim prefix="SET" suffix="WHERE id = #{id}">
+      `name` = #{name},
+      `parent_id` = #{parrentId},
+      `href` = #{href},
+      `icon_class` = #{iconClass}
+    </trim>
+  </update>
+
+  <delete id="removeMenuById" parameterType="int">
+    DELETE FROM menu
+    WHERE `id` = #{id}
+  </delete>
 
   <select id="listMenuByRoles" resultMap="menuMap" parameterType="list">
     SELECT `id`, `name`, parent_id, href, icon_class

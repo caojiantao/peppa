@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 角色拦截器，拦截controller层有权限注解的方法
+ *
  * @author caojiantao
  */
 public class PermissionInterceptor implements HandlerInterceptor {
