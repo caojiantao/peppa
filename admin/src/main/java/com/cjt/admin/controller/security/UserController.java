@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cjt.admin.controller.BaseController;
 import com.cjt.common.dto.UserDTO;
 import com.cjt.entity.admin.security.User;
+import com.cjt.service.IMenuService;
 import com.cjt.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IMenuService menuService;
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") Long id) {
