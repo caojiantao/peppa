@@ -22,9 +22,6 @@ import java.util.List;
  */
 public class PermissionInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private IUserService userService;
-
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) {
         // 判断此处是否是方法处理器

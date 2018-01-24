@@ -17,6 +17,10 @@ public class BaseController {
 
     private Logger logger = LogManager.getLogger(BaseController.class);
 
+    protected static final String NOT_FOUND = "暂无数据";
+
+    protected static final String OPERATION_FAILED = "操作失败";
+
     public HttpServletRequest request;
 
     public HttpServletResponse response;

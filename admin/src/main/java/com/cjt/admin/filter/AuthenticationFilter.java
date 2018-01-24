@@ -1,7 +1,6 @@
 package com.cjt.admin.filter;
 
 import com.cjt.service.TokenService;
-import com.cjt.service.security.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,9 +31,6 @@ public class AuthenticationFilter implements Filter {
     @Autowired
     private TokenService tokenService;
 
-    @Autowired
-    private IUserService userService;
-
     private List<String> excludePaths;
 
     @Override
@@ -46,7 +42,7 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        setCors(httpRequest, httpResponse);
+        setCors(httpResponse);
         if (isExcluded(httpRequest) || isPreflight(httpRequest) || isValidRequest(httpRequest)) {
             chain.doFilter(request, response);
         } else {
@@ -65,8 +61,9 @@ public class AuthenticationFilter implements Filter {
     /**
      * 根绝CORE规范设置跨域资源共享
      */
-    private void setCors(HttpServletRequest request, HttpServletResponse response) {
+    private void setCors(HttpServletResponse response) {
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "*");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "X-Token");
     }
 

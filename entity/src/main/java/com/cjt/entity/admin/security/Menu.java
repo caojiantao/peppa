@@ -3,68 +3,69 @@ package com.cjt.entity.admin.security;
 import java.util.List;
 
 /**
- * @author caojiantao
  * 菜单实体类
+ *
+ * @author caojiantao
  */
 public class Menu {
 
-  private Integer id;
+    private Integer id;
 
-  private String name;
+    private String name;
 
-  private Integer parentId;
+    private Integer parentId;
 
-  private String href;
+    private String href;
 
-  private String iconClass;
+    private String iconClass;
 
-  private List<Menu> children;
+    private List<Menu> children;
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public Integer getParentId() {
-    return parentId;
-  }
+    public Integer getParentId() {
+        return parentId;
+    }
 
-  public void setParentId(Integer parentId) {
-    this.parentId = parentId;
-  }
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
 
-  public String getHref() {
-    return href;
-  }
+    public String getHref() {
+        return href;
+    }
 
-  public void setHref(String href) {
-    this.href = href;
-  }
+    public void setHref(String href) {
+        this.href = href;
+    }
 
-  public List<Menu> getChildren() {
-    return children;
-  }
+    public List<Menu> getChildren() {
+        return children;
+    }
 
-  public void setChildren(List<Menu> children) {
-    this.children = children;
-  }
+    public void setChildren(List<Menu> children) {
+        this.children = children;
+    }
 
-  public String getIconClass() {
-    return iconClass;
-  }
+    public String getIconClass() {
+        return iconClass;
+    }
 
-  public void setIconClass(String iconClass) {
-    this.iconClass = iconClass;
-  }
+    public void setIconClass(String iconClass) {
+        this.iconClass = iconClass;
+    }
 }

@@ -40,7 +40,7 @@
     UPDATE menu
     <trim prefix="SET" suffix="WHERE id = #{id}">
       `name` = #{name},
-      `parent_id` = #{parrentId},
+      `parent_id` = #{parentId},
       `href` = #{href},
       `icon_class` = #{iconClass}
     </trim>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author caojiantao
@@ -23,9 +24,19 @@ public class MenuController extends BaseController {
         Menu menu = menuService.getMenuById(id);
         if (menu == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return "该菜单不存在";
+            return NOT_FOUND;
         }
         return menu;
+    }
+
+    @GetMapping(value = {"", "/"})
+    public Object listMenu(){
+        List<Menu> menus = menuService.listMenu();
+        if (menus == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return NOT_FOUND;
+        }
+        return menus;
     }
 
     @PostMapping("")
@@ -34,7 +45,7 @@ public class MenuController extends BaseController {
             return menu;
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return "新增菜单失败";
+            return OPERATION_FAILED;
         }
     }
 
@@ -44,7 +55,7 @@ public class MenuController extends BaseController {
             return menu;
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return "更新菜单失败";
+            return OPERATION_FAILED;
         }
     }
 
@@ -55,7 +66,7 @@ public class MenuController extends BaseController {
             return null;
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return "删除菜单失败";
+            return OPERATION_FAILED;
         }
     }
 }

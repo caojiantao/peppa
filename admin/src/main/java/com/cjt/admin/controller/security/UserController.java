@@ -27,19 +27,21 @@ public class UserController extends BaseController {
     private IMenuService menuService;
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable("id") Long id) {
+    public Object getUser(@PathVariable("id") Long id) {
         User user = userService.getUserByUserId(id);
         if (user == null) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
+            return NOT_FOUND;
         }
         return user;
     }
 
     @GetMapping("/{id}/menus")
-    public List<Menu> getUserMenu(@PathVariable("id") Long id) {
+    public Object getUserMenu(@PathVariable("id") Long id) {
         List<Menu> menus = menuService.listMenuByUserId(id);
         if (menus == null) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
+            return NOT_FOUND;
         }
         return menus;
     }
@@ -50,6 +52,7 @@ public class UserController extends BaseController {
             List<User> users = userService.getUserByDTO(userDTO);
             if (users == null || users.isEmpty()) {
                 response.setStatus(HttpStatus.NOT_FOUND.value());
+                return NOT_FOUND;
             }
             return users;
         }
@@ -64,7 +67,7 @@ public class UserController extends BaseController {
             return user;
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return "创建用户失败";
+            return OPERATION_FAILED;
         }
     }
 
@@ -74,7 +77,7 @@ public class UserController extends BaseController {
             return user;
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return "更新用户失败";
+            return OPERATION_FAILED;
         }
     }
 
@@ -85,7 +88,7 @@ public class UserController extends BaseController {
             return null;
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return "删除用户失败";
+            return OPERATION_FAILED;
         }
     }
 }
