@@ -1,8 +1,10 @@
-package com.cjt.service;
+package com.cjt.service.security;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.common.dto.UserDTO;
 import com.cjt.entity.admin.security.User;
+
+import java.util.List;
 
 /**
  * @author caojiantao
@@ -14,17 +16,9 @@ public interface IUserService {
      *
      * @param username 账号
      * @param password 密码
-     * @return 成功与否
-     */
-    boolean login(String username, String password);
-
-    /**
-     * 通过username获取用户
-     *
-     * @param username 用户账号
      * @return 用户信息
      */
-    User getUserByUsername(String username);
+    User login(String username, String password);
 
     /**
      * 通过userId获取用户
@@ -40,7 +34,7 @@ public interface IUserService {
      * @param userDTO 用户DTO
      * @return 用户信息
      */
-    User getUserByDto(UserDTO userDTO);
+    List<User> getUserByDTO(UserDTO userDTO);
 
     /**
      * 根据dto获取用户分页信息

@@ -2,17 +2,11 @@ package com.cjt.admin.controller.security;
 
 import com.cjt.admin.controller.BaseController;
 import com.cjt.entity.admin.security.Menu;
-import com.cjt.entity.admin.security.User;
-import com.cjt.service.IMenuService;
-import com.cjt.service.IUserService;
-import org.apache.commons.lang.StringUtils;
+import com.cjt.service.security.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author caojiantao
@@ -24,25 +18,44 @@ public class MenuController extends BaseController {
     @Autowired
     private IMenuService menuService;
 
-    @Autowired
-    private IUserService userService;
-
-    @GetMapping("")
-    public List<Menu> listMenu(String username) {
-        if (StringUtils.isBlank(username)) {
-            return menuService.listAllMenu();
+    @GetMapping("/{id}")
+    public Object getMenuBy(@PathVariable("id") int id) {
+        Menu menu = menuService.getMenuById(id);
+        if (menu == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return "该菜单不存在";
         }
-        User user = userService.getUserByUsername(username);
-        return menuService.listMenuByUser(user);
+        return menu;
     }
 
     @PostMapping("")
-    public Object insertMenu(Menu menu){
-        if (menuService.saveMenu(menu)){
+    public Object insertMenu(Menu menu) {
+        if (menuService.saveMenu(menu)) {
             return menu;
         } else {
-            internalError();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return "新增菜单失败";
+        }
+    }
+
+    @PutMapping("")
+    public Object updateMenu(Menu menu) {
+        if (menuService.updateMenu(menu)) {
+            return menu;
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return "更新菜单失败";
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public Object removeMenuById(@PathVariable("id") int id) {
+        if (menuService.removeMenuById(id)) {
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            return null;
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return "删除菜单失败";
         }
     }
 }

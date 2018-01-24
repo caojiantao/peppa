@@ -1,8 +1,7 @@
 package com.cjt.admin.filter;
 
-import com.cjt.entity.admin.security.User;
-import com.cjt.service.IUserService;
 import com.cjt.service.TokenService;
+import com.cjt.service.security.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -109,14 +108,7 @@ public class AuthenticationFilter implements Filter {
             tokenStr = request.getHeader(tokenHeaderName);
         }
         String username = tokenService.parseToken(tokenStr);
-        if (StringUtils.isNotBlank(username)) {
-            // 当登录鉴权成功后将user设置到request中
-            User user = userService.getUserByUsername(username);
-            request.setAttribute("user", user);
-            return true;
-        } else {
-            return false;
-        }
+        return StringUtils.isNotBlank(username);
     }
 
     public List<String> getExcludePaths() {

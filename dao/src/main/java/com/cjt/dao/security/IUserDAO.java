@@ -18,9 +18,9 @@ public interface IUserDAO {
      *
      * @param username 账号
      * @param password 密码
-     * @return 成功与否
+     * @return 用户信息
      */
-    boolean login(@Param("username") String username, @Param("password") String password);
+    User login(@Param("username") String username, @Param("password") String password);
 
     /**
      * 通过dto获取用户
@@ -28,7 +28,7 @@ public interface IUserDAO {
      * @param userDTO 用户DTO
      * @return 用户信息
      */
-    User getUserByDto(UserDTO userDTO);
+    List<User> getUserByDTO(UserDTO userDTO);
 
     /**
      * 根据dto列出所有用户信息

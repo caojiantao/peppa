@@ -1,5 +1,6 @@
-package com.cjt.dao.security;
+package com.cjt.service.security;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cjt.common.dto.BasePageDTO;
 import com.cjt.entity.admin.security.Role;
 
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * @author caojiantao
  */
-public interface IRoleDAO {
+public interface IRoleService {
 
     /**
      * 根据username获取角色集合
@@ -19,22 +20,16 @@ public interface IRoleDAO {
     List<Role> listRoleByUserId(long userId);
 
     /**
-     * 分页获取角色
+     * 分页获取所有角色信息
      *
-     * @param dto 分页参数
-     * @return 角色集合
+     * @param pageDTO 分页参数
+     * @return 所有角色集合
      */
-    List<Role> listRole(BasePageDTO dto);
-
-    /**
-     * 得到所有角色数量
-     *
-     * @return 所有角色数量
-     */
-    int countRole();
+    JSONObject listRoleByPage(BasePageDTO pageDTO);
 
     /**
      * 获取指定ID的角色信息
+     *
      * @param id 角色ID
      * @return 角色信息
      */

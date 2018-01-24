@@ -7,19 +7,39 @@
     <result column="name" property="name"/>
   </resultMap>
 
-  <select id="listRoleByUserId" resultMap="roleMap" parameterType="long">
+  <sql id="selectRole">
     SELECT
       `id`,
       `name`
     FROM
       role
+  </sql>
+
+  <select id="listRoleByUserId" resultMap="roleMap" parameterType="long">
+    <include refid="selectRole"/>
     WHERE
-      id IN (
-        SELECT role_id
-        FROM
-          user_roles
-        WHERE
-          user_id = #{userId}
-      )
+    id IN (
+    SELECT role_id
+    FROM
+    user_roles
+    WHERE
+    user_id = #{userId}
+    )
+  </select>
+
+  <select id="listRole" resultMap="roleMap" parameterType="com.cjt.common.dto.BasePageDTO">
+    <include refid="selectRole"/>
+    FROM role
+    LIMIT #{start}, #{offset}
+  </select>
+
+  <select id="countRole" resultType="int">
+    SELECT COUNT(*)
+    FROM role
+  </select>
+
+  <select id="getRoleById" resultMap="roleMap" parameterType="int">
+    <include refid="selectRole"/>
+    WHERE id = #{id}
   </select>
 </mapper>

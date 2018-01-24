@@ -9,22 +9,30 @@
     <result column="nickname" property="nickname"/>
   </resultMap>
 
-  <select id="listUser" resultMap="userMap" parameterType="com.cjt.common.dto.UserDTO">
-    SELECT id, username, password, nickname
+  <sql id="selectUser">
+    SELECT
+      id,
+      username,
+      password,
+      nickname
     FROM user
+  </sql>
+
+  <select id="listUser" resultMap="userMap" parameterType="com.cjt.common.dto.UserDTO">
+    <include refid="selectUser"/>
     <trim prefix="WHERE" prefixOverrides="AND">
-      <if test="id!=0">AND id = #{id}</if>
+      <if test="id!=null">AND id = #{id}</if>
       <if test="username!=null">AND `username` = #{username}</if>
       <if test="password!=null">AND `password` = #{password}</if>
-      <if test="offset!=0">LIMIT #{start}, #{offset}</if>
     </trim>
+    <if test="start!=null and offset!=null">LIMIT #{start}, #{offset}</if>
   </select>
 
   <select id="countUser" resultType="int" parameterType="com.cjt.common.dto.UserDTO">
     SELECT COUNT(*)
     FROM user
     <trim prefix="WHERE" prefixOverrides="AND">
-      <if test="id!=0">AND id = #{id}</if>
+      <if test="id!=null">AND id = #{id}</if>
       <if test="username!=null">AND `username` = #{username}</if>
       <if test="password!=null">AND `password` = #{password}</if>
     </trim>
@@ -36,24 +44,17 @@
     VALUES (#{username}, #{password}, #{nickname})
   </insert>
 
-  <select id="login" resultType="boolean">
-    SELECT EXISTS(
-            SELECT *
-            FROM
-              `user`
-            WHERE
-              `username` = #{username}
-              AND `password` = #{password}
-    )
+  <select id="login" resultMap="userMap">
+    <include refid="selectUser"/>
+    WHERE
+    `username` = #{username}
+    AND `password` = #{password}
   </select>
 
-  <select id="getUserByDto" resultMap="userMap">
-    SELECT
-    id, `username`, `password`, `nickname`
-    FROM
-    `user`
+  <select id="getUserByDTO" resultMap="userMap">
+    <include refid="selectUser"/>
     <trim prefix="WHERE" prefixOverrides="AND">
-      <if test="id!=0">AND id = #{id}</if>
+      <if test="id!=null">AND id = #{id}</if>
       <if test="username!=null">AND `username` = #{username}</if>
       <if test="password!=null">AND `password` = #{password}</if>
     </trim>

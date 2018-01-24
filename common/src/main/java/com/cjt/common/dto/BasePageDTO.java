@@ -11,7 +11,7 @@ public class BasePageDTO {
 
     private Integer offset;
 
-    public int getStart() {
+    public Integer getStart() {
         return start;
     }
 

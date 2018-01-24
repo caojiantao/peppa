@@ -1,15 +1,16 @@
-package com.cjt.service.impl;
+package com.cjt.service.security.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.cjt.common.dto.UserDTO;
 import com.cjt.common.util.ExceptionUtil;
+import com.cjt.common.util.JsonUtils;
 import com.cjt.dao.security.IMenuDAO;
 import com.cjt.dao.security.IRoleDAO;
 import com.cjt.dao.security.IUserDAO;
-import com.cjt.entity.admin.security.Role;
 import com.cjt.entity.admin.security.User;
-import com.cjt.service.IUserService;
+import com.cjt.service.TokenService;
+import com.cjt.service.security.IUserService;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.LogManager;
@@ -40,11 +41,14 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IMenuDAO menuDAO;
 
+    @Autowired
+    private TokenService tokenService;
+
     @Value("${password_secret}")
     private String passwordSecret;
 
     @Override
-    public boolean login(String username, String password) {
+    public User login(String username, String password) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(passwordSecret);
             byte[] bytes = algorithm.sign(password.getBytes(CharEncoding.UTF_8));
@@ -52,38 +56,31 @@ public class UserServiceImpl implements IUserService {
             return userDAO.login(username, password);
         } catch (UnsupportedEncodingException e) {
             logger.error(ExceptionUtil.toDetailStr(e));
-            return false;
+            return null;
         }
-    }
-
-    @Override
-    public User getUserByUsername(String username) {
-        UserDTO.Builder builder = new UserDTO.Builder();
-        return this.getUserByDto(builder.username(username).build());
     }
 
     @Override
     public User getUserByUserId(long userId) {
         UserDTO.Builder builder = new UserDTO.Builder();
-        return this.getUserByDto(builder.id(userId).build());
+        List<User> users = getUserByDTO(builder.id(userId).build());
+        if (users == null || users.isEmpty()) {
+            return null;
+        } else {
+            return users.get(0);
+        }
     }
 
     @Override
-    public User getUserByDto(UserDTO userDto) {
-        User user = userDAO.getUserByDto(userDto);
-        List<Role> roles = roleDAO.listRoleByUserId(user.getId());
-        user.setRoles(roles);
-        return user;
+    public List<User> getUserByDTO(UserDTO userDto) {
+        return userDAO.getUserByDTO(userDto);
     }
 
     @Override
     public JSONObject listUserByPage(UserDTO userDTO) {
-        JSONObject object = new JSONObject();
         List<User> users = userDAO.listUser(userDTO);
-        object.put("data", users);
         int total = userDAO.countUser(userDTO);
-        object.put("total", total);
-        return object;
+        return JsonUtils.toPageData(users, total);
     }
 
     @Override

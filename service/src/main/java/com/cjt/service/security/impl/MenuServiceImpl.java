@@ -1,12 +1,14 @@
-package com.cjt.service.impl;
+package com.cjt.service.security.impl;
 
 import com.cjt.dao.security.IMenuDAO;
 import com.cjt.entity.admin.security.Menu;
 import com.cjt.entity.admin.security.Role;
 import com.cjt.entity.admin.security.User;
-import com.cjt.service.IMenuService;
+import com.cjt.service.security.IMenuService;
+import com.cjt.service.security.IRoleService;
+import com.cjt.service.security.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -23,20 +25,33 @@ public class MenuServiceImpl implements IMenuService {
     @Resource
     private IMenuDAO menuDAO;
 
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private IRoleService roleService;
+
     @Override
-    public List<Menu> listMenuByUser(User user) {
-        List<Role> roles = user.getRoles();
-        if (roles == null || roles.isEmpty()) {
-            return null;
+    public List<Menu> listMenuByUserId(Long userId) {
+        User user = userService.getUserByUserId(userId);
+        List<Role> roles = roleService.listRoleByUserId(user.getId());
+        List<Integer> roleIds = new ArrayList<>();
+        for (Role role : roles) {
+            roleIds.add(role.getId());
         }
-        List<Menu> menus = menuDAO.listMenuByRoles(roles);
+        List<Menu> menus = menuDAO.listMenuByRoleIds(roleIds);
         return formatMenuList(menus);
     }
 
     @Override
-    public List<Menu> listAllMenu() {
+    public List<Menu> listMenu() {
         List<Menu> menus = menuDAO.listAllMenu();
         return formatMenuList(menus);
+    }
+
+    @Override
+    public Menu getMenuById(int id) {
+        return menuDAO.getMenuById(id);
     }
 
     @Override
@@ -45,12 +60,23 @@ public class MenuServiceImpl implements IMenuService {
         return menu.getId() > 0;
     }
 
+    @Override
+    public boolean updateMenu(Menu menu) {
+        return menuDAO.updateMenu(menu) > 0;
+    }
+
+    @Override
+    public boolean removeMenuById(int id) {
+        return menuDAO.removeMenuById(id) > 0;
+    }
+
     /**
      * 格式化原始 menus，方便前端遍历
+     *
      * @param menus 原始数据 menus
      * @return 格式化后的 menus
      */
-    private List<Menu> formatMenuList(List<Menu> menus){
+    private List<Menu> formatMenuList(List<Menu> menus) {
         // 采用spring自带工具类，实质就是实现Map<V, List<V>>，得到以parentId为分组的map
         MultiValueMap<Integer, Menu> map = new LinkedMultiValueMap<>();
         for (Menu menu : menus) {

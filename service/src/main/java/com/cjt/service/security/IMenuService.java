@@ -1,35 +1,37 @@
-package com.cjt.dao.security;
+package com.cjt.service.security;
+
 
 import com.cjt.entity.admin.security.Menu;
 import com.cjt.entity.admin.security.Role;
+import com.cjt.entity.admin.security.User;
 
 import java.util.List;
 
 /**
  * @author caojiantao
  */
-public interface IMenuDAO {
+public interface IMenuService {
 
     /**
-     * 根据角色列表，获取菜单集合（去重）
+     * 获取用户对应菜单集合
      *
-     * @param roleIds 角色ID结合
+     * @param userId 用户ID
      * @return 菜单集合
      */
-    List<Menu> listMenuByRoleIds(List<Integer> roleIds);
+    List<Menu> listMenuByUserId(Long userId);
 
     /**
      * 获取所有菜单集合
      *
      * @return 菜单集合
      */
-    List<Menu> listAllMenu();
+    List<Menu> listMenu();
 
     /**
      * 获取指定ID的菜单
      *
      * @param id 菜单ID
-     * @return 菜单
+     * @return 菜单信息
      */
     Menu getMenuById(int id);
 
@@ -37,22 +39,23 @@ public interface IMenuDAO {
      * 新增菜单
      *
      * @param menu 菜单
+     * @return 成功与否
      */
-    void saveMenu(Menu menu);
+    boolean saveMenu(Menu menu);
 
     /**
-     * 更新菜单信息
+     * 修改菜单信息
      *
-     * @param menu 菜单
-     * @return 影响行数
+     * @param menu 修改的菜单信息
+     * @return 成功与否
      */
-    int updateMenu(Menu menu);
+    boolean updateMenu(Menu menu);
 
     /**
      * 删除指定ID的菜单
      *
      * @param id 菜单ID
-     * @return 影响行数
+     * @return 成功与否
      */
-    int removeMenuById(int id);
+    boolean removeMenuById(int id);
 }

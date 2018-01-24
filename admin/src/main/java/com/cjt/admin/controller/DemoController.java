@@ -8,7 +8,7 @@ import com.cjt.entity.admin.Quartz;
 import com.cjt.entity.demo.User;
 import com.cjt.service.IMailService;
 import com.cjt.service.IQuartzService;
-import com.cjt.service.IUserService;
+import com.cjt.service.security.IUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

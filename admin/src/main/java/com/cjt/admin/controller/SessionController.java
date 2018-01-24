@@ -1,6 +1,7 @@
 package com.cjt.admin.controller;
 
-import com.cjt.service.IUserService;
+import com.cjt.entity.admin.security.User;
+import com.cjt.service.security.IUserService;
 import com.cjt.service.TokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +32,12 @@ public class SessionController extends BaseController {
      */
     @PostMapping(value = {"", "/"})
     private Object login(String username, String password, boolean rememberMe) {
-        if (userService.login(username, password)){
+        User user = userService.login(username, password);
+        if (user != null) {
             String token = tokenService.getToken(username, rememberMe);
-            Map<String, String> resultMap = new HashMap<>(2);
+            Map<String, Object> resultMap = new HashMap<>(2);
             resultMap.put("token", token);
-            resultMap.put("username", username);
+            resultMap.put("userId", user.getId());
             return resultMap;
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
