@@ -1,6 +1,4 @@
-package com.cjt.entity.security;
-
-import java.util.List;
+package com.cjt.entity.model.security;
 
 /**
  * 菜单实体类
@@ -18,8 +16,6 @@ public class Menu {
     private String href;
 
     private String iconClass;
-
-    private List<Menu> children;
 
     public Integer getId() {
         return id;
@@ -51,14 +47,6 @@ public class Menu {
 
     public void setHref(String href) {
         this.href = href;
-    }
-
-    public List<Menu> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Menu> children) {
-        this.children = children;
     }
 
     public String getIconClass() {

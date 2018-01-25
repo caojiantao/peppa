@@ -1,6 +1,7 @@
 package com.cjt.dao.security;
 
-import com.cjt.entity.security.Menu;
+import com.cjt.entity.model.security.Menu;
+import com.cjt.entity.vo.MenuVO;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface IMenuDAO {
      *
      * @return 菜单集合
      */
-    List<Menu> listAllMenu();
+    List<Menu> listMenu();
 
     /**
      * 获取指定ID的菜单

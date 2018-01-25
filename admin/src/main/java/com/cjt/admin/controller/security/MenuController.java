@@ -1,7 +1,8 @@
 package com.cjt.admin.controller.security;
 
 import com.cjt.admin.controller.BaseController;
-import com.cjt.entity.security.Menu;
+import com.cjt.entity.model.security.Menu;
+import com.cjt.entity.vo.MenuVO;
 import com.cjt.service.security.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class MenuController extends BaseController {
 
     @GetMapping(value = {"", "/"})
     public Object listMenu(){
-        List<Menu> menus = menuService.listMenu();
+        List<MenuVO> menus = menuService.listMenuVO();
         if (menus == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return NOT_FOUND;

@@ -2,8 +2,8 @@ package com.cjt.admin.controller.security;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.admin.controller.BaseController;
-import com.cjt.common.dto.RoleDTO;
-import com.cjt.entity.security.Role;
+import com.cjt.entity.dto.RoleDTO;
+import com.cjt.entity.model.security.Role;
 import com.cjt.service.security.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

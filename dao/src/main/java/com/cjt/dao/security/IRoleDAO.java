@@ -1,7 +1,7 @@
 package com.cjt.dao.security;
 
-import com.cjt.common.dto.RoleDTO;
-import com.cjt.entity.security.Role;
+import com.cjt.entity.dto.RoleDTO;
+import com.cjt.entity.model.security.Role;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.cjt.common.dto;
+package com.cjt.entity.dto;
 
 /**
  * 用户信息DTO

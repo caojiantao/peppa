@@ -2,9 +2,9 @@
 package com.cjt.admin.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjt.common.dto.BasePageDTO;
+import com.cjt.entity.dto.BasePageDTO;
 import com.cjt.common.util.FileUtil;
-import com.cjt.entity.job.Quartz;
+import com.cjt.entity.model.job.Quartz;
 import com.cjt.entity.demo.User;
 import com.cjt.service.IMailService;
 import com.cjt.service.IQuartzService;

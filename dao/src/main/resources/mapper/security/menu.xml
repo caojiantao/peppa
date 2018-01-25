@@ -3,7 +3,7 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.security.IMenuDAO">
 
-  <resultMap id="menuMap" type="com.cjt.entity.security.Menu">
+  <resultMap id="menuMap" type="com.cjt.entity.model.security.Menu">
     <id column="id" property="id"/>
     <result column="name" property="name"/>
     <result column="parent_id" property="parentId"/>
@@ -21,7 +21,7 @@
     FROM menu
   </sql>
 
-  <select id="listAllMenu" resultMap="menuMap">
+  <select id="listMenu" resultMap="menuMap">
     <include refid="selectMenu"/>
   </select>
 
@@ -30,13 +30,13 @@
     WHERE id = #{id}
   </select>
 
-  <insert id="saveMenu" parameterType="com.cjt.entity.security.Menu"
+  <insert id="saveMenu" parameterType="com.cjt.entity.model.security.Menu"
           useGeneratedKeys="true" keyProperty="id">
     INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`)
     VALUES (#{name}, #{parentId}, #{href}, #{iconClass})
   </insert>
 
-  <update id="updateMenu" parameterType="com.cjt.entity.security.Menu">
+  <update id="updateMenu" parameterType="com.cjt.entity.model.security.Menu">
     UPDATE menu
     <trim prefix="SET" suffix="WHERE id = #{id}">
       `name` = #{name},

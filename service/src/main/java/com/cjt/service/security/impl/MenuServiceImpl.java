@@ -1,9 +1,11 @@
 package com.cjt.service.security.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cjt.dao.security.IMenuDAO;
-import com.cjt.entity.security.Menu;
-import com.cjt.entity.security.Role;
-import com.cjt.entity.security.User;
+import com.cjt.entity.model.security.Menu;
+import com.cjt.entity.model.security.Role;
+import com.cjt.entity.model.security.User;
+import com.cjt.entity.vo.MenuVO;
 import com.cjt.service.security.IMenuService;
 import com.cjt.service.security.IRoleService;
 import com.cjt.service.security.IUserService;
@@ -32,7 +34,7 @@ public class MenuServiceImpl implements IMenuService {
     private IRoleService roleService;
 
     @Override
-    public List<Menu> listMenuByUserId(Long userId) {
+    public List<MenuVO> listMenuVOByUserId(Long userId) {
         User user = userService.getUserByUserId(userId);
         List<Role> roles = roleService.listRoleByUserId(user.getId());
         List<Integer> roleIds = new ArrayList<>();
@@ -44,8 +46,8 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     @Override
-    public List<Menu> listMenu() {
-        List<Menu> menus = menuDAO.listAllMenu();
+    public List<MenuVO> listMenuVO() {
+        List<Menu> menus = menuDAO.listMenu();
         return formatMenuList(menus);
     }
 
@@ -76,24 +78,25 @@ public class MenuServiceImpl implements IMenuService {
      * @param menus 原始数据 menus
      * @return 格式化后的 menus
      */
-    private List<Menu> formatMenuList(List<Menu> menus) {
+    private List<MenuVO> formatMenuList(List<Menu> menus) {
         // 采用spring自带工具类，实质就是实现Map<V, List<V>>，得到以parentId为分组的map
-        MultiValueMap<Integer, Menu> map = new LinkedMultiValueMap<>();
+        MultiValueMap<Integer, MenuVO> map = new LinkedMultiValueMap<>();
         for (Menu menu : menus) {
-            map.add(menu.getParentId(), menu);
+            // 直接强转会报错，借用JSON的小技巧
+            map.add(menu.getParentId(), JSONObject.parseObject(JSONObject.toJSONString(menu), MenuVO.class));
         }
         return setSubItem(map, 0);
     }
 
-    private List<Menu> setSubItem(MultiValueMap<Integer, Menu> map, int parentId) {
-        List<Menu> result = new ArrayList<>();
+    private List<MenuVO> setSubItem(MultiValueMap<Integer, MenuVO> map, int parentId) {
+        List<MenuVO> result = new ArrayList<>();
         if (map.containsKey(parentId)) {
-            List<Menu> menus = map.get(parentId);
-            for (Menu menu : menus) {
+            List<MenuVO> menus = map.get(parentId);
+            for (MenuVO menuVO : menus) {
                 // 递归设置子项
-                menu.setChildren(setSubItem(map, menu.getId()));
+                menuVO.setChildren(setSubItem(map, menuVO.getId()));
                 // 注意添加到当前同级兄弟list中
-                result.add(menu);
+                result.add(menuVO);
             }
         }
         return result;

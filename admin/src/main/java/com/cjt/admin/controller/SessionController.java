@@ -1,6 +1,6 @@
 package com.cjt.admin.controller;
 
-import com.cjt.entity.security.User;
+import com.cjt.entity.model.security.User;
 import com.cjt.service.security.IUserService;
 import com.cjt.service.TokenService;
 import org.springframework.beans.factory.annotation.Value;

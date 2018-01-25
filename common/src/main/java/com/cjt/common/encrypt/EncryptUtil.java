@@ -34,4 +34,8 @@ public class EncryptUtil {
         }
         return value;
     }
+
+    public static void main(String[] args) {
+        System.out.println(decrypt("cm9vdDEyMw=="));
+    }
 }

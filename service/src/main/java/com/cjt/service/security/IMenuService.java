@@ -1,7 +1,8 @@
 package com.cjt.service.security;
 
 
-import com.cjt.entity.security.Menu;
+import com.cjt.entity.model.security.Menu;
+import com.cjt.entity.vo.MenuVO;
 
 import java.util.List;
 
@@ -16,14 +17,14 @@ public interface IMenuService {
      * @param userId 用户ID
      * @return 菜单集合
      */
-    List<Menu> listMenuByUserId(Long userId);
+    List<MenuVO> listMenuVOByUserId(Long userId);
 
     /**
      * 获取所有菜单集合
      *
      * @return 菜单集合
      */
-    List<Menu> listMenu();
+    List<MenuVO> listMenuVO();
 
     /**
      * 获取指定ID的菜单

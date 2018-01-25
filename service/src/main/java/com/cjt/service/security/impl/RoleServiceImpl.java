@@ -1,12 +1,12 @@
 package com.cjt.service.security.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjt.common.dto.RoleDTO;
+import com.cjt.entity.dto.RoleDTO;
 import com.cjt.common.util.JsonUtils;
 import com.cjt.dao.security.IMenuDAO;
 import com.cjt.dao.security.IRoleDAO;
-import com.cjt.entity.security.Menu;
-import com.cjt.entity.security.Role;
+import com.cjt.entity.model.security.Menu;
+import com.cjt.entity.model.security.Role;
 import com.cjt.service.security.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

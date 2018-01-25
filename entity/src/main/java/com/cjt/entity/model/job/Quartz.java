@@ -1,4 +1,4 @@
-package com.cjt.entity.job;
+package com.cjt.entity.model.job;
 
 import org.quartz.Job;
 import org.quartz.JobDetail;

@@ -1,9 +1,8 @@
 package com.cjt.service.security;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjt.common.dto.BasePageDTO;
-import com.cjt.common.dto.RoleDTO;
-import com.cjt.entity.security.Role;
+import com.cjt.entity.dto.RoleDTO;
+import com.cjt.entity.model.security.Role;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.cjt.common.dto;
+package com.cjt.entity.dto;
 
 /**
  * 分页基础DTO

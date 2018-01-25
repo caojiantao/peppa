@@ -3,7 +3,7 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.IQuartzDAO">
 
-  <select id="listJobs" resultType="com.cjt.entity.job.Quartz">
+  <select id="listJobs" resultType="com.cjt.entity.model.job.Quartz">
     SELECT
     `id`,
     `name`,
@@ -25,7 +25,7 @@
     WHERE deleted = 0
   </select>
 
-  <insert id="saveJob" parameterType="com.cjt.entity.job.Quartz">
+  <insert id="saveJob" parameterType="com.cjt.entity.model.job.Quartz">
     INSERT INTO quartz (
     `name`,
     `group`,
