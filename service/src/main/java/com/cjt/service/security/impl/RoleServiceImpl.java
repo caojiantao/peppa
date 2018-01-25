@@ -1,12 +1,12 @@
 package com.cjt.service.security.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjt.common.dto.BasePageDTO;
+import com.cjt.common.dto.RoleDTO;
 import com.cjt.common.util.JsonUtils;
 import com.cjt.dao.security.IMenuDAO;
 import com.cjt.dao.security.IRoleDAO;
-import com.cjt.entity.admin.security.Menu;
-import com.cjt.entity.admin.security.Role;
+import com.cjt.entity.security.Menu;
+import com.cjt.entity.security.Role;
 import com.cjt.service.security.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +32,8 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public JSONObject listRoleByPage(BasePageDTO pageDTO) {
-        List<Role> roles = roleDAO.listRole(pageDTO);
+    public JSONObject listRoleByPage(RoleDTO roleDTO) {
+        List<Role> roles = roleDAO.listRole(roleDTO);
         int total = roleDAO.countRole();
         return JsonUtils.toPageData(roles, total);
     }

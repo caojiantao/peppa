@@ -3,13 +3,11 @@ package com.cjt.admin.filter;
 import com.cjt.service.TokenService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,11 +20,9 @@ import java.util.List;
  */
 public class AuthenticationFilter implements Filter {
 
-    @Value("${token_name}")
-    private String tokenName;
+    private static final String TOKEN_HEADER_NAME = "X-Token";
 
-    @Value("${token_header_name}")
-    private String tokenHeaderName;
+    private String tokenName = TOKEN_HEADER_NAME;
 
     @Autowired
     private TokenService tokenService;
@@ -92,18 +88,7 @@ public class AuthenticationFilter implements Filter {
     }
 
     private boolean isValidRequest(HttpServletRequest request) {
-        String tokenStr = "";
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(tokenName)) {
-                    tokenStr = cookie.getValue();
-                    break;
-                }
-            }
-        } else {
-            tokenStr = request.getHeader(tokenHeaderName);
-        }
+        String tokenStr = request.getHeader(tokenName);
         String username = tokenService.parseToken(tokenStr);
         return StringUtils.isNotBlank(username);
     }
@@ -114,5 +99,13 @@ public class AuthenticationFilter implements Filter {
 
     public void setExcludePaths(List<String> excludePaths) {
         this.excludePaths = excludePaths;
+    }
+
+    public String getTokenName() {
+        return tokenName;
+    }
+
+    public void setTokenName(String tokenName) {
+        this.tokenName = tokenName;
     }
 }

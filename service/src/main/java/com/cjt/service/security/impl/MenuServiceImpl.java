@@ -1,9 +1,9 @@
 package com.cjt.service.security.impl;
 
 import com.cjt.dao.security.IMenuDAO;
-import com.cjt.entity.admin.security.Menu;
-import com.cjt.entity.admin.security.Role;
-import com.cjt.entity.admin.security.User;
+import com.cjt.entity.security.Menu;
+import com.cjt.entity.security.Role;
+import com.cjt.entity.security.User;
 import com.cjt.service.security.IMenuService;
 import com.cjt.service.security.IRoleService;
 import com.cjt.service.security.IUserService;

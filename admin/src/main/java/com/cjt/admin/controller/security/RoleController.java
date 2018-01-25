@@ -2,8 +2,8 @@ package com.cjt.admin.controller.security;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.admin.controller.BaseController;
-import com.cjt.common.dto.BasePageDTO;
-import com.cjt.entity.admin.security.Role;
+import com.cjt.common.dto.RoleDTO;
+import com.cjt.entity.security.Role;
 import com.cjt.service.security.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ public class RoleController extends BaseController {
     }
 
     @GetMapping("")
-    public JSONObject listRoleByPage(BasePageDTO pageDTO) {
-        return roleService.listRoleByPage(pageDTO);
+    public JSONObject listRole(RoleDTO roleDTO) {
+        return roleService.listRoleByPage(roleDTO);
     }
 }

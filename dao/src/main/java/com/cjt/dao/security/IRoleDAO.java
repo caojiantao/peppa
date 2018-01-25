@@ -1,7 +1,7 @@
 package com.cjt.dao.security;
 
-import com.cjt.common.dto.BasePageDTO;
-import com.cjt.entity.admin.security.Role;
+import com.cjt.common.dto.RoleDTO;
+import com.cjt.entity.security.Role;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface IRoleDAO {
      * @param dto 分页参数
      * @return 角色集合
      */
-    List<Role> listRole(BasePageDTO dto);
+    List<Role> listRole(RoleDTO dto);
 
     /**
      * 得到所有角色数量

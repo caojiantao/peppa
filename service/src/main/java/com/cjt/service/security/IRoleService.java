@@ -2,7 +2,8 @@ package com.cjt.service.security;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.common.dto.BasePageDTO;
-import com.cjt.entity.admin.security.Role;
+import com.cjt.common.dto.RoleDTO;
+import com.cjt.entity.security.Role;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface IRoleService {
      * @param pageDTO 分页参数
      * @return 所有角色集合
      */
-    JSONObject listRoleByPage(BasePageDTO pageDTO);
+    JSONObject listRoleByPage(RoleDTO pageDTO);
 
     /**
      * 获取指定ID的角色信息

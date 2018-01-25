@@ -2,7 +2,7 @@ package com.cjt.service.security;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.common.dto.UserDTO;
-import com.cjt.entity.admin.security.User;
+import com.cjt.entity.security.User;
 
 import java.util.List;
 

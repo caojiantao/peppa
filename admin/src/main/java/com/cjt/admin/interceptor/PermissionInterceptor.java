@@ -1,10 +1,8 @@
 package com.cjt.admin.interceptor;
 
 import com.cjt.admin.annotation.Permissions;
-import com.cjt.entity.admin.security.Role;
-import com.cjt.entity.admin.security.User;
-import com.cjt.service.security.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cjt.entity.security.Role;
+import com.cjt.entity.security.User;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

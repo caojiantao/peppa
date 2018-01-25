@@ -1,7 +1,7 @@
 package com.cjt.dao;
 
 import com.cjt.common.dto.BasePageDTO;
-import com.cjt.entity.admin.Quartz;
+import com.cjt.entity.job.Quartz;
 
 import java.util.List;
 

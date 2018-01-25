@@ -1,7 +1,7 @@
 package com.cjt.admin.controller.security;
 
 import com.cjt.admin.controller.BaseController;
-import com.cjt.entity.admin.security.Menu;
+import com.cjt.entity.security.Menu;
 import com.cjt.service.security.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -8,7 +8,7 @@ import com.cjt.common.util.JsonUtils;
 import com.cjt.dao.security.IMenuDAO;
 import com.cjt.dao.security.IRoleDAO;
 import com.cjt.dao.security.IUserDAO;
-import com.cjt.entity.admin.security.User;
+import com.cjt.entity.security.User;
 import com.cjt.service.TokenService;
 import com.cjt.service.security.IUserService;
 import org.apache.commons.codec.CharEncoding;

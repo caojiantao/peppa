@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 自定义权限注解，结合aop实现权限控制
+ * 自定义权限注解，结合AOP实现权限控制
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

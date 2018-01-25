@@ -2,7 +2,7 @@ package com.cjt.service.impl;
 
 import com.cjt.common.dto.BasePageDTO;
 import com.cjt.dao.IQuartzDAO;
-import com.cjt.entity.admin.Quartz;
+import com.cjt.entity.job.Quartz;
 import com.cjt.service.IQuartzService;
 import com.cjt.service.QuartzJobManager;
 import org.apache.log4j.LogManager;

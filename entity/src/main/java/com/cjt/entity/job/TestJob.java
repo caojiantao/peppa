@@ -1,8 +1,10 @@
-package com.cjt.entity.admin.job;
+package com.cjt.entity.job;
 
-import com.cjt.entity.admin.Quartz;
 import org.quartz.Job;
 
+/**
+ * @author caojiantao
+ */
 public class TestJob extends Quartz implements Job {
 
 }

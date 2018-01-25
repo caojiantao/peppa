@@ -1,7 +1,7 @@
 package com.cjt.dao.security;
 
 import com.cjt.common.dto.UserDTO;
-import com.cjt.entity.admin.security.User;
+import com.cjt.entity.security.User;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

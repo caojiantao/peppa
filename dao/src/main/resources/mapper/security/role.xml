@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.security.IRoleDAO">
-  <resultMap id="roleMap" type="com.cjt.entity.admin.security.Role">
+  <resultMap id="roleMap" type="com.cjt.entity.security.Role">
     <id column="id" property="id"/>
     <result column="name" property="name"/>
   </resultMap>
@@ -27,14 +27,19 @@
     )
   </select>
 
-  <select id="listRole" resultMap="roleMap" parameterType="com.cjt.common.dto.BasePageDTO">
+  <select id="listRole" resultMap="roleMap" parameterType="com.cjt.common.dto.RoleDTO">
     <include refid="selectRole"/>
-    FROM role
+    <trim prefix="WHERE" prefixOverrides="AND">
+      <if test="name!=null">AND `name` like CONCAT('%',#{name},'%')</if>
+    </trim>
     LIMIT #{start}, #{offset}
   </select>
 
-  <select id="countRole" resultType="int">
+  <select id="countRole" resultType="int" parameterType="com.cjt.common.dto.RoleDTO">
     SELECT COUNT(*)
+    <trim prefix="WHERE" prefixOverrides="AND">
+      <if test="name!=null">AND `name` like CONCAT('%',#{name},'%')</if>
+    </trim>
     FROM role
   </select>
 

@@ -1,9 +1,7 @@
 package com.cjt.service.security;
 
 
-import com.cjt.entity.admin.security.Menu;
-import com.cjt.entity.admin.security.Role;
-import com.cjt.entity.admin.security.User;
+import com.cjt.entity.security.Menu;
 
 import java.util.List;
 

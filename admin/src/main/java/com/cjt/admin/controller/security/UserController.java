@@ -2,8 +2,8 @@ package com.cjt.admin.controller.security;
 
 import com.cjt.admin.controller.BaseController;
 import com.cjt.common.dto.UserDTO;
-import com.cjt.entity.admin.security.Menu;
-import com.cjt.entity.admin.security.User;
+import com.cjt.entity.security.Menu;
+import com.cjt.entity.security.User;
 import com.cjt.service.security.IMenuService;
 import com.cjt.service.security.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
