@@ -6,10 +6,10 @@ import com.cjt.entity.dto.RoleDTO;
 import com.cjt.entity.model.security.Role;
 import com.cjt.service.security.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author caojiantao
@@ -29,5 +29,14 @@ public class RoleController extends BaseController {
     @GetMapping("")
     public JSONObject listRole(RoleDTO roleDTO) {
         return roleService.listRoleByPage(roleDTO);
+    }
+
+    @PostMapping("")
+    public Object saveRole(Role role, @RequestParam("menuIds") List<Integer> menuIds) {
+        if (roleService.saveRole(role, menuIds)) {
+            return role;
+        }
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return OPERATION_FAILED;
     }
 }

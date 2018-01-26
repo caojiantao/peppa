@@ -34,4 +34,12 @@ public interface IRoleService {
      * @return 角色信息
      */
     Role getRoleById(int id);
+
+    /**
+     * 新增角色
+     * @param role 角色实体
+     * @param menuIds 关联菜单ID集合
+     * @return 成功与否
+     */
+    boolean saveRole(Role role, List<Integer> menuIds);
 }

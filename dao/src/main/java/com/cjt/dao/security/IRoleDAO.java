@@ -39,4 +39,10 @@ public interface IRoleDAO {
      * @return 角色信息
      */
     Role getRoleById(int id);
+
+    /**
+     * 新增角色
+     * @param role 角色
+     */
+    void saveRole(Role role);
 }

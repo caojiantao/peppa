@@ -47,4 +47,9 @@
     <include refid="selectRole"/>
     WHERE id = #{id}
   </select>
+
+  <insert id="saveRole" parameterType="com.cjt.entity.model.security.Role" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO role (name)
+    VALUES (#{name})
+  </insert>
 </mapper>

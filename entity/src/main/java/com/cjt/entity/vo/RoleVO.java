@@ -13,13 +13,18 @@ public class RoleVO extends Role {
 
     private List<Menu> menus;
 
-    @Override
     public List<Menu> getMenus() {
         return menus;
     }
 
-    @Override
     public void setMenus(List<Menu> menus) {
         this.menus = menus;
+    }
+
+    @Override
+    public String toString() {
+        return "RoleVO{" +
+                "menus=" + menus +
+                '}';
     }
 }

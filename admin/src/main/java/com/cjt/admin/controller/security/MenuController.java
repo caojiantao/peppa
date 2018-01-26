@@ -31,7 +31,7 @@ public class MenuController extends BaseController {
     }
 
     @GetMapping(value = {"", "/"})
-    public Object listMenu(){
+    public Object listMenu() {
         List<MenuVO> menus = menuService.listMenuVO();
         if (menus == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -44,10 +44,9 @@ public class MenuController extends BaseController {
     public Object insertMenu(Menu menu) {
         if (menuService.saveMenu(menu)) {
             return menu;
-        } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return OPERATION_FAILED;
         }
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return OPERATION_FAILED;
     }
 
     @PutMapping("")

@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.cjt.common.util.ExceptionUtil;
 import org.apache.commons.lang.StringUtils;
@@ -41,7 +42,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTCreator.Builder builder = JWT.create();
             builder.withClaim(tokenUsername, username);
-            if (rememberMe){
+            if (rememberMe) {
                 builder.withExpiresAt(new Date(System.currentTimeMillis() + maxAge));
             }
             token = builder.sign(algorithm);
@@ -62,7 +63,7 @@ public class TokenService {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT jwt = verifier.verify(token);
                 username = jwt.getClaim(tokenUsername).asString();
-            } catch (UnsupportedEncodingException e) {
+            } catch (JWTVerificationException | UnsupportedEncodingException e) {
                 logger.error(ExceptionUtil.toDetailStr(e));
             }
         }
