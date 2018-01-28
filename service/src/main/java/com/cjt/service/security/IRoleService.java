@@ -42,4 +42,8 @@ public interface IRoleService {
      * @return 成功与否
      */
     boolean saveRole(Role role, List<Integer> menuIds);
+
+    boolean updateRole(Role role, List<Integer> menuIds);
+
+    boolean removeRole(int id);
 }

@@ -45,4 +45,8 @@ public interface IRoleDAO {
      * @param role 角色
      */
     void saveRole(Role role);
+
+    int removeRoleById(int id);
+
+    int updateRole(Role role);
 }

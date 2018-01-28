@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface IRoleMenusDAO {
 
+    List<Integer> listMenuIdByRoleId(int roleId);
+
     /**
      * 批量插入
      *
@@ -16,4 +18,6 @@ public interface IRoleMenusDAO {
      * @param menuIds 菜单ID集合
      */
     void saveRoleMenus(@Param("roleId") int roleId, @Param("menuIds") List<Integer> menuIds);
+
+    int removeRoleMenus(int roleId);
 }

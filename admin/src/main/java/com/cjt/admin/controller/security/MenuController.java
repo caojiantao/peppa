@@ -32,7 +32,7 @@ public class MenuController extends BaseController {
 
     @GetMapping(value = {"", "/"})
     public Object listMenu() {
-        List<MenuVO> menus = menuService.listMenuVO();
+        List<Menu> menus = menuService.listMenu();
         if (menus == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return NOT_FOUND;

@@ -52,4 +52,16 @@
     INSERT INTO role (name)
     VALUES (#{name})
   </insert>
+
+  <delete id="removeRoleById" parameterType="int">
+    DELETE FROM role
+    WHERE id = #{id}
+  </delete>
+
+  <update id="updateRole" parameterType="com.cjt.entity.model.security.Role">
+    UPDATE role
+    <trim prefix="SET" suffix="WHERE id = #{id}">
+      `name` = #{name}
+    </trim>
+  </update>
 </mapper>

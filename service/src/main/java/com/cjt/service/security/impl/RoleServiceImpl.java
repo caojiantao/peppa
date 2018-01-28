@@ -2,7 +2,6 @@ package com.cjt.service.security.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.common.util.JsonUtils;
-import com.cjt.dao.security.IMenuDAO;
 import com.cjt.dao.security.IRoleDAO;
 import com.cjt.dao.security.IRoleMenusDAO;
 import com.cjt.entity.dto.RoleDTO;
@@ -22,9 +21,6 @@ public class RoleServiceImpl implements IRoleService {
 
     @Autowired
     private IRoleDAO roleDAO;
-
-    @Autowired
-    private IMenuDAO menuDAO;
 
     @Autowired
     private IRoleMenusDAO roleMenusDAO;
@@ -52,5 +48,19 @@ public class RoleServiceImpl implements IRoleService {
         roleDAO.saveRole(role);
         roleMenusDAO.saveRoleMenus(role.getId(), menuIds);
         return role.getId() > 0;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean updateRole(Role role, List<Integer> menuIds) {
+        roleMenusDAO.removeRoleMenus(role.getId());
+        roleMenusDAO.saveRoleMenus(role.getId(), menuIds);
+        return roleDAO.updateRole(role) > 0;
+    }
+
+    @Override
+    public boolean removeRole(int id) {
+        roleMenusDAO.removeRoleMenus(id);
+        return roleDAO.removeRoleById(id) > 0;
     }
 }

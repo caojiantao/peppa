@@ -38,7 +38,7 @@ public class BaseController {
      * 采用注解方式统一处理服务器未捕获异常（500：服务器内部错误）
      */
     @ExceptionHandler
-    public void handleException(HttpServletRequest request, Exception ex) throws IOException {
+    public void handleException(Exception ex) throws IOException {
         logger.error(ExceptionUtil.toDetailStr(ex));
         // 注意setStatus和sendError的区别
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

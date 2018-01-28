@@ -2,8 +2,8 @@ package com.cjt.admin.controller.security;
 
 import com.cjt.admin.controller.BaseController;
 import com.cjt.entity.dto.UserDTO;
+import com.cjt.entity.model.security.Menu;
 import com.cjt.entity.model.security.User;
-import com.cjt.entity.vo.MenuVO;
 import com.cjt.service.security.IMenuService;
 import com.cjt.service.security.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/{id}/menus")
     public Object getUserMenu(@PathVariable("id") Long id) {
-        List<MenuVO> menus = menuService.listMenuVOByUserId(id);
+        List<Menu> menus = menuService.listMenuByUserId(id);
         if (menus == null) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
             return NOT_FOUND;

@@ -17,14 +17,16 @@ public interface IMenuService {
      * @param userId 用户ID
      * @return 菜单集合
      */
-    List<MenuVO> listMenuVOByUserId(Long userId);
+    List<Menu> listMenuByUserId(Long userId);
 
     /**
      * 获取所有菜单集合
      *
      * @return 菜单集合
      */
-    List<MenuVO> listMenuVO();
+    List<Menu> listMenu();
+
+    List<Menu> listMenuByRoleId(int roleId);
 
     /**
      * 获取指定ID的菜单
