@@ -48,6 +48,7 @@ public class RoleController extends BaseController {
     @PostMapping("")
     public Object saveRole(Role role, @RequestParam("menuIds") List<Integer> menuIds) {
         if (roleService.saveRole(role, menuIds)) {
+            response.setStatus(HttpServletResponse.SC_CREATED);
             return role;
         }
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -2,7 +2,6 @@ package com.cjt.admin.controller.security;
 
 import com.cjt.admin.controller.BaseController;
 import com.cjt.entity.model.security.Menu;
-import com.cjt.entity.vo.MenuVO;
 import com.cjt.service.security.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +42,7 @@ public class MenuController extends BaseController {
     @PostMapping("")
     public Object insertMenu(Menu menu) {
         if (menuService.saveMenu(menu)) {
+            response.setStatus(HttpServletResponse.SC_CREATED);
             return menu;
         }
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

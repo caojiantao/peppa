@@ -22,7 +22,7 @@
     <include refid="selectUser"/>
     <trim prefix="WHERE" prefixOverrides="AND">
       <if test="id!=null">AND id = #{id}</if>
-      <if test="username!=null">AND `username` = #{username}</if>
+      <if test="username!=null and username!=''">AND `username` = #{username}</if>
       <if test="password!=null">AND `password` = #{password}</if>
     </trim>
     <if test="start!=null and offset!=null">LIMIT #{start}, #{offset}</if>
@@ -39,7 +39,7 @@
   </select>
 
   <!-- 想要获取最后一次插入的主键id，注意mybatis和ibatis的区别 -->
-  <insert id="saveUser" parameterType="com.cjt.entity.model.security.User">
+  <insert id="saveUser" parameterType="com.cjt.entity.model.security.User" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO user (username, password, nickname)
     VALUES (#{username}, #{password}, #{nickname})
   </insert>
@@ -67,10 +67,10 @@
 
   <update id="updateUser" parameterType="com.cjt.entity.model.security.User">
     UPDATE user
-    <trim prefix="SET" suffix="WHERE id = #{id}">
-      `username` = #{username},
-      `password` = #{password},
-      `nickname` = #{nickname}
+    <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
+      <if test="username!=null and username!=''">`username` = #{username},</if>
+      <if test="password!=null and password!=''">`password` = #{password},</if>
+      <if test="nickname!=null and nickname!=''">`nickname` = #{nickname},</if>
     </trim>
   </update>
 </mapper>

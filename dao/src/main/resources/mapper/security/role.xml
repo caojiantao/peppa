@@ -32,7 +32,9 @@
     <trim prefix="WHERE" prefixOverrides="AND">
       <if test="name!=null">AND `name` like CONCAT('%',#{name},'%')</if>
     </trim>
-    LIMIT #{start}, #{offset}
+    <if test="offset!=null and offset!=0">
+      LIMIT #{start}, #{offset}
+    </if>
   </select>
 
   <select id="countRole" resultType="int" parameterType="com.cjt.entity.dto.RoleDTO">

@@ -1,7 +1,6 @@
 package com.cjt.dao.security;
 
 import com.cjt.entity.model.security.Menu;
-import com.cjt.entity.vo.MenuVO;
 
 import java.util.List;
 

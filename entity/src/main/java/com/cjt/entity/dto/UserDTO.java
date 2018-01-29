@@ -13,6 +13,9 @@ public class UserDTO extends BasePageDTO {
 
     private String password;
 
+    public UserDTO() {
+    }
+
     private UserDTO(long id, String username, String password) {
         this.id = id;
         this.username = username;

@@ -16,7 +16,8 @@
   </delete>
 
   <select id="listMenuIdByRoleId" parameterType="int">
-    SELECT menu_id FROM role_menus
+    SELECT menu_id
+    FROM role_menus
     WHERE role_id = #{roleId}
   </select>
 </mapper>

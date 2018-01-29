@@ -2,7 +2,8 @@ package com.cjt.admin.interceptor;
 
 import com.cjt.admin.annotation.Permissions;
 import com.cjt.entity.model.security.Role;
-import com.cjt.entity.model.security.User;
+import com.cjt.service.security.IRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +21,9 @@ import java.util.List;
  */
 public class PermissionInterceptor implements HandlerInterceptor {
 
+    @Autowired
+    private IRoleService roleService;
+
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) {
         // 判断此处是否是方法处理器
@@ -29,8 +33,8 @@ public class PermissionInterceptor implements HandlerInterceptor {
             if (method.isAnnotationPresent(Permissions.class)) {
                 Permissions permissions = method.getAnnotation(Permissions.class);
                 String[] permissionRoleNames = permissions.value();
-                User user = (User) httpServletRequest.getAttribute("user");
-                List<Role> roles = user.getRoles();
+                long userId = Long.parseLong(String.valueOf(httpServletRequest.getAttribute("userId")));
+                List<Role> roles = roleService.listRoleByUserId(userId);
                 if (roles != null && !roles.isEmpty()) {
                     List<String> userRoleNames = new ArrayList<>();
                     for (Role role : roles) {

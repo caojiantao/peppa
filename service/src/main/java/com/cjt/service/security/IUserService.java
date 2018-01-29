@@ -48,17 +48,19 @@ public interface IUserService {
      * 新增用户
      *
      * @param user 新增用户信息
+     * @param roleIds 角色列表
      * @return 成功与否
      */
-    boolean saveUser(User user);
+    boolean saveUser(User user, List<Integer> roleIds);
 
     /**
      * 更新用户
      *
      * @param user 用户信息
+     * @param roleIds 角色列表
      * @return 成功与否
      */
-    boolean updateUser(User user);
+    boolean updateUser(User user, List<Integer> roleIds);
 
     /**
      * 删除指定ID的用户信息

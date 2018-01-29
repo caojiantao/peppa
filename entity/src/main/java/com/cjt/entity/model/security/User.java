@@ -1,7 +1,5 @@
 package com.cjt.entity.model.security;
 
-import java.util.List;
-
 /**
  * 用户信息实体类
  *
@@ -16,12 +14,6 @@ public class User {
     private String password;
 
     private String nickname;
-
-    private Integer age;
-
-    private Boolean sex;
-
-    private List<Role> roles;
 
     public Long getId() {
         return id;
@@ -53,29 +45,5 @@ public class User {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public Boolean getSex() {
-        return sex;
-    }
-
-    public void setSex(Boolean sex) {
-        this.sex = sex;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 }

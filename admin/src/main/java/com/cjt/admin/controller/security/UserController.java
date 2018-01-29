@@ -5,6 +5,7 @@ import com.cjt.entity.dto.UserDTO;
 import com.cjt.entity.model.security.Menu;
 import com.cjt.entity.model.security.User;
 import com.cjt.service.security.IMenuService;
+import com.cjt.service.security.IRoleService;
 import com.cjt.service.security.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private IMenuService menuService;
+
+    @Autowired
+    private IRoleService roleService;
 
     @GetMapping("/{id}")
     public Object getUser(@PathVariable("id") Long id) {
@@ -60,25 +64,30 @@ public class UserController extends BaseController {
         return userService.listUserByPage(userDTO);
     }
 
-    @PostMapping(value = {"", "/"})
-    public Object saveUser(User user) {
-        if (userService.saveUser(user)) {
-            response.setStatus(HttpServletResponse.SC_CREATED);
-            return user;
-        } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return OPERATION_FAILED;
-        }
+    @GetMapping("/{id}/roles")
+    public Object listRoleByUserId(@PathVariable("id") long id) {
+        return roleService.listRoleByUserId(id);
     }
 
-    @PutMapping("/{id}")
-    public Object updateUser(@PathVariable("id") long id, @ModelAttribute("user") User user) {
-        if (userService.updateUser(user)) {
+    @PostMapping("")
+    public Object saveUser(User user, @RequestParam("roleIds") List<Integer> roleIds) {
+        if (userService.saveUser(user, roleIds)) {
+            response.setStatus(HttpServletResponse.SC_CREATED);
             return user;
-        } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return OPERATION_FAILED;
         }
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return OPERATION_FAILED;
+
+    }
+
+    @PutMapping(value = {"", "/"})
+    public Object updateUser(User user, @RequestParam("roleIds") List<Integer> roleIds) {
+        if (userService.updateUser(user, roleIds)) {
+            return user;
+        }
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return OPERATION_FAILED;
+
     }
 
     @DeleteMapping("/{id}")
@@ -86,9 +95,8 @@ public class UserController extends BaseController {
         if (userService.removeUserById(id)) {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return null;
-        } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return OPERATION_FAILED;
         }
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return OPERATION_FAILED;
     }
 }
