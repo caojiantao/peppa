@@ -3,21 +3,21 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.security.IRoleMenusDAO">
 
-  <insert id="saveRoleMenus" parameterType="com.cjt.entity.model.security.Role">
-    INSERT INTO role_menus (role_id, menu_id) VALUES
-    <foreach collection="menuIds" item="menuId" separator=",">
-      (#{roleId}, #{menuId})
-    </foreach>
-  </insert>
+    <insert id="saveRoleMenus" parameterType="com.cjt.entity.model.security.Role">
+        INSERT INTO role_menus (role_id, menu_id) VALUES
+        <foreach collection="menuIds" item="menuId" separator=",">
+            (#{roleId}, #{menuId})
+        </foreach>
+    </insert>
 
-  <delete id="removeRoleMenus" parameterType="int">
-    DELETE FROM role_menus
-    WHERE role_id = #{roleId}
-  </delete>
+    <delete id="removeRoleMenus" parameterType="int">
+        DELETE FROM role_menus
+        WHERE role_id = #{roleId}
+    </delete>
 
-  <select id="listMenuIdByRoleId" parameterType="int">
-    SELECT menu_id
-    FROM role_menus
-    WHERE role_id = #{roleId}
-  </select>
+    <select id="listMenuIdByRoleId" parameterType="int">
+        SELECT menu_id
+        FROM role_menus
+        WHERE role_id = #{roleId}
+    </select>
 </mapper>

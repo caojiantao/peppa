@@ -5,27 +5,12 @@
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <!-- 配置文件分环境读取（自定义加密） -->
-
-    <beans profile="dev">
-        <bean class="com.cjt.common.encrypt.GlobalPropertyConfigure">
-            <property name="locations">
-                <list>
-                    <value>classpath*:properties/dev/**/*.properties</value>
-                </list>
-            </property>
-            <property name="fileEncoding" value="UTF-8"/>
-        </bean>
-    </beans>
-
-    <beans profile="pro">
-        <bean class="com.cjt.common.encrypt.GlobalPropertyConfigure">
-            <property name="locations">
-                <list>
-                    <value>classpath*:properties/pro/**/*.properties</value>
-                </list>
-            </property>
-            <property name="fileEncoding" value="UTF-8"/>
-        </bean>
-    </beans>
+    <bean class="com.cjt.common.encrypt.GlobalPropertyConfigure">
+        <property name="locations">
+            <list>
+                <value>classpath*:properties/${profiles.active}/**/*.properties</value>
+            </list>
+        </property>
+        <property name="fileEncoding" value="UTF-8"/>
+    </bean>
 </beans>

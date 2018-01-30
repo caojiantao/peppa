@@ -2,19 +2,19 @@ package com.cjt.service.security.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.cjt.dao.security.IUserRolesDao;
-import com.cjt.entity.dto.UserDTO;
 import com.cjt.common.util.ExceptionUtil;
 import com.cjt.common.util.JsonUtils;
 import com.cjt.dao.security.IMenuDAO;
 import com.cjt.dao.security.IRoleDAO;
 import com.cjt.dao.security.IUserDAO;
+import com.cjt.dao.security.IUserRolesDao;
+import com.cjt.entity.dto.UserDTO;
 import com.cjt.entity.model.security.User;
 import com.cjt.service.TokenService;
 import com.cjt.service.security.IUserService;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class UserServiceImpl implements IUserService {
     /**
      * 对密码进行加密
      */
-    private String encryptPassword(String password){
+    private String encryptPassword(String password) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(passwordSecret);
             byte[] bytes = algorithm.sign(password.getBytes(CharEncoding.UTF_8));
@@ -98,7 +98,7 @@ public class UserServiceImpl implements IUserService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveUser(User user, List<Integer> roleIds) {
-        if (StringUtils.isNotBlank(user.getPassword())){
+        if (StringUtils.isNotBlank(user.getPassword())) {
             user.setPassword(encryptPassword(user.getPassword()));
         }
         userDAO.saveUser(user);
@@ -109,7 +109,7 @@ public class UserServiceImpl implements IUserService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateUser(User user, List<Integer> roleIds) {
-        if (StringUtils.isNotBlank(user.getPassword())){
+        if (StringUtils.isNotBlank(user.getPassword())) {
             user.setPassword(encryptPassword(user.getPassword()));
         }
         userRolesDao.removeUserRoles(user.getId());

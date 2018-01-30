@@ -2,68 +2,68 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.security.IRoleDAO">
-  <resultMap id="roleMap" type="com.cjt.entity.model.security.Role">
-    <id column="id" property="id"/>
-    <result column="name" property="name"/>
-  </resultMap>
+    <resultMap id="roleMap" type="com.cjt.entity.model.security.Role">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
 
-  <sql id="selectRole">
-    SELECT
-      `id`,
-      `name`
-    FROM
-      role
-  </sql>
+    <sql id="selectRole">
+        SELECT
+        `id`,
+        `name`
+        FROM
+        role
+    </sql>
 
-  <select id="listRoleByUserId" resultMap="roleMap" parameterType="long">
-    <include refid="selectRole"/>
-    WHERE
-    id IN (
-    SELECT role_id
-    FROM
-    user_roles
-    WHERE
-    user_id = #{userId}
-    )
-  </select>
+    <select id="listRoleByUserId" resultMap="roleMap" parameterType="long">
+        <include refid="selectRole"/>
+        WHERE
+        id IN (
+        SELECT role_id
+        FROM
+        user_roles
+        WHERE
+        user_id = #{userId}
+        )
+    </select>
 
-  <select id="listRole" resultMap="roleMap" parameterType="com.cjt.entity.dto.RoleDTO">
-    <include refid="selectRole"/>
-    <trim prefix="WHERE" prefixOverrides="AND">
-      <if test="name!=null">AND `name` like CONCAT('%',#{name},'%')</if>
-    </trim>
-    <if test="offset!=null and offset!=0">
-      LIMIT #{start}, #{offset}
-    </if>
-  </select>
+    <select id="listRole" resultMap="roleMap" parameterType="com.cjt.entity.dto.RoleDTO">
+        <include refid="selectRole"/>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="name!=null">AND `name` like CONCAT('%',#{name},'%')</if>
+        </trim>
+        <if test="offset!=null and offset!=0">
+            LIMIT #{start}, #{offset}
+        </if>
+    </select>
 
-  <select id="countRole" resultType="int" parameterType="com.cjt.entity.dto.RoleDTO">
-    SELECT COUNT(*)
-    <trim prefix="WHERE" prefixOverrides="AND">
-      <if test="name!=null">AND `name` like CONCAT('%',#{name},'%')</if>
-    </trim>
-    FROM role
-  </select>
+    <select id="countRole" resultType="int" parameterType="com.cjt.entity.dto.RoleDTO">
+        SELECT COUNT(*)
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="name!=null">AND `name` like CONCAT('%',#{name},'%')</if>
+        </trim>
+        FROM role
+    </select>
 
-  <select id="getRoleById" resultMap="roleMap" parameterType="int">
-    <include refid="selectRole"/>
-    WHERE id = #{id}
-  </select>
+    <select id="getRoleById" resultMap="roleMap" parameterType="int">
+        <include refid="selectRole"/>
+        WHERE id = #{id}
+    </select>
 
-  <insert id="saveRole" parameterType="com.cjt.entity.model.security.Role" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO role (name)
-    VALUES (#{name})
-  </insert>
+    <insert id="saveRole" parameterType="com.cjt.entity.model.security.Role" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO role (name)
+        VALUES (#{name})
+    </insert>
 
-  <delete id="removeRoleById" parameterType="int">
-    DELETE FROM role
-    WHERE id = #{id}
-  </delete>
+    <delete id="removeRoleById" parameterType="int">
+        DELETE FROM role
+        WHERE id = #{id}
+    </delete>
 
-  <update id="updateRole" parameterType="com.cjt.entity.model.security.Role">
-    UPDATE role
-    <trim prefix="SET" suffix="WHERE id = #{id}">
-      `name` = #{name}
-    </trim>
-  </update>
+    <update id="updateRole" parameterType="com.cjt.entity.model.security.Role">
+        UPDATE role
+        <trim prefix="SET" suffix="WHERE id = #{id}">
+            `name` = #{name}
+        </trim>
+    </update>
 </mapper>

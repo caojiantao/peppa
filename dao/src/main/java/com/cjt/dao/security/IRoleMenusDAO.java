@@ -10,8 +10,10 @@ import java.util.List;
 public interface IRoleMenusDAO {
 
     /**
+     * 获取指定ID的菜单ID集合
+     *
      * @param roleId 角色ID
-     * @return 该角色拥有的菜单ID集合
+     * @return 菜单ID集合
      */
     List<Integer> listMenuIdByRoleId(int roleId);
 
@@ -24,6 +26,8 @@ public interface IRoleMenusDAO {
     void saveRoleMenus(@Param("roleId") int roleId, @Param("menuIds") List<Integer> menuIds);
 
     /**
+     * 删除角色ID的 角色-菜单 关联关系
+     *
      * @param roleId 角色ID
      * @return 成功与否
      */

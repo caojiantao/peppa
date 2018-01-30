@@ -1,7 +1,7 @@
 package com.cjt.admin.filter;
 
 import com.cjt.service.TokenService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.AntPathMatcher;

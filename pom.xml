@@ -20,6 +20,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.compile.jdk>1.8</project.compile.jdk>
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
         <spring.version>4.3.10.RELEASE</spring.version>
         <mybatis.version>3.1.1</mybatis.version>
@@ -28,8 +29,6 @@
         <commons-dbcp.version>1.2.2</commons-dbcp.version>
         <servlet-api.version>3.1.0</servlet-api.version>
         <fastjson.version>1.2.13</fastjson.version>
-        <velocity.version>1.7</velocity.version>
-        <velocity-tools.version>2.0</velocity-tools.version>
         <fileupload.version>1.3.3</fileupload.version>
         <quartz.version>2.2.1</quartz.version>
         <spring-data-redis.version>1.6.2.RELEASE</spring-data-redis.version>
@@ -37,8 +36,9 @@
         <hessian.version>4.0.7</hessian.version>
         <mail.version>1.4.7</mail.version>
         <jwt.version>3.2.0</jwt.version>
-        <shiro-spring.version>1.2.1</shiro-spring.version>
         <slf4j-log4j12.version>1.7.21</slf4j-log4j12.version>
+        <freemarker.version>2.3.23</freemarker.version>
+        <common-lang3.version>3.4</common-lang3.version>
     </properties>
 
     <dependencies>
@@ -107,18 +107,6 @@
             <version>${fastjson.version}</version>
         </dependency>
 
-        <!-- velocity页面渲染依赖 -->
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>${velocity.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-tools</artifactId>
-            <version>${velocity-tools.version}</version>
-        </dependency>
-
         <!-- 文件上传 -->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -181,19 +169,58 @@
             <version>${slf4j-log4j12.version}</version>
         </dependency>
 
+        <!-- freemarker支持 -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${common-lang3.version}</version>
+        </dependency>
     </dependencies>
+
+    <!-- 分环境打包 -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <profiles.active>pro</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <finalName>peppa</finalName>
+        <!-- 分环境打包需要设置该项，允许变量替换资源文件 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                    <encoding>UTF-8</encoding>
+                    <source>${project.compile.jdk}</source>
+                    <target>${project.compile.jdk}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>

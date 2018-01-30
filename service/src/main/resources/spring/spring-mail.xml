@@ -4,28 +4,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-    <property name="host" value="${mail.host}"/>
-    <property name="username" value="${mail.username}"/>
-    <property name="password" value="${mail.password}"/>
-    <property name="protocol" value="${mail.protocol}"/>
-    <property name="javaMailProperties">
-      <props>
-        <prop key="mail.smtp.auth">${mail.auth}</prop>
-        <prop key="mail.smtp.timeout">${mail.timeout}</prop>
-      </props>
-    </property>
-  </bean>
-
-  <!-- 渲染引擎 -->
-  <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
-    <property name="velocityProperties">
-      <props>
-        <prop key="resource.loader">class</prop>
-        <prop key="class.resource.loader.class">
-          org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-        </prop>
-      </props>
-    </property>
-  </bean>
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${mail.host}"/>
+        <property name="username" value="${mail.username}"/>
+        <property name="password" value="${mail.password}"/>
+        <property name="protocol" value="${mail.protocol}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">${mail.auth}</prop>
+                <prop key="mail.smtp.timeout">${mail.timeout}</prop>
+            </props>
+        </property>
+    </bean>
 </beans>

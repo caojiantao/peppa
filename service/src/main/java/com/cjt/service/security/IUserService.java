@@ -47,7 +47,7 @@ public interface IUserService {
     /**
      * 新增用户
      *
-     * @param user 新增用户信息
+     * @param user    新增用户信息
      * @param roleIds 角色列表
      * @return 成功与否
      */
@@ -56,7 +56,7 @@ public interface IUserService {
     /**
      * 更新用户
      *
-     * @param user 用户信息
+     * @param user    用户信息
      * @param roleIds 角色列表
      * @return 成功与否
      */

@@ -10,18 +10,24 @@ import java.util.List;
 public interface IUserRolesDao {
 
     /**
+     * 获取指定用户ID的角色ID集合
+     *
      * @param userId 用户ID
-     * @return 该用户拥有的角色ID集合
+     * @return 角色ID集合
      */
     List<Integer> listRoleIdByUserId(int userId);
 
     /**
+     * 保存 用户-角色 对应关系
+     *
      * @param userId  用户ID
      * @param roleIds 角色ID集合
      */
     void saveUserRoles(@Param("userId") long userId, @Param("roleIds") List<Integer> roleIds);
 
     /**
+     * 删除 用户-角色 对应关系
+     *
      * @param userId 用户ID
      * @return 成功与否
      */

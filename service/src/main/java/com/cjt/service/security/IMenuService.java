@@ -25,6 +25,12 @@ public interface IMenuService {
      */
     List<Menu> listMenu();
 
+    /**
+     * 获取指定角色ID的菜单集合
+     *
+     * @param roleId 角色ID
+     * @return 菜单集合
+     */
     List<Menu> listMenuByRoleId(int roleId);
 
     /**

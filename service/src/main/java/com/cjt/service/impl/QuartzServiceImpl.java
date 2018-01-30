@@ -1,5 +1,7 @@
 package com.cjt.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cjt.entity.dto.BasePageDTO;
 import com.cjt.dao.IQuartzDAO;
 import com.cjt.entity.model.job.Quartz;
@@ -18,58 +20,59 @@ import java.util.List;
  * @author caojiantao
  */
 @Service
-public class QuartzServiceImpl implements IQuartzService,InitializingBean {
+public class QuartzServiceImpl implements IQuartzService, InitializingBean {
 
-  private Logger logger = LogManager.getLogger(getClass());
+    private Logger logger = LogManager.getLogger(getClass());
 
-  @Resource
-  private QuartzJobManager quartzJobManager;
+    @Resource
+    private QuartzJobManager quartzJobManager;
 
-  @Resource
-  private IQuartzDAO quartzDao;
+    @Resource
+    private IQuartzDAO quartzDao;
 
-  @Override
-  public List<Quartz> listJobs() {
-    return listJobs(null);
-  }
-
-  @Override
-  public List<Quartz> listJobs(BasePageDTO dto) {
-    return quartzDao.listJobs(dto);
-  }
-
-  @Override
-  public int countJobs(BasePageDTO dto) {
-    return quartzDao.countJobs(dto);
-  }
-
-  @Override
-  public <T extends Quartz> boolean saveQuartz(T job) {
-    if (quartzDao.saveJob(job) < 0){
-      return false;
+    @Override
+    public JSONObject listJobs() {
+        return listJobs(null);
     }
-    quartzJobManager.addJob(job);
-    return true;
-  }
 
-  @Cacheable("quartzCache")
-  @Override
-  public Quartz getQuartz(String name) {
-    System.out.println("操作");
-    Quartz job = new Quartz();
-    job.setName(name);
-    return job;
-  }
-
-  /**
-   * bean初始化，加载一次
-   */
-  @Override
-  public void afterPropertiesSet() throws Exception {
-    logger.info("====================【开始初始化定时任务】====================");
-    List<Quartz> tasks = listJobs();
-    for (Quartz task : tasks) {
-      quartzJobManager.addJob(task);
+    @Override
+    public JSONObject listJobs(BasePageDTO dto) {
+        JSONObject result = new JSONObject();
+        List<Quartz> quartzs = quartzDao.listJobs(dto);
+        int total = quartzDao.countJobs(dto);
+        result.put("data", quartzs);
+        result.put("total", total);
+        return result;
     }
-  }
+
+    @Override
+    public <T extends Quartz> boolean saveQuartz(T job) {
+        quartzDao.saveJob(job);
+        if (job.getId() < 0) {
+            return false;
+        }
+        quartzJobManager.addJob(job);
+        return true;
+    }
+
+    @Cacheable("quartzCache")
+    @Override
+    public Quartz getQuartz(String name) {
+        System.out.println("操作");
+        Quartz job = new Quartz();
+        job.setName(name);
+        return job;
+    }
+
+    /**
+     * bean初始化，加载一次
+     */
+    @Override
+    public void afterPropertiesSet() {
+        logger.info("====================【开始初始化定时任务】====================");
+        List<Quartz> tasks = quartzDao.listJobs(null);
+        for (Quartz task : tasks) {
+            quartzJobManager.addJob(task);
+        }
+    }
 }

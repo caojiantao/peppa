@@ -5,11 +5,32 @@ import com.cjt.entity.model.job.Quartz;
 
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 public interface IQuartzDAO {
 
-  List<Quartz> listJobs(BasePageDTO dto);
+    /**
+     * 获取条件范围内的定时任务集合
+     *
+     * @param dto 定时任务查询DTO
+     * @return 定时任务集合
+     */
+    List<Quartz> listJobs(BasePageDTO dto);
 
-  int countJobs(BasePageDTO dto);
+    /**
+     * 获取条件范围内的定时任务数量
+     *
+     * @param dto 定时任务查询DTO
+     * @return 定时任务数量
+     */
+    int countJobs(BasePageDTO dto);
 
-  <T extends Quartz> int saveJob(T job);
+    /**
+     * 添加定时任务
+     *
+     * @param job 定时任务
+     * @param <T> 定时任务class
+     */
+    <T extends Quartz> void saveJob(T job);
 }

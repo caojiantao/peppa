@@ -37,13 +37,27 @@ public interface IRoleService {
 
     /**
      * 新增角色
-     * @param role 角色实体
+     *
+     * @param role    角色实体
      * @param menuIds 关联菜单ID集合
      * @return 成功与否
      */
     boolean saveRole(Role role, List<Integer> menuIds);
 
+    /**
+     * 更新角色信息
+     *
+     * @param role    角色
+     * @param menuIds 菜单ID集合
+     * @return 成功与否
+     */
     boolean updateRole(Role role, List<Integer> menuIds);
 
+    /**
+     * 删除指定ID的角色
+     *
+     * @param id 角色ID
+     * @return 成功与否
+     */
     boolean removeRole(int id);
 }

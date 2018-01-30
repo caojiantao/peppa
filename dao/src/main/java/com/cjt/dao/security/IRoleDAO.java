@@ -35,6 +35,7 @@ public interface IRoleDAO {
 
     /**
      * 获取指定ID的角色信息
+     *
      * @param id 角色ID
      * @return 角色信息
      */
@@ -42,11 +43,24 @@ public interface IRoleDAO {
 
     /**
      * 新增角色
+     *
      * @param role 角色
      */
     void saveRole(Role role);
 
+    /**
+     * 删除指定ID的角色
+     *
+     * @param id 角色ID
+     * @return 影响行数
+     */
     int removeRoleById(int id);
 
+    /**
+     * 更新角色
+     *
+     * @param role 角色信息
+     * @return 影响行数
+     */
     int updateRole(Role role);
 }

@@ -2,75 +2,75 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.security.IUserDAO">
-  <resultMap id="userMap" type="com.cjt.entity.model.security.User">
-    <id column="id" property="id"/>
-    <result column="username" property="username"/>
-    <result column="password" property="password"/>
-    <result column="nickname" property="nickname"/>
-  </resultMap>
+    <resultMap id="userMap" type="com.cjt.entity.model.security.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+    </resultMap>
 
-  <sql id="selectUser">
-    SELECT
-      id,
-      username,
-      password,
-      nickname
-    FROM user
-  </sql>
+    <sql id="selectUser">
+        SELECT
+        id,
+        username,
+        password,
+        nickname
+        FROM user
+    </sql>
 
-  <select id="listUser" resultMap="userMap" parameterType="com.cjt.entity.dto.UserDTO">
-    <include refid="selectUser"/>
-    <trim prefix="WHERE" prefixOverrides="AND">
-      <if test="id!=null">AND id = #{id}</if>
-      <if test="username!=null and username!=''">AND `username` = #{username}</if>
-      <if test="password!=null">AND `password` = #{password}</if>
-    </trim>
-    <if test="start!=null and offset!=null">LIMIT #{start}, #{offset}</if>
-  </select>
+    <select id="listUser" resultMap="userMap" parameterType="com.cjt.entity.dto.UserDTO">
+        <include refid="selectUser"/>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id!=null">AND id = #{id}</if>
+            <if test="username!=null and username!=''">AND `username` = #{username}</if>
+            <if test="password!=null">AND `password` = #{password}</if>
+        </trim>
+        <if test="start!=null and offset!=null">LIMIT #{start}, #{offset}</if>
+    </select>
 
-  <select id="countUser" resultType="int" parameterType="com.cjt.entity.dto.UserDTO">
-    SELECT COUNT(*)
-    FROM user
-    <trim prefix="WHERE" prefixOverrides="AND">
-      <if test="id!=null">AND id = #{id}</if>
-      <if test="username!=null">AND `username` = #{username}</if>
-      <if test="password!=null">AND `password` = #{password}</if>
-    </trim>
-  </select>
+    <select id="countUser" resultType="int" parameterType="com.cjt.entity.dto.UserDTO">
+        SELECT COUNT(*)
+        FROM user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id!=null">AND id = #{id}</if>
+            <if test="username!=null">AND `username` = #{username}</if>
+            <if test="password!=null">AND `password` = #{password}</if>
+        </trim>
+    </select>
 
-  <!-- 想要获取最后一次插入的主键id，注意mybatis和ibatis的区别 -->
-  <insert id="saveUser" parameterType="com.cjt.entity.model.security.User" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO user (username, password, nickname)
-    VALUES (#{username}, #{password}, #{nickname})
-  </insert>
+    <!-- 想要获取最后一次插入的主键id，注意mybatis和ibatis的区别 -->
+    <insert id="saveUser" parameterType="com.cjt.entity.model.security.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (username, password, nickname)
+        VALUES (#{username}, #{password}, #{nickname})
+    </insert>
 
-  <select id="login" resultMap="userMap">
-    <include refid="selectUser"/>
-    WHERE
-    `username` = #{username}
-    AND `password` = #{password}
-  </select>
+    <select id="login" resultMap="userMap">
+        <include refid="selectUser"/>
+        WHERE
+        `username` = #{username}
+        AND `password` = #{password}
+    </select>
 
-  <select id="getUserByDTO" resultMap="userMap">
-    <include refid="selectUser"/>
-    <trim prefix="WHERE" prefixOverrides="AND">
-      <if test="id!=null">AND id = #{id}</if>
-      <if test="username!=null">AND `username` = #{username}</if>
-      <if test="password!=null">AND `password` = #{password}</if>
-    </trim>
-  </select>
+    <select id="getUserByDTO" resultMap="userMap">
+        <include refid="selectUser"/>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id!=null">AND id = #{id}</if>
+            <if test="username!=null">AND `username` = #{username}</if>
+            <if test="password!=null">AND `password` = #{password}</if>
+        </trim>
+    </select>
 
-  <delete id="removeUserById" parameterType="long">
-    DELETE FROM user
-    WHERE id = #{id}
-  </delete>
+    <delete id="removeUserById" parameterType="long">
+        DELETE FROM user
+        WHERE id = #{id}
+    </delete>
 
-  <update id="updateUser" parameterType="com.cjt.entity.model.security.User">
-    UPDATE user
-    <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
-      <if test="username!=null and username!=''">`username` = #{username},</if>
-      <if test="password!=null and password!=''">`password` = #{password},</if>
-      <if test="nickname!=null and nickname!=''">`nickname` = #{nickname},</if>
-    </trim>
-  </update>
+    <update id="updateUser" parameterType="com.cjt.entity.model.security.User">
+        UPDATE user
+        <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
+            <if test="username!=null and username!=''">`username` = #{username},</if>
+            <if test="password!=null and password!=''">`password` = #{password},</if>
+            <if test="nickname!=null and nickname!=''">`nickname` = #{nickname},</if>
+        </trim>
+    </update>
 </mapper>

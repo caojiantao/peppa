@@ -3,61 +3,61 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.security.IMenuDAO">
 
-  <resultMap id="menuMap" type="com.cjt.entity.model.security.Menu">
-    <id column="id" property="id"/>
-    <result column="name" property="name"/>
-    <result column="parent_id" property="parentId"/>
-    <result column="href" property="href"/>
-    <result column="icon_class" property="iconClass"/>
-  </resultMap>
+    <resultMap id="menuMap" type="com.cjt.entity.model.security.Menu">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="href" property="href"/>
+        <result column="icon_class" property="iconClass"/>
+    </resultMap>
 
-  <sql id="selectMenu">
-    SELECT
-      `id`,
-      `name`,
-      parent_id,
-      href,
-      icon_class
-    FROM menu
-  </sql>
+    <sql id="selectMenu">
+        SELECT
+        `id`,
+        `name`,
+        parent_id,
+        href,
+        icon_class
+        FROM menu
+    </sql>
 
-  <select id="getMenuById" resultMap="menuMap">
-    <include refid="selectMenu"/>
-    WHERE id = #{id}
-  </select>
+    <select id="getMenuById" resultMap="menuMap">
+        <include refid="selectMenu"/>
+        WHERE id = #{id}
+    </select>
 
-  <insert id="saveMenu" parameterType="com.cjt.entity.model.security.Menu"
-          useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`)
-    VALUES (#{name}, #{parentId}, #{href}, #{iconClass})
-  </insert>
+    <insert id="saveMenu" parameterType="com.cjt.entity.model.security.Menu"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`)
+        VALUES (#{name}, #{parentId}, #{href}, #{iconClass})
+    </insert>
 
-  <update id="updateMenu" parameterType="com.cjt.entity.model.security.Menu">
-    UPDATE menu
-    <trim prefix="SET" suffix="WHERE id = #{id}">
-      `name` = #{name},
-      `parent_id` = #{parentId},
-      `href` = #{href},
-      `icon_class` = #{iconClass}
-    </trim>
-  </update>
+    <update id="updateMenu" parameterType="com.cjt.entity.model.security.Menu">
+        UPDATE menu
+        <trim prefix="SET" suffix="WHERE id = #{id}">
+            `name` = #{name},
+            `parent_id` = #{parentId},
+            `href` = #{href},
+            `icon_class` = #{iconClass}
+        </trim>
+    </update>
 
-  <delete id="removeMenuById" parameterType="int">
-    DELETE FROM menu
-    WHERE `id` = #{id}
-  </delete>
+    <delete id="removeMenuById" parameterType="int">
+        DELETE FROM menu
+        WHERE `id` = #{id}
+    </delete>
 
-  <select id="listMenuByRoleIds" resultMap="menuMap" parameterType="list">
-    <include refid="selectMenu"/>
-    <if test="list!=null">
-      WHERE id IN
-      (
-      SELECT DISTINCT menu_id FROM role_menus
-      WHERE role_id IN
-      <foreach collection="list" item="id" open="(" close=")" separator=",">
-        #{id}
-      </foreach>
-      )
-    </if>
-  </select>
+    <select id="listMenuByRoleIds" resultMap="menuMap" parameterType="list">
+        <include refid="selectMenu"/>
+        <if test="list!=null">
+            WHERE id IN
+            (
+            SELECT DISTINCT menu_id FROM role_menus
+            WHERE role_id IN
+            <foreach collection="list" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+    </select>
 </mapper>

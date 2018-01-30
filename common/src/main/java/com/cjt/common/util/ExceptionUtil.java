@@ -10,15 +10,15 @@ import java.io.StringWriter;
  */
 public class ExceptionUtil {
 
-  /**
-   * 异常转换为详情字符串
-   */
-  public static String toDetailStr(Exception ex){
-    StringWriter sw = new StringWriter();
-    PrintWriter pw = new PrintWriter(sw, true);
-    ex.printStackTrace(pw);
-    pw.flush();
-    sw.flush();
-    return sw.toString();
-  }
+    /**
+     * 异常转换为详情字符串
+     */
+    public static String toDetailStr(Exception ex) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw, true);
+        ex.printStackTrace(pw);
+        pw.flush();
+        sw.flush();
+        return sw.toString();
+    }
 }

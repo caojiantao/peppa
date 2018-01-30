@@ -3,44 +3,44 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.IQuartzDAO">
 
-  <select id="listJobs" resultType="com.cjt.entity.model.job.Quartz">
-    SELECT
-    `id`,
-    `name`,
-    `group`,
-    cron_expre AS 'cronExpre',
-    `desc`,
-    `status`,
-    deleted
-    FROM quartz
-    WHERE deleted = 0
-    <if test="start!=null and limit!=null">
-      LIMIT #{start}, #{limit}
-    </if>
-  </select>
+    <select id="listJobs" resultType="com.cjt.entity.model.job.Quartz">
+        SELECT
+        `id`,
+        `name`,
+        `group`,
+        cron_expre AS 'cronExpre',
+        `desc`,
+        `status`,
+        deleted
+        FROM quartz
+        WHERE deleted = 0
+        <if test="start!=null and limit!=null">
+            LIMIT #{start}, #{limit}
+        </if>
+    </select>
 
-  <select id="countJobs" resultType="int">
-    SELECT count(*)
-    FROM quartz
-    WHERE deleted = 0
-  </select>
+    <select id="countJobs" resultType="int">
+        SELECT count(*)
+        FROM quartz
+        WHERE deleted = 0
+    </select>
 
-  <insert id="saveJob" parameterType="com.cjt.entity.model.job.Quartz">
-    INSERT INTO quartz (
-    `name`,
-    `group`,
-    cron_expre,
-    `desc`
-    )
-    VALUES
-    (
-    #{name},
-    #{group},
-    #{cronExpre},
-    #{desc}
-    )
-    <selectKey keyProperty="id" resultType="int">
-      SELECT last_insert_id()
-    </selectKey>
-  </insert>
+    <insert id="saveJob" parameterType="com.cjt.entity.model.job.Quartz">
+        INSERT INTO quartz (
+        `name`,
+        `group`,
+        cron_expre,
+        `desc`
+        )
+        VALUES
+        (
+        #{name},
+        #{group},
+        #{cronExpre},
+        #{desc}
+        )
+        <selectKey keyProperty="id" resultType="int">
+            SELECT last_insert_id()
+        </selectKey>
+    </insert>
 </mapper>

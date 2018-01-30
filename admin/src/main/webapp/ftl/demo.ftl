@@ -8,6 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-<h2>这是一个会议</h2>
+
 </body>
 </html>

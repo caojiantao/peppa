@@ -3,21 +3,21 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.security.IUserRolesDao">
 
-  <insert id="saveUserRoles">
-    INSERT INTO user_roles (user_id, role_id) VALUES
-    <foreach collection="roleIds" item="roleId" separator=",">
-      (#{userId}, #{roleId})
-    </foreach>
-  </insert>
+    <insert id="saveUserRoles">
+        INSERT INTO user_roles (user_id, role_id) VALUES
+        <foreach collection="roleIds" item="roleId" separator=",">
+            (#{userId}, #{roleId})
+        </foreach>
+    </insert>
 
-  <delete id="removeUserRoles" parameterType="long">
-    DELETE FROM user_roles
-    WHERE user_id = #{userId}
-  </delete>
+    <delete id="removeUserRoles" parameterType="long">
+        DELETE FROM user_roles
+        WHERE user_id = #{userId}
+    </delete>
 
-  <select id="listRoleIdByUserId" parameterType="long">
-    SELECT role_id
-    FROM user_roles
-    WHERE user_id = #{userId}
-  </select>
+    <select id="listRoleIdByUserId" parameterType="long">
+        SELECT role_id
+        FROM user_roles
+        WHERE user_id = #{userId}
+    </select>
 </mapper>
