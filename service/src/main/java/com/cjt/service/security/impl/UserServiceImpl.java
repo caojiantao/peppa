@@ -4,13 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.cjt.common.util.ExceptionUtil;
 import com.cjt.common.util.JsonUtils;
-import com.cjt.dao.security.IMenuDAO;
-import com.cjt.dao.security.IRoleDAO;
 import com.cjt.dao.security.IUserDAO;
 import com.cjt.dao.security.IUserRolesDao;
 import com.cjt.entity.dto.UserDTO;
 import com.cjt.entity.model.security.User;
-import com.cjt.service.TokenService;
 import com.cjt.service.security.IUserService;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.binary.Hex;
@@ -37,15 +34,6 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserDAO userDAO;
-
-    @Autowired
-    private IRoleDAO roleDAO;
-
-    @Autowired
-    private IMenuDAO menuDAO;
-
-    @Autowired
-    private TokenService tokenService;
 
     @Autowired
     private IUserRolesDao userRolesDao;

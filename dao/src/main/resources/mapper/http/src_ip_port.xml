@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.http.ISrcIpPortDao">
+
+    <resultMap id="baseMap" type="com.cjt.entity.model.http.SrcIpPort">
+        <id column="id" property="id"/>
+        <result column="src_url" property="srcUrl"/>
+        <result column="ip" property="ip"/>
+        <result column="port" property="port"/>
+    </resultMap>
+
+    <select id="listSrcIpPort" resultMap="baseMap">
+        SELECT
+            `id`,
+            `src_url`,
+            `ip`,
+            `port`
+        FROM src_ip_port
+    </select>
+
+    <insert id="saveSrcIpPort" parameterType="com.cjt.entity.model.http.SrcIpPort">
+        INSERT INTO src_ip_port (src_url, ip, port)
+        VALUES (#{srcUrl}, #{ip}, #{port})
+    </insert>
+
+    <delete id="removeSrcIpPort" parameterType="String">
+        DELETE FROM src_ip_port
+        WHERE src_url = #{srcUrl}
+    </delete>
+</mapper>

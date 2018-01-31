@@ -1,4 +1,4 @@
-package com.cjt.service;
+package com.cjt.admin.service;
 
 import com.cjt.entity.model.job.Quartz;
 import org.apache.log4j.LogManager;
