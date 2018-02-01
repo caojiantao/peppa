@@ -74,83 +74,106 @@ public class JapaneseServiceImpl implements IJapaneseService {
 
     @Override
     public String getFileSrc(String vid) {
-        Map<String, SrcIpPort> srcIpPortMap = getSrcIpPortMap();
+        String url = API_URL + "/video/" + vid;
+
+        boolean isVisitLocal = false;
+
+        // 获取数据库中已保存的“资源-IP-端口”对应关系，和本机localhost是否已经有关联资源
+        Map<String, SrcIpPort> srcIpPortMap = new HashMap<>();
+        List<SrcIpPort> srcIpPorts = srcIpPortDao.listSrcIpPort();
+        if (srcIpPorts != null) {
+            for (SrcIpPort srcIpPort : srcIpPorts) {
+                if ("localhost".equals(srcIpPort.getIp())) {
+                    isVisitLocal = true;
+                }
+                srcIpPortMap.put(srcIpPort.getSrcUrl(), srcIpPort);
+            }
+        }
+
+        SrcIpPort srcIpPort = srcIpPortMap.get(url);
+        // 根据请求资源地址匹配数据库查询
+        if (srcIpPort != null) {
+            if ("localhost".equals(srcIpPort.getIp())) {
+                // 本地已经访问过
+                return parseLocal(url, false);
+            } else {
+                // 动态IP代理
+                return parseDynamic(url, srcIpPort.getIp(), srcIpPort.getPort(), wormService.listIpPort());
+            }
+        } else {
+            if (isVisitLocal) {
+                // 随机动态IP代理
+                return parseDynamic(url, wormService.listIpPort());
+            } else {
+                // 本机可首次访问
+                return parseLocal(url, true);
+            }
+        }
+    }
+
+    private String parseLocal(String url, boolean isSave) {
         try {
-            String requestUrl = API_URL + "/video/" + vid;
-            Document document = Jsoup.connect(requestUrl)
+            Document document = Jsoup.connect(url)
                     // 模拟客户端，防止被拦截
                     .userAgent("Chrome")
                     .ignoreContentType(true)
                     // 添加referrer，避免读取不到数据
-                    .referrer(API_URL + "/video/" + vid)
+                    .referrer(url)
                     .get();
             JSONObject result = JSONObject.parseObject(document.text());
             if (result != null) {
-                if (!StringUtils.isEmpty(result.getString("data"))) {
-                    return SRC_URL + result.getString("data");
+                String data = result.getString("data");
+                if (!StringUtils.isEmpty(data)) {
+                    if (isSave) {
+                        srcIpPortDao.removeSrcIpPort(url);
+                        srcIpPortDao.saveSrcIpPort(new SrcIpPort(url, "localhost", 80));
+                    }
+                    return SRC_URL + data;
                 }
             }
-            // 否则设置动态IP
-            return parseDynamic(requestUrl, 0, wormService.listIpPort(), srcIpPortMap);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+        // 本地再次失败采用动态代理
+        srcIpPortDao.removeSrcIpPort(url);
+        return parseDynamic(url, wormService.listIpPort());
     }
 
-    private Map<String, SrcIpPort> getSrcIpPortMap() {
-        List<SrcIpPort> srcIpPorts = srcIpPortDao.listSrcIpPort();
-        Map<String, SrcIpPort> srcIpPortMap = new HashMap<>();
-        if (srcIpPorts != null) {
-            for (SrcIpPort srcIpPort : srcIpPorts) {
-                srcIpPortMap.put(srcIpPort.getSrcUrl(), srcIpPort);
-            }
-        }
-        return srcIpPortMap;
+    /**
+     * 随机取动态IP端口代理请求
+     *
+     * @param url           请求地址
+     * @param dynamicIpPort 可用的代理IP端口
+     * @return 资源地址
+     */
+    private String parseDynamic(String url, JSONArray dynamicIpPort) {
+        JSONObject ipPort = dynamicIpPort.getJSONObject((new Random()).nextInt(dynamicIpPort.size()));
+        String newIp = ipPort.getString("ip");
+        int newPort = ipPort.getInteger("port");
+        return parseDynamic(url, newIp, newPort, dynamicIpPort);
     }
 
-    private String parseDynamic(String url, int count, JSONArray dynamicIpPort, Map<String, SrcIpPort> srcIpPortMap) {
-        if (count > 10) {
-            return null;
-        }
-        String ip;
-        int port;
-        // 根据请求URL匹配数据库 IP PORT
-        SrcIpPort srcIpPort = srcIpPortMap.get(url);
-        if (srcIpPort == null) {
-            // 随机取可用动态IP
-            JSONObject ipPort = dynamicIpPort.getJSONObject((new Random()).nextInt(dynamicIpPort.size()));
-            ip = ipPort.getString("ip");
-            port = ipPort.getInteger("port");
-        } else {
-            ip = srcIpPort.getIp();
-            port = srcIpPort.getPort();
-        }
+    private String parseDynamic(String url, String ip, int port, JSONArray dynamicIpPort) {
         InputStream is = wormService.getInputStreamByDynamicIpPort(url, ip, port);
         if (is == null) {
-            return parseDynamic(url, ++count, dynamicIpPort, srcIpPortMap);
+            srcIpPortDao.removeSrcIpPort(url);
+            return parseDynamic(url, dynamicIpPort);
         }
         JSONObject result;
         try {
             result = JSONObject.parseObject(is, JSONObject.class);
             if (result == null || StringUtils.isEmpty(result.getString("data"))) {
-                return parseDynamic(url, ++count, dynamicIpPort, srcIpPortMap);
-            }
-            if (srcIpPort == null) {
-                // 动态IP获取数据成功，存储VID IP PORT对应关系至数据库
-                srcIpPort = new SrcIpPort(url, ip, port);
                 srcIpPortDao.removeSrcIpPort(url);
-                srcIpPortDao.saveSrcIpPort(srcIpPort);
+                return parseDynamic(url, dynamicIpPort);
             }
+            SrcIpPort srcIpPort = new SrcIpPort(url, ip, port);
+            // 存储需要注意
+            srcIpPortDao.removeSrcIpPort(url);
+            srcIpPortDao.saveSrcIpPort(srcIpPort);
             return SRC_URL + result.getString("data");
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return parseDynamic(url, dynamicIpPort);
         }
     }
-//
-//    public static void main(String[] args) {
-//        IJapaneseService japaneseService = new JapaneseServiceImpl();
-//        System.out.println(japaneseService.getFileSrc("4479"));
-//    }
 }
