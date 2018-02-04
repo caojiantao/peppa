@@ -31,7 +31,7 @@ public class WormServiceImpl implements IWormService {
         Document document;
         try {
             document = Jsoup.connect(DYNAMIC_IP_URL)
-                    .userAgent("Mozilla")
+                    .userAgent("chrome")
                     .get();
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,6 +43,13 @@ public class WormServiceImpl implements IWormService {
             Elements colElements = element.getElementsByTag("td");
             if (!colElements.isEmpty()) {
                 JSONObject object = new JSONObject();
+                String timeoutStr = colElements.get(6).getElementsByClass("bar").first().attr("title");
+                double timeout = Double.parseDouble(timeoutStr.replace("秒", ""));
+                if (timeout > 1) {
+                    // 过滤掉速度超过1s的
+                    continue;
+                }
+                object.put("timeout", timeout);
                 object.put("ip", colElements.get(1).text());
                 object.put("port", colElements.get(2).text());
                 data.add(object);
@@ -57,12 +64,13 @@ public class WormServiceImpl implements IWormService {
         Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection(proxy);
-            connection.setConnectTimeout(3000);
+            connection.setConnectTimeout(6666);
             connection.setRequestProperty("Referer", url);
-            connection.setRequestProperty("User-Agent", "Chrome");
+            connection.setRequestProperty("User-Agent", "chrome");
             connection.connect();
             return connection.getInputStream();
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }

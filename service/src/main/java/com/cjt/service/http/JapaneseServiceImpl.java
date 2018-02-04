@@ -157,6 +157,7 @@ public class JapaneseServiceImpl implements IJapaneseService {
         InputStream is = wormService.getInputStreamByDynamicIpPort(url, ip, port);
         if (is == null) {
             srcIpPortDao.removeSrcIpPort(url);
+            removeInvalidData(ip, port, dynamicIpPort);
             return parseDynamic(url, dynamicIpPort);
         }
         JSONObject result;
@@ -164,6 +165,7 @@ public class JapaneseServiceImpl implements IJapaneseService {
             result = JSONObject.parseObject(is, JSONObject.class);
             if (result == null || StringUtils.isEmpty(result.getString("data"))) {
                 srcIpPortDao.removeSrcIpPort(url);
+                removeInvalidData(ip, port, dynamicIpPort);
                 return parseDynamic(url, dynamicIpPort);
             }
             SrcIpPort srcIpPort = new SrcIpPort(url, ip, port);
@@ -174,6 +176,19 @@ public class JapaneseServiceImpl implements IJapaneseService {
         } catch (IOException e) {
             e.printStackTrace();
             return parseDynamic(url, dynamicIpPort);
+        }
+    }
+
+    /**
+     * 删除失效动态IP端口数据
+     */
+    private void removeInvalidData(String ip, int port, JSONArray dynamicIpPort) {
+        for (int index = 0; index < dynamicIpPort.size(); index++) {
+            JSONObject jsonObject = (JSONObject) dynamicIpPort.get(index);
+            if (jsonObject.getString("ip").equals(ip)
+                    && jsonObject.getInteger("port") == port) {
+                dynamicIpPort.remove(jsonObject);
+            }
         }
     }
 }

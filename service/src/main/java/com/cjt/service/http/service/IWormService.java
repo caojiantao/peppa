@@ -11,7 +11,7 @@ import java.io.InputStream;
 public interface IWormService {
 
     /**
-     * 获取可用的动态IP，端口
+     * 获取可用的动态IP，端口（确保品质，过滤速度超过1s的）
      *
      * @return 可用IP，端口
      */
