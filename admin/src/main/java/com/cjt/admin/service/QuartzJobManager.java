@@ -4,6 +4,7 @@ import com.cjt.entity.model.job.Quartz;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.quartz.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -16,7 +17,7 @@ public class QuartzJobManager {
 
     private Logger logger = LogManager.getLogger(QuartzJobManager.class);
 
-    @Resource
+    @Autowired
     private Scheduler scheduler;
 
     /**
@@ -28,20 +29,18 @@ public class QuartzJobManager {
         try {
             Trigger trigger = scheduler.getTrigger(triggerKey);
             if (trigger == null) {
-                logger.info("====================【" + job.getDesc() + "】添加====================");
+                logger.info("【" + job.getDesc() + "】添加");
                 // 新建一个job
                 JobDetail jobDetail = JobBuilder.newJob(job.getClass())
                         .withIdentity(job.getName(), job.getGroup())
                         .withDescription(job.getDesc())
                         .build();
-
                 // 新建一个trigger
                 CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpre());
                 trigger = TriggerBuilder.newTrigger()
                         .withIdentity(triggerKey)
                         .withSchedule(scheduleBuilder)
                         .build();
-
                 // scheduler设置job和trigger
                 scheduler.scheduleJob(jobDetail, trigger);
             } else {
@@ -51,6 +50,7 @@ public class QuartzJobManager {
                 // 根据trigger key重新设置trigger
                 scheduler.rescheduleJob(triggerKey, trigger);
             }
+            // job状态暂停
             if (!job.getStatus()) {
                 pauseJob(job);
             }
@@ -60,7 +60,7 @@ public class QuartzJobManager {
     }
 
     public <T extends Quartz> void pauseJob(T job) {
-        logger.info("====================【" + job.getDesc() + "】暂停====================");
+        logger.info("【" + job.getDesc() + "】暂停");
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
@@ -70,7 +70,7 @@ public class QuartzJobManager {
     }
 
     public <T extends Quartz> void resumeJob(T job) {
-        logger.info("====================【" + job.getDesc() + "】恢复====================");
+        logger.info("【" + job.getDesc() + "】恢复");
         try {
             scheduler.resumeTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
@@ -80,7 +80,7 @@ public class QuartzJobManager {
     }
 
     public <T extends Quartz> void removeJob(T job) {
-        logger.info("====================【" + job.getDesc() + "】移除====================");
+        logger.info("【" + job.getDesc() + "】移除");
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
             scheduler.unscheduleJob(TriggerKey.triggerKey(job.getName(), job.getGroup()));

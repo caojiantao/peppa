@@ -27,9 +27,9 @@ import java.util.Random;
 @Service
 public class JapaneseServiceImpl implements IJapaneseService {
 
-    private static final String CENTER_URL = "https://ku188.top";
+    private static final String CENTER_URL = "https://ku0002.top";
 
-    private static final String API_URL = "https://www.ku188.top";
+    private static final String API_URL = "https://www.ku0002.top";
 
     private static final String SRC_URL = "https://cf.hls2.top";
 

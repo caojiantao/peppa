@@ -3,6 +3,7 @@ package com.cjt.admin.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.admin.service.IQuartzService;
 import com.cjt.admin.service.QuartzJobManager;
+import com.cjt.common.util.JsonUtils;
 import com.cjt.dao.IQuartzDAO;
 import com.cjt.entity.dto.BasePageDTO;
 import com.cjt.entity.model.job.Quartz;
@@ -21,7 +22,7 @@ import java.util.List;
 @Service
 public class QuartzServiceImpl implements IQuartzService, InitializingBean {
 
-    private Logger logger = LogManager.getLogger(getClass());
+    private Logger logger = LogManager.getLogger(QuartzServiceImpl.class);
 
     @Resource
     private QuartzJobManager quartzJobManager;
@@ -36,12 +37,9 @@ public class QuartzServiceImpl implements IQuartzService, InitializingBean {
 
     @Override
     public JSONObject listJobs(BasePageDTO dto) {
-        JSONObject result = new JSONObject();
         List<Quartz> quartzs = quartzDao.listJobs(dto);
         int total = quartzDao.countJobs(dto);
-        result.put("data", quartzs);
-        result.put("total", total);
-        return result;
+        return JsonUtils.toPageData(quartzs, total);
     }
 
     @Override
@@ -70,6 +68,7 @@ public class QuartzServiceImpl implements IQuartzService, InitializingBean {
     public void afterPropertiesSet() {
         logger.info("====================【开始初始化定时任务】====================");
         List<Quartz> tasks = quartzDao.listJobs(null);
+        // TODO bean复制，让job也能正常使用注入service
         for (Quartz task : tasks) {
             quartzJobManager.addJob(task);
         }
