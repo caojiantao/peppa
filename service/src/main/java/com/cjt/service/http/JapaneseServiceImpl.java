@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,9 @@ public class JapaneseServiceImpl implements IJapaneseService {
 
     @Value("${replace_str}")
     private String replaceStr;
+
+    @Value("${file_api_url}")
+    private String fileApiUrl;
 
     @Override
     public JSONObject listVideo(int page, int pagesize) {
@@ -142,7 +146,7 @@ public class JapaneseServiceImpl implements IJapaneseService {
             try {
                 while ((line = reader.readLine()) != null) {
                     if (line.endsWith(".ts")) {
-                        line = fileServerHost + "/files/ts?src=" + URLEncoder.encode(line, "UTF-8");
+                        line = fileApiUrl + "?src=" + URLEncoder.encode(SRC_URL + line, "UTF-8");
                     }
                     builder.append(line);
                     builder.append(System.getProperty("line.separator", "\n"));

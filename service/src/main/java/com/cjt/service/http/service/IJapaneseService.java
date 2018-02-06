@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 public interface IJapaneseService {
 
     /**
-     * @param page 页码
+     * @param page     页码
      * @param pagesize 分页大小
      * @return 分页获取视频信息
      */

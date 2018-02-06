@@ -20,28 +20,11 @@ import java.net.URLDecoder;
 @RequestMapping("/files")
 public class FileController {
 
-    @GetMapping("/m3u8")
-    public void getM3u8InputStream(String src, HttpServletResponse response) {
-        try (
-                InputStream is = StreamUtils.getInputStream(URLDecoder.decode(src, "UTF-8"));
-                BufferedInputStream bis = new BufferedInputStream(is);
-                ServletOutputStream sos = response.getOutputStream()) {
-            byte[] buffers = new byte[1024 * 1024];
-            int len;
-            while ((len = bis.read(buffers)) != -1) {
-                sos.write(buffers, 0, len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @GetMapping("/ts")
+    @GetMapping("")
     public void getTsInputStream(String src, HttpServletResponse response) {
-        try (
-                InputStream is = StreamUtils.getInputStream(URLDecoder.decode(src, "UTF-8"));
-                BufferedInputStream bis = new BufferedInputStream(is);
-                ServletOutputStream sos = response.getOutputStream()) {
+        try (InputStream is = StreamUtils.getInputStream(URLDecoder.decode(src, "UTF-8"));
+             BufferedInputStream bis = new BufferedInputStream(is);
+             ServletOutputStream sos = response.getOutputStream()) {
             byte[] buffers = new byte[1024 * 1024];
             int len;
             while ((len = bis.read(buffers)) != -1) {
