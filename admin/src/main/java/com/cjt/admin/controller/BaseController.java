@@ -1,6 +1,6 @@
 package com.cjt.admin.controller;
 
-import com.cjt.common.util.ExceptionUtil;
+import com.cjt.common.util.ExceptionUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,7 +39,7 @@ public class BaseController {
      */
     @ExceptionHandler
     public void handleException(Exception ex) throws IOException {
-        logger.error(ExceptionUtil.toDetailStr(ex));
+        logger.error(ExceptionUtils.toDetailStr(ex));
         // 注意setStatus和sendError的区别
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }

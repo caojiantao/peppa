@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2018-01-31 17:53:34
+Date: 2018-02-06 22:33:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -147,12 +147,12 @@ CREATE TABLE `src_ip_port` (
   `ip` varchar(20) DEFAULT NULL,
   `port` int(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of src_ip_port
 -- ----------------------------
-INSERT INTO `src_ip_port` VALUES ('2', 'https://www.ku188.top/video/4479', '123.207.25.143', '3128');
+INSERT INTO `src_ip_port` VALUES ('24', 'https://www.ku0002.top/video/4480', 'localhost', '80');
 
 -- ----------------------------
 -- Table structure for user
@@ -188,3 +188,19 @@ CREATE TABLE `user_roles` (
 -- ----------------------------
 INSERT INTO `user_roles` VALUES ('12', '1', '1');
 INSERT INTO `user_roles` VALUES ('13', '3', '1');
+
+-- ----------------------------
+-- Table structure for video_index
+-- ----------------------------
+DROP TABLE IF EXISTS `video_index`;
+CREATE TABLE `video_index` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `vid` varchar(10) NOT NULL COMMENT '视频ID',
+  `index_url` varchar(255) NOT NULL COMMENT '视频索引本地路径（m3u8）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of video_index
+-- ----------------------------
+INSERT INTO `video_index` VALUES ('8', '4480', 'http://localhost:8080/m3u8/4480.m3u8');

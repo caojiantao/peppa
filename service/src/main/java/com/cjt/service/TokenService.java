@@ -6,7 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.cjt.common.util.ExceptionUtil;
+import com.cjt.common.util.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -47,7 +47,7 @@ public class TokenService {
             }
             token = builder.sign(algorithm);
         } catch (Exception e) {
-            logger.error(ExceptionUtil.toDetailStr(e));
+            logger.error(ExceptionUtils.toDetailStr(e));
         }
         return token;
     }
@@ -64,7 +64,7 @@ public class TokenService {
                 DecodedJWT jwt = verifier.verify(token);
                 username = jwt.getClaim(tokenUsername).asString();
             } catch (JWTVerificationException | UnsupportedEncodingException e) {
-                logger.error(ExceptionUtil.toDetailStr(e));
+                logger.error(ExceptionUtils.toDetailStr(e));
             }
         }
         return username;

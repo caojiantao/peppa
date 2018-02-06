@@ -14,7 +14,7 @@ import java.io.IOException;
  * @since 2018-01-12 22:38:43
  */
 @Component
-public class CrosFilter implements Filter {
+public class CorsFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {

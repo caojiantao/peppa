@@ -2,7 +2,7 @@ package com.cjt.service.security.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.cjt.common.util.ExceptionUtil;
+import com.cjt.common.util.ExceptionUtils;
 import com.cjt.common.util.JsonUtils;
 import com.cjt.dao.security.IUserDAO;
 import com.cjt.dao.security.IUserRolesDao;
@@ -50,7 +50,7 @@ public class UserServiceImpl implements IUserService {
             byte[] bytes = algorithm.sign(password.getBytes(CharEncoding.UTF_8));
             return Hex.encodeHexString(bytes);
         } catch (UnsupportedEncodingException e) {
-            logger.error(ExceptionUtil.toDetailStr(e));
+            logger.error(ExceptionUtils.toDetailStr(e));
             return null;
         }
     }

@@ -8,7 +8,7 @@ import java.io.StringWriter;
  * @create 2017-08-11 00:37:25
  * @desc 异常工具类
  */
-public class ExceptionUtil {
+public class ExceptionUtils {
 
     /**
      * 异常转换为详情字符串

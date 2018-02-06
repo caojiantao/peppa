@@ -1,6 +1,6 @@
 package com.cjt.common.encrypt;
 
-import com.cjt.common.util.ExceptionUtil;
+import com.cjt.common.util.ExceptionUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -20,7 +20,7 @@ public class EncryptUtil {
         try {
             value = DatatypeConverter.printBase64Binary(value.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            logger.error(ExceptionUtil.toDetailStr(e));
+            logger.error(ExceptionUtils.toDetailStr(e));
         }
         return value;
     }
@@ -30,7 +30,7 @@ public class EncryptUtil {
         try {
             value = new String(bytes, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            logger.error(ExceptionUtil.toDetailStr(e));
+            logger.error(ExceptionUtils.toDetailStr(e));
         }
         return value;
     }

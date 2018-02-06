@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel;
 /**
  * @author caojiantao
  */
-public class FileUtil {
+public class FileUtils {
 
     /**
      * 使用文件通道的方式高效复制文件
@@ -30,9 +30,9 @@ public class FileUtil {
                 return false;
             }
         }
-        FileOutputStream fos = null;
-        FileChannel in = null;
-        FileChannel out = null;
+        FileOutputStream fos;
+        FileChannel in;
+        FileChannel out;
         try {
             fos = new FileOutputStream(tarFile);
             // 得到对应的文件通道

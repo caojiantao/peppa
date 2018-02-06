@@ -26,7 +26,7 @@
 
     <!-- 跨域支持 -->
     <filter>
-        <filter-name>crosFilter</filter-name>
+        <filter-name>corsFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
         <init-param>
             <param-name>targetFilterLifecycle</param-name>
@@ -34,7 +34,7 @@
         </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>crosFilter</filter-name>
+        <filter-name>corsFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
@@ -54,5 +54,4 @@
         <servlet-name>springmvc</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-
 </web-app>

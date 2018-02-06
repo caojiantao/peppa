@@ -2,20 +2,24 @@ package com.cjt.service.http;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cjt.common.util.StreamUtils;
 import com.cjt.dao.http.ISrcIpPortDao;
+import com.cjt.dao.http.IVideoUrlDAO;
 import com.cjt.entity.model.http.SrcIpPort;
 import com.cjt.service.http.service.IJapaneseService;
 import com.cjt.service.http.service.IWormService;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +42,18 @@ public class JapaneseServiceImpl implements IJapaneseService {
 
     @Autowired
     private ISrcIpPortDao srcIpPortDao;
+
+    @Autowired
+    private IVideoUrlDAO videoUrlDAO;
+
+    @Value("${file_server_host}")
+    private String fileServerHost;
+
+    @Value("${file_path}")
+    private String filePath;
+
+    @Value("${replace_str}")
+    private String replaceStr;
 
     @Override
     public JSONObject listVideo(int page, int pagesize) {
@@ -74,40 +90,72 @@ public class JapaneseServiceImpl implements IJapaneseService {
 
     @Override
     public String getFileSrc(String vid) {
-        String url = API_URL + "/video/" + vid;
-
-        boolean isVisitLocal = false;
-
-        // 获取数据库中已保存的“资源-IP-端口”对应关系，和本机localhost是否已经有关联资源
-        Map<String, SrcIpPort> srcIpPortMap = new HashMap<>();
-        List<SrcIpPort> srcIpPorts = srcIpPortDao.listSrcIpPort();
-        if (srcIpPorts != null) {
-            for (SrcIpPort srcIpPort : srcIpPorts) {
-                if ("localhost".equals(srcIpPort.getIp())) {
-                    isVisitLocal = true;
+        // 获取视频m3u8文件本地路径
+        String fileUrl = videoUrlDAO.getUrlByVid(vid);
+        if (StringUtils.isBlank(fileUrl)) {
+            String url = API_URL + "/video/" + vid;
+            boolean isVisitLocal = false;
+            // 获取数据库中已保存的“资源-IP-端口”对应关系，和本机localhost是否已经有关联资源
+            Map<String, SrcIpPort> srcIpPortMap = new HashMap<>();
+            List<SrcIpPort> srcIpPorts = srcIpPortDao.listSrcIpPort();
+            if (srcIpPorts != null) {
+                for (SrcIpPort srcIpPort : srcIpPorts) {
+                    if ("localhost".equals(srcIpPort.getIp())) {
+                        isVisitLocal = true;
+                    }
+                    srcIpPortMap.put(srcIpPort.getSrcUrl(), srcIpPort);
                 }
-                srcIpPortMap.put(srcIpPort.getSrcUrl(), srcIpPort);
             }
+            SrcIpPort srcIpPort = srcIpPortMap.get(url);
+            // 根据请求资源地址匹配数据库查询
+            String indexUrl;
+            if (srcIpPort != null) {
+                if ("localhost".equals(srcIpPort.getIp())) {
+                    // 本地已经访问过
+                    indexUrl = parseLocal(url, false);
+                } else {
+                    // 动态IP代理
+                    indexUrl = parseDynamic(url, srcIpPort.getIp(), srcIpPort.getPort(), wormService.listIpPort());
+                }
+            } else {
+                if (isVisitLocal) {
+                    // 随机动态IP代理
+                    indexUrl = parseDynamic(url, wormService.listIpPort());
+                } else {
+                    // 本机可首次访问
+                    indexUrl = parseLocal(url, true);
+                }
+            }
+            // 数据持久化到磁盘
+            fileUrl = saveDisk(indexUrl, filePath + "/m3u8", vid + ".m3u8");
+            // 存储对应关系至数据库
+            videoUrlDAO.saveVideoUrl(vid, fileUrl);
         }
+        return fileUrl;
+    }
 
-        SrcIpPort srcIpPort = srcIpPortMap.get(url);
-        // 根据请求资源地址匹配数据库查询
-        if (srcIpPort != null) {
-            if ("localhost".equals(srcIpPort.getIp())) {
-                // 本地已经访问过
-                return parseLocal(url, false);
-            } else {
-                // 动态IP代理
-                return parseDynamic(url, srcIpPort.getIp(), srcIpPort.getPort(), wormService.listIpPort());
+    private String saveDisk(String srcUrl, String path, String name) {
+        try (InputStream is = StreamUtils.getInputStream(srcUrl);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+            StringBuilder builder = new StringBuilder();
+            String line;
+            try {
+                while ((line = reader.readLine()) != null) {
+                    if (line.endsWith(".ts")) {
+                        line = fileServerHost + "/files/ts?src=" + URLEncoder.encode(line, "UTF-8");
+                    }
+                    builder.append(line);
+                    builder.append(System.getProperty("line.separator", "\n"));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } else {
-            if (isVisitLocal) {
-                // 随机动态IP代理
-                return parseDynamic(url, wormService.listIpPort());
-            } else {
-                // 本机可首次访问
-                return parseLocal(url, true);
-            }
+            File file = new File(path, name);
+            FileUtils.writeStringToFile(file, builder.toString(), "UTF-8");
+            return fileServerHost + "/m3u8/" + file.getName();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
