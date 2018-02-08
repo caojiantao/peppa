@@ -62,7 +62,6 @@ public class JapaneseServiceImpl implements IJapaneseService {
     @Override
     public JSONObject listVideo(int page, int pagesize) {
         JSONObject result = new JSONObject();
-
         try {
             Document document = Jsoup.connect(CENTER_URL + "/video/")
                     // 模拟客户端，防止被拦截

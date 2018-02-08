@@ -25,7 +25,7 @@ public class MailServiceImpl implements IMailService {
     @Autowired
     private JavaMailSender mailSender;
 
-//    @Autowired
+    @Autowired
     private FreeMarkerConfig freeMarkerConfig;
 
     @Value("${mail.username}")

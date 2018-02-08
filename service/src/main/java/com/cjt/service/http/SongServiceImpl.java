@@ -2,14 +2,18 @@ package com.cjt.service.http;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cjt.common.util.JsonUtils;
+import com.cjt.common.util.StreamUtils;
 import com.cjt.service.http.service.ISongService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
+import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author caojiantao
@@ -30,37 +34,37 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public JSONObject listSong(String keyword, int page, int pagesize) {
-        String params = "keyword=" + keyword + "&page=" + page + "&pagesize=" + pagesize;
-        params += "&platform=WebFilter";
-        HttpClient client = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet(SONG_SEARCH + "?" + params);
         JSONArray songs = null;
         int total = 0;
         try {
-            HttpResponse response = client.execute(httpGet);
-            // 将content的输入流直接转换为JSONObject
-            JSONObject object = JSONObject.parseObject(response.getEntity().getContent(), JSONObject.class);
+            String content = Jsoup.connect(SONG_SEARCH)
+                    .data("keyword", keyword)
+                    .data("page", String.valueOf(page))
+                    .data("pagesize", String.valueOf(pagesize))
+                    .data("platform", "WebFilter")
+                    .get()
+                    .text();
+            JSONObject object = JSONObject.parseObject(content, JSONObject.class);
             // 获取歌曲list
             songs = object.getJSONObject("data").getJSONArray("lists");
             total = object.getJSONObject("data").getInteger("total");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        JSONObject result = new JSONObject();
-        result.put("data", songs);
-        result.put("total", total);
-        return result;
+        return JsonUtils.toPageData(songs, total);
     }
 
     @Override
     public JSONObject getSongPlay(String fileHash, String albumId) {
         JSONObject songPlay = null;
-        String data = "r=play/getdata&hash=" + fileHash + "&album_id=" + albumId;
-        HttpClient client = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet(SONG + "?" + data);
         try {
-            HttpResponse response = client.execute(httpGet);
-            songPlay = JSONObject.parseObject(response.getEntity().getContent(), JSONObject.class);
+            String content = Jsoup.connect(SONG)
+                    .data("r", "play/getdata")
+                    .data("hash", fileHash)
+                    .data("album_id", albumId)
+                    .get()
+                    .text();
+            songPlay = JSONObject.parseObject(content, JSONObject.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
