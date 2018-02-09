@@ -42,6 +42,7 @@
         <common-lang3.version>3.4</common-lang3.version>
         <jsoup.version>1.8.3</jsoup.version>
         <httpclient.version>4.5.4</httpclient.version>
+        <qiniu.version>7.2.0</qiniu.version>
     </properties>
 
     <dependencies>
@@ -194,9 +195,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpclient.version}</version>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>${qiniu.version}</version>
         </dependency>
     </dependencies>
 

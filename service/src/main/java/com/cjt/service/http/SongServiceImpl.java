@@ -3,17 +3,11 @@ package com.cjt.service.http;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.common.util.JsonUtils;
-import com.cjt.common.util.StreamUtils;
 import com.cjt.service.http.service.ISongService;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author caojiantao
