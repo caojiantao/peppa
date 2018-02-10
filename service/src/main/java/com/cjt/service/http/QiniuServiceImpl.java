@@ -54,11 +54,11 @@ public class QiniuServiceImpl implements IQiniuService {
     }
 
     @Override
-    public JSONObject listFiles(String bucket, int page, int pagesize) {
+    public JSONObject listFiles(String bucket, String prefix, int page, int pagesize) {
         Configuration cfg = new Configuration(Zone.zone0());
         Auth auth = Auth.create(accessKey, secretKey);
         BucketManager bucketManager = new BucketManager(auth, cfg);
-        BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(bucket, "", pagesize, "");
+        BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(bucket, prefix, pagesize, "");
         List<FileInfo> infos = new ArrayList<>();
         int total = 0;
         while (fileListIterator.hasNext()) {
@@ -81,6 +81,19 @@ public class QiniuServiceImpl implements IQiniuService {
         } catch (QiniuException ex) {
             ex.printStackTrace();
             return false;
+        }
+    }
+
+    @Override
+    public String[] listBucket() {
+        Configuration cfg = new Configuration(Zone.zone0());
+        Auth auth = Auth.create(accessKey, secretKey);
+        BucketManager bucketManager = new BucketManager(auth, cfg);
+        try {
+            return bucketManager.buckets();
+        } catch (QiniuException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

@@ -19,7 +19,12 @@ public class QiniuController extends BaseController {
     @Autowired
     private IQiniuService qiniuService;
 
-    @PostMapping("/{bucket}")
+    @GetMapping("/buckets")
+    public Object listBucket() {
+        return qiniuService.listBucket();
+    }
+
+    @PostMapping("/buckets/{bucket}/files")
     public Object upload(@PathVariable("bucket") String bucket, MultipartFile file, String key) {
         try {
             return qiniuService.uploadFile(StreamUtils.copyToByteArray(file.getInputStream()), bucket, key);
@@ -30,13 +35,17 @@ public class QiniuController extends BaseController {
         }
     }
 
-    @GetMapping("/{bucket}")
-    public Object listFiles(@PathVariable("bucket") String bucket, int page, int pagesize) {
-        return qiniuService.listFiles(bucket, page, pagesize);
+    @GetMapping("/buckets/{bucket}/files")
+    public Object listFiles(@PathVariable("bucket") String bucket, String prefix, int page, int pagesize) {
+        return qiniuService.listFiles(bucket, prefix, page, pagesize);
     }
 
-    @DeleteMapping("/{bucket}/{key}")
-    public Object removeFile(@PathVariable("bucket") String bucket, @PathVariable("key") String key) {
-        return qiniuService.removeFile(bucket, key);
+    @DeleteMapping("/buckets/{bucket}/files")
+    public Object removeFile(@PathVariable("bucket") String bucket, String key) {
+        if (qiniuService.removeFile(bucket, key)){
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            return null;
+        }
+        return "删除资源失败";
     }
 }

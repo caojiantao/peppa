@@ -22,7 +22,7 @@ public class KugouController {
 
     @RequestMapping("/songs")
     public JSONObject listSongPage(String keyword, int page, int pagesize) throws UnsupportedEncodingException {
-        return songService.listSong(URLEncoder.encode(keyword, "utf-8"), page, pagesize);
+        return songService.listSong(keyword, page, pagesize);
     }
 
     @RequestMapping("/songs/play")
