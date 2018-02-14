@@ -7,8 +7,6 @@ import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-
 /**
  * @author caojiantao
  */
@@ -23,7 +21,8 @@ public class QuartzJobManager {
     /**
      * 添加定时任务
      */
-    public <T extends Quartz> void addJob(T job) {
+    @SuppressWarnings("unchecked")
+    public void addJob(Quartz job) {
         // 根据name和group获取trigger key，判断是否已经存在该trigger
         TriggerKey triggerKey = TriggerKey.triggerKey(job.getName(), job.getGroup());
         try {
@@ -31,7 +30,7 @@ public class QuartzJobManager {
             if (trigger == null) {
                 logger.info("【" + job.getDesc() + "】添加");
                 // 新建一个job
-                JobDetail jobDetail = JobBuilder.newJob(job.getClass())
+                JobDetail jobDetail = JobBuilder.newJob((Class<? extends Job>) Class.forName(job.getJobClass()))
                         .withIdentity(job.getName(), job.getGroup())
                         .withDescription(job.getDesc())
                         .build();
@@ -54,12 +53,12 @@ public class QuartzJobManager {
             if (!job.getStatus()) {
                 pauseJob(job);
             }
-        } catch (SchedulerException e) {
+        } catch (SchedulerException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public <T extends Quartz> void pauseJob(T job) {
+    public void pauseJob(Quartz job) {
         logger.info("【" + job.getDesc() + "】暂停");
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
@@ -69,7 +68,7 @@ public class QuartzJobManager {
         }
     }
 
-    public <T extends Quartz> void resumeJob(T job) {
+    public void resumeJob(Quartz job) {
         logger.info("【" + job.getDesc() + "】恢复");
         try {
             scheduler.resumeTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
@@ -79,7 +78,7 @@ public class QuartzJobManager {
         }
     }
 
-    public <T extends Quartz> void removeJob(T job) {
+    public void removeJob(Quartz job) {
         logger.info("【" + job.getDesc() + "】移除");
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));

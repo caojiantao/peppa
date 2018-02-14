@@ -5,6 +5,10 @@
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
+    <bean id="jobFactory" class="com.cjt.admin.service.JobFactory"/>
+
     <!-- 特别注意工厂类的注入，得到的是产品scheduler（自动启动） -->
-    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobFactory" ref="jobFactory"/>
+    </bean>
 </beans>

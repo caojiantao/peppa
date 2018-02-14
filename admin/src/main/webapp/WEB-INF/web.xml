@@ -5,86 +5,86 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    
+    <!-- 编码过滤器 -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-  <!-- 编码过滤器 -->
-  <filter>
-    <filter-name>encodingFilter</filter-name>
-    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-    </init-param>
-    <init-param>
-      <param-name>forceEncoding</param-name>
-      <param-value>true</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>encodingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+    <!-- 提供PUT等高级HTTP请求解析 -->
+    <filter>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <filter-class>
+            org.springframework.web.filter.HiddenHttpMethodFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-  <!-- 提供PUT等高级HTTP请求解析 -->
-  <filter>
-    <filter-name>HiddenHttpMethodFilter</filter-name>
-    <filter-class>
-      org.springframework.web.filter.HiddenHttpMethodFilter
-    </filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>HiddenHttpMethodFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+    <!-- 安全过滤器 -->
+    <filter>
+        <filter-name>permissionFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>permissionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-  <!-- 安全过滤器 -->
-  <filter>
-    <filter-name>permissionFilter</filter-name>
-    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    <init-param>
-      <param-name>targetFilterLifecycle</param-name>
-      <param-value>true</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>permissionFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+    <!-- spring mvc加载（注意spring和springmvc容器的差异与联系，若整合建议统一配置在springmvc下） -->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!-- 配置文件加载 -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath*:spring/spring-*.xml</param-value>
+        </init-param>
+        <!-- 默认环境配置 -->
+        <init-param>
+            <param-name>spring.profiles.default</param-name>
+            <param-value>dev</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
-  <!-- spring mvc加载（注意spring和springmvc容器的差异与联系，若整合建议统一配置在springmvc下） -->
-  <servlet>
-    <servlet-name>springmvc</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <!-- 配置文件加载 -->
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath*:spring/spring-*.xml</param-value>
-    </init-param>
-    <!-- 默认环境配置 -->
-    <init-param>
-      <param-name>spring.profiles.default</param-name>
-      <param-value>dev</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+    <!-- springmvc请求处理 -->
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
-  <!-- springmvc请求处理 -->
-  <servlet-mapping>
-    <servlet-name>springmvc</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
+    <!-- 错误页面 -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/static/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/static/500.html</location>
+    </error-page>
 
-  <!-- 错误页面 -->
-  <error-page>
-    <error-code>404</error-code>
-    <location>/static/404.html</location>
-  </error-page>
-  <error-page>
-    <error-code>500</error-code>
-    <location>/static/500.html</location>
-  </error-page>
-
-  <!--首页配置-->
-  <welcome-file-list>
-    <welcome-file>/static/index.html</welcome-file>
-  </welcome-file-list>
+    <!--首页配置-->
+    <welcome-file-list>
+        <welcome-file>/static/index.html</welcome-file>
+    </welcome-file-list>
 </web-app>

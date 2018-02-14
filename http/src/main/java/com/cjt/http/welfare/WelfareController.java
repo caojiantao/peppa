@@ -39,7 +39,7 @@ public class WelfareController extends BaseController {
 
     @GetMapping("/videos/{id}")
     public Object getVideoById(@PathVariable("id") String id) throws UnsupportedEncodingException {
-        String fileSrc = URLEncoder.encode(japaneseService.getFileSrc(id), "UTF-8");
+        String fileSrc = URLEncoder.encode(japaneseService.getVideoSrc(id), "UTF-8");
         return fileApiUrl + "?src=" + fileSrc;
     }
 }

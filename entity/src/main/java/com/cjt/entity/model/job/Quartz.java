@@ -1,17 +1,11 @@
 package com.cjt.entity.model.job;
 
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-
-import java.io.Serializable;
-
 /**
  * 定时计划基本信息
  *
  * @author caojiantao
  */
-public class Quartz implements Job, Serializable {
+public class Quartz{
 
     /**
      * 任务id
@@ -43,10 +37,7 @@ public class Quartz implements Job, Serializable {
      */
     private String desc;
 
-    /**
-     * 删除标识
-     */
-    private Boolean deleted;
+    private String jobClass;
 
     public Integer getId() {
         return id;
@@ -96,20 +87,11 @@ public class Quartz implements Job, Serializable {
         this.status = status;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
+    public String getJobClass() {
+        return jobClass;
     }
 
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
+    public void setJobClass(String jobClass) {
+        this.jobClass = jobClass;
     }
-
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) {
-        JobDetail jobDetail = jobExecutionContext.getJobDetail();
-        if (jobDetail != null) {
-            System.out.println(jobDetail.getDescription() + ":执行");
-        }
-    }
-
 }

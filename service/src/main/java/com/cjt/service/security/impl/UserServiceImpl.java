@@ -90,7 +90,9 @@ public class UserServiceImpl implements IUserService {
             user.setPassword(encryptPassword(user.getPassword()));
         }
         userDAO.saveUser(user);
-        userRolesDao.saveUserRoles(user.getId(), roleIds);
+        if (!roleIds.isEmpty()) {
+            userRolesDao.saveUserRoles(user.getId(), roleIds);
+        }
         return user.getId() > 0;
     }
 

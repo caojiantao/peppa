@@ -3,6 +3,7 @@ package com.cjt.service.http;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.service.http.service.IWormService;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,8 +11,6 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.*;
 
 /**
  * @author caojiantao
@@ -19,6 +18,8 @@ import java.net.*;
  */
 @Service
 public class WormServiceImpl implements IWormService {
+
+    private final static Logger logger = Logger.getLogger(WormServiceImpl.class);
 
     /**
      * 动态IP端口解析地址，后面加"/1"代表第一页
@@ -56,22 +57,5 @@ public class WormServiceImpl implements IWormService {
             }
         }
         return data;
-    }
-
-    @Override
-    public InputStream getInputStreamByDynamicIpPort(String url, String ip, int port) {
-        SocketAddress address = new InetSocketAddress(ip, port);
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
-        try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection(proxy);
-            connection.setConnectTimeout(6666);
-            connection.setRequestProperty("Referer", url);
-            connection.setRequestProperty("User-Agent", "chrome");
-            connection.connect();
-            return connection.getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }

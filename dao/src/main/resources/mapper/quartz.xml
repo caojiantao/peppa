@@ -3,44 +3,53 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.IQuartzDAO">
 
-    <select id="listJobs" resultType="com.cjt.entity.model.job.Quartz">
-        SELECT
-        `id`,
-        `name`,
-        `group`,
-        cron_expre AS 'cronExpre',
-        `desc`,
-        `status`,
-        deleted
+    <resultMap id="quartzMap" type="com.cjt.entity.model.job.Quartz">
+        <id column="id" property="id"/>
+        <result column="vid" property="vid"/>
+        <result column="name" property="name"/>
+        <result column="group" property="group"/>
+        <result column="cron_expre" property="cronExpre"/>
+        <result column="job_class" property="jobClass"/>
+    </resultMap>
+
+    <select id="getQuartzById" resultMap="quartzMap">
+        SELECT *
         FROM quartz
-        WHERE deleted = 0
-        <if test="start!=null and limit!=null">
-            LIMIT #{start}, #{limit}
+        WHERE id = #{id}
+    </select>
+
+    <select id="listQuartz" resultMap="quartzMap">
+        SELECT *
+        FROM quartz
+        <if test="start!=null and offset!=null">
+            LIMIT #{start}, #{offset}
         </if>
     </select>
 
-    <select id="countJobs" resultType="int">
+    <select id="countQuartz" resultType="int">
         SELECT count(*)
         FROM quartz
-        WHERE deleted = 0
     </select>
 
-    <insert id="saveJob" parameterType="com.cjt.entity.model.job.Quartz">
-        INSERT INTO quartz (
-        `name`,
-        `group`,
-        cron_expre,
-        `desc`
-        )
-        VALUES
-        (
-        #{name},
-        #{group},
-        #{cronExpre},
-        #{desc}
-        )
-        <selectKey keyProperty="id" resultType="int">
-            SELECT last_insert_id()
-        </selectKey>
+    <insert id="saveQuartz" parameterType="com.cjt.entity.model.job.Quartz"
+        useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO quartz (`name`, `group`, cron_expre, `desc`, `job_class`)
+        VALUES (#{name}, #{group}, #{cronExpre}, #{desc}, #{jobClass})
     </insert>
+
+    <update id="updateQuartz" parameterType="com.cjt.entity.model.job.Quartz">
+        UPDATE quartz
+        <trim prefix="SET" suffix="WHERE id = #{id}">
+            `name` = #{name},
+            `group` = #{group},
+            `cron_expre` = #{cronExpre},
+            `desc` = #{desc},
+            `job_class` = #{jobClass}
+        </trim>
+    </update>
+
+    <delete id="removeQuartzById" parameterType="int">
+        DELETE FROM quartz
+        WHERE id = #{id}
+    </delete>
 </mapper>

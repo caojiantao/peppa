@@ -49,6 +49,9 @@ public class MenuServiceImpl implements IMenuService {
         for (Role role : roles) {
             roleIds.add(role.getId());
         }
+        if (roleIds.isEmpty()){
+            return null;
+        }
         return menuDAO.listMenuByRoleIds(roleIds);
     }
 

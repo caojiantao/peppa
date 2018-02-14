@@ -1,6 +1,7 @@
 package com.cjt.service.http;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cjt.common.util.ExceptionUtils;
 import com.cjt.common.util.JsonUtils;
 import com.cjt.service.http.service.IQiniuService;
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import java.util.List;
  */
 @Service
 public class QiniuServiceImpl implements IQiniuService {
+
+    private static final Logger logger = Logger.getLogger(QiniuServiceImpl.class);
 
     @Value("${qiniu_url}")
     private String url;
@@ -48,9 +52,9 @@ public class QiniuServiceImpl implements IQiniuService {
             DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
             return url + putRet.key;
         } catch (QiniuException ex) {
-            ex.printStackTrace();
+            logger.error(ExceptionUtils.toDetailStr(ex));
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class QiniuServiceImpl implements IQiniuService {
         BucketManager bucketManager = new BucketManager(auth, cfg);
         BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(bucket, prefix, pagesize, "");
         List<FileInfo> infos = new ArrayList<>();
-        int total = 0;
+        int total;
         while (fileListIterator.hasNext()) {
             //处理获取的file list结果
             FileInfo[] items = fileListIterator.next();
@@ -79,7 +83,7 @@ public class QiniuServiceImpl implements IQiniuService {
             bucketManager.delete(bucket, key);
             return true;
         } catch (QiniuException ex) {
-            ex.printStackTrace();
+            logger.error(ExceptionUtils.toDetailStr(ex));
             return false;
         }
     }
@@ -92,7 +96,7 @@ public class QiniuServiceImpl implements IQiniuService {
         try {
             return bucketManager.buckets();
         } catch (QiniuException e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.toDetailStr(e));
             return null;
         }
     }

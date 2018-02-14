@@ -1,53 +1,47 @@
 /*
-Navicat MySQL Data Transfer
+ Navicat Premium Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50528
-Source Host           : localhost:3306
-Source Database       : ssm
+ Source Server         : 本地
+ Source Server Type    : MySQL
+ Source Server Version : 50718
+ Source Host           : localhost
+ Source Database       : ssm
 
-Target Server Type    : MYSQL
-Target Server Version : 50528
-File Encoding         : 65001
+ Target Server Type    : MySQL
+ Target Server Version : 50718
+ File Encoding         : utf-8
 
-Date: 2018-02-06 22:33:33
+ Date: 02/13/2018 22:58:16 PM
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for code_set
+--  Table structure for `code_set`
 -- ----------------------------
 DROP TABLE IF EXISTS `code_set`;
 CREATE TABLE `code_set` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
-  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '字典集code，不重复（方便代码英文语义化）',
-  `name` varchar(255) DEFAULT NULL COMMENT '字典集名称',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `code_idx` (`code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  UNIQUE KEY `code_idx` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of code_set
--- ----------------------------
-
--- ----------------------------
--- Table structure for code_value
+--  Table structure for `code_value`
 -- ----------------------------
 DROP TABLE IF EXISTS `code_value`;
 CREATE TABLE `code_value` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
-  `code_set_id` int(11) NOT NULL COMMENT '字典集ID',
-  `name` varchar(255) DEFAULT NULL COMMENT '字典名称',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code_set_id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of code_value
--- ----------------------------
-
--- ----------------------------
--- Table structure for menu
+--  Table structure for `menu`
 -- ----------------------------
 DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu` (
@@ -57,23 +51,17 @@ CREATE TABLE `menu` (
   `href` varchar(50) DEFAULT NULL,
   `icon_class` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of menu
+--  Records of `menu`
 -- ----------------------------
-INSERT INTO `menu` VALUES ('1', '权限模块', '0', '', 'el-icon-tickets');
-INSERT INTO `menu` VALUES ('2', '菜单管理', '1', 'Menus', null);
-INSERT INTO `menu` VALUES ('3', '角色管理', '1', 'Role', '');
-INSERT INTO `menu` VALUES ('4', '用户管理', '1', 'User', '');
-INSERT INTO `menu` VALUES ('5', '随便爬爬', '0', null, null);
-INSERT INTO `menu` VALUES ('6', '酷狗', '5', null, null);
-INSERT INTO `menu` VALUES ('7', '歌曲下载', '6', 'Songs', null);
-INSERT INTO `menu` VALUES ('8', '福利', '0', '', '');
-INSERT INTO `menu` VALUES ('9', '学日语', '8', 'Videos', '');
+BEGIN;
+INSERT INTO `menu` VALUES ('1', '权限管理', '0', null, null), ('2', '菜单管理', '1', 'Menus', null), ('3', '角色管理', '1', 'Role', ''), ('4', '用户管理', '1', 'User', ''), ('5', '定时任务', '0', '', ''), ('6', '任务列表', '5', 'Job', ''), ('7', '七牛存储', '0', '', ''), ('8', '资源管理', '7', 'Resources', ''), ('9', '随便爬爬', '0', '', ''), ('10', '酷狗音乐', '9', '', ''), ('11', '歌曲搜索', '10', 'Songs', ''), ('12', '福利放送', '9', '', ''), ('13', '妹纸图鉴', '12', 'Girls', '');
+COMMIT;
 
 -- ----------------------------
--- Table structure for quartz
+--  Table structure for `quartz`
 -- ----------------------------
 DROP TABLE IF EXISTS `quartz`;
 CREATE TABLE `quartz` (
@@ -83,33 +71,29 @@ CREATE TABLE `quartz` (
   `status` tinyint(1) DEFAULT '0',
   `cron_expre` varchar(255) DEFAULT NULL,
   `desc` varchar(255) DEFAULT NULL,
-  `deleted` tinyint(1) DEFAULT '0',
+  `job_class` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of quartz
--- ----------------------------
-
--- ----------------------------
--- Table structure for role
+--  Table structure for `role`
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
-  `name` varchar(255) DEFAULT NULL COMMENT '角色名称',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of role
+--  Records of `role`
 -- ----------------------------
+BEGIN;
 INSERT INTO `role` VALUES ('1', '超级管理员');
-INSERT INTO `role` VALUES ('7', '福利');
-INSERT INTO `role` VALUES ('8', '曹建涛');
+COMMIT;
 
 -- ----------------------------
--- Table structure for role_menus
+--  Table structure for `role_menus`
 -- ----------------------------
 DROP TABLE IF EXISTS `role_menus`;
 CREATE TABLE `role_menus` (
@@ -117,28 +101,17 @@ CREATE TABLE `role_menus` (
   `role_id` int(10) NOT NULL,
   `menu_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of role_menus
+--  Records of `role_menus`
 -- ----------------------------
-INSERT INTO `role_menus` VALUES ('33', '8', '1');
-INSERT INTO `role_menus` VALUES ('34', '8', '4');
-INSERT INTO `role_menus` VALUES ('35', '7', '5');
-INSERT INTO `role_menus` VALUES ('36', '7', '6');
-INSERT INTO `role_menus` VALUES ('37', '7', '7');
-INSERT INTO `role_menus` VALUES ('38', '1', '1');
-INSERT INTO `role_menus` VALUES ('39', '1', '2');
-INSERT INTO `role_menus` VALUES ('40', '1', '3');
-INSERT INTO `role_menus` VALUES ('41', '1', '4');
-INSERT INTO `role_menus` VALUES ('42', '1', '5');
-INSERT INTO `role_menus` VALUES ('43', '1', '6');
-INSERT INTO `role_menus` VALUES ('44', '1', '7');
-INSERT INTO `role_menus` VALUES ('45', '1', '8');
-INSERT INTO `role_menus` VALUES ('46', '1', '9');
+BEGIN;
+INSERT INTO `role_menus` VALUES ('1', '1', '1'), ('2', '1', '2'), ('3', '1', '3'), ('4', '1', '4'), ('5', '1', '5'), ('6', '1', '6'), ('7', '1', '7'), ('8', '1', '8'), ('9', '1', '9'), ('10', '1', '10'), ('11', '1', '11'), ('12', '1', '12'), ('13', '1', '13');
+COMMIT;
 
 -- ----------------------------
--- Table structure for src_ip_port
+--  Table structure for `src_ip_port`
 -- ----------------------------
 DROP TABLE IF EXISTS `src_ip_port`;
 CREATE TABLE `src_ip_port` (
@@ -147,60 +120,68 @@ CREATE TABLE `src_ip_port` (
   `ip` varchar(20) DEFAULT NULL,
   `port` int(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of src_ip_port
--- ----------------------------
-INSERT INTO `src_ip_port` VALUES ('24', 'https://www.ku0002.top/video/4480', 'localhost', '80');
-
--- ----------------------------
--- Table structure for user
+--  Table structure for `user`
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键ID',
-  `username` varchar(20) DEFAULT NULL COMMENT '用户名',
-  `password` varchar(100) DEFAULT NULL COMMENT '密码',
-  `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `nickname` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of user
+--  Records of `user`
 -- ----------------------------
+BEGIN;
 INSERT INTO `user` VALUES ('1', 'caojiantao', '69f50b2ff3918d3d973492fa72796449640954834347be24c23058dd8840591d', '曹建涛');
-INSERT INTO `user` VALUES ('3', 'liuxinquan', '69f50b2ff3918d3d973492fa72796449640954834347be24c23058dd8840591d', '刘新全');
+COMMIT;
 
 -- ----------------------------
--- Table structure for user_roles
+--  Table structure for `user_roles`
 -- ----------------------------
 DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE `user_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL COMMENT '用户ID',
-  `role_id` int(11) NOT NULL COMMENT '角色ID',
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of user_roles
+--  Records of `user_roles`
 -- ----------------------------
-INSERT INTO `user_roles` VALUES ('12', '1', '1');
-INSERT INTO `user_roles` VALUES ('13', '3', '1');
+BEGIN;
+INSERT INTO `user_roles` VALUES ('1', '1', '1');
+COMMIT;
 
 -- ----------------------------
--- Table structure for video_index
+--  Table structure for `video`
+-- ----------------------------
+DROP TABLE IF EXISTS `video`;
+CREATE TABLE `video` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `vid` bigint(10) NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `poster_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `index_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+--  Table structure for `video_index`
 -- ----------------------------
 DROP TABLE IF EXISTS `video_index`;
 CREATE TABLE `video_index` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `vid` varchar(10) NOT NULL COMMENT '视频ID',
-  `index_url` varchar(255) NOT NULL COMMENT '视频索引本地路径（m3u8）',
+  `vid` varchar(10) NOT NULL,
+  `index_url` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Records of video_index
--- ----------------------------
-INSERT INTO `video_index` VALUES ('8', '4480', 'http://localhost:8080/m3u8/4480.m3u8');
+SET FOREIGN_KEY_CHECKS = 1;

@@ -10,13 +10,15 @@ import java.util.List;
  */
 public interface IQuartzDAO {
 
+    Quartz getQuartzById(int id);
+
     /**
      * 获取条件范围内的定时任务集合
      *
      * @param dto 定时任务查询DTO
      * @return 定时任务集合
      */
-    List<Quartz> listJobs(BasePageDTO dto);
+    List<Quartz> listQuartz(BasePageDTO dto);
 
     /**
      * 获取条件范围内的定时任务数量
@@ -24,13 +26,14 @@ public interface IQuartzDAO {
      * @param dto 定时任务查询DTO
      * @return 定时任务数量
      */
-    int countJobs(BasePageDTO dto);
+    int countQuartz(BasePageDTO dto);
 
     /**
      * 添加定时任务
-     *
-     * @param job 定时任务
-     * @param <T> 定时任务class
      */
-    <T extends Quartz> void saveJob(T job);
+    void saveQuartz(Quartz quartz);
+
+    int updateQuartz(Quartz quartz);
+
+    int removeQuartzById(int id);
 }

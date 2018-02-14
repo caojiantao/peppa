@@ -16,14 +16,4 @@ public interface IWormService {
      * @return 可用IP，端口
      */
     JSONArray listIpPort();
-
-    /**
-     * 动态代理IP和端口获取指定地址的输入流
-     *
-     * @param url  请求地址
-     * @param ip   代理IP
-     * @param port 代理端口
-     * @return inputstream流
-     */
-    InputStream getInputStreamByDynamicIpPort(String url, String ip, int port);
 }

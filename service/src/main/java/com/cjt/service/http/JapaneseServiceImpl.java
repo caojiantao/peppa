@@ -2,14 +2,13 @@ package com.cjt.service.http;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cjt.common.util.ExceptionUtils;
 import com.cjt.common.util.StreamUtils;
-import com.cjt.dao.http.ISrcIpPortDao;
-import com.cjt.dao.http.IVideoUrlDAO;
-import com.cjt.entity.model.http.SrcIpPort;
+import com.cjt.entity.model.Video;
 import com.cjt.service.http.service.IJapaneseService;
 import com.cjt.service.http.service.IWormService;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,12 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.util.HashMap;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -32,29 +31,19 @@ import java.util.Random;
 @Service
 public class JapaneseServiceImpl implements IJapaneseService {
 
-    private static final String CENTER_URL = "https://ku0002.top";
-
-    private static final String API_URL = "https://www.ku0002.top";
-
-    private static final String SRC_URL = "https://cf.hls2.top";
+    private static final Logger logger = Logger.getLogger(JapaneseServiceImpl.class);
 
     @Autowired
     private IWormService wormService;
 
-    @Autowired
-    private ISrcIpPortDao srcIpPortDao;
+    @Value("${ku_center}")
+    private String centerUrl;
 
-    @Autowired
-    private IVideoUrlDAO videoUrlDAO;
+    @Value("${ku_api}")
+    private String apiUrl;
 
-    @Value("${file_server_host}")
-    private String fileServerHost;
-
-    @Value("${file_path}")
-    private String filePath;
-
-    @Value("${replace_str}")
-    private String replaceStr;
+    @Value("${ku_src}")
+    private String srcUrl;
 
     @Value("${file_api_url}")
     private String fileApiUrl;
@@ -63,106 +52,45 @@ public class JapaneseServiceImpl implements IJapaneseService {
     public JSONObject listVideo(int page, int pagesize) {
         JSONObject result = new JSONObject();
         try {
-            Document document = Jsoup.connect(CENTER_URL + "/video/")
+            Document document = Jsoup.connect(centerUrl + "/video/")
                     // 模拟客户端，防止被拦截
                     .userAgent("Chrome")
                     .data("PageNo", String.valueOf(page))
                     .get();
             Element container = document.getElementsByClass("blog-posts").first();
             Elements posts = container.getElementsByClass("blog-post");
-            JSONArray data = new JSONArray();
+            List<Video> videos = new ArrayList<>();
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             for (Element element : posts) {
-                JSONObject post = new JSONObject();
-                // 得到VID还包含video字符串，剪掉
-                post.put("vid", element.getElementsByTag("a").first().attr("href").replace("/video/", ""));
-                post.put("title", element.getElementsByClass("blog-title").first().attr("title"));
-                post.put("img", element.getElementsByTag("img").first().attr("src"));
-                post.put("date", element.getElementsByClass("sub_head").first().text());
-                data.add(post);
+                Video video = new Video();
+                // 得到vid还包含"/video/"字符串，减掉
+                String href = element.getElementsByTag("a").first().attr("href");
+                video.setVid(href.substring(7));
+                video.setTitle(element.getElementsByClass("blog-title").first().attr("title"));
+                video.setPosterUrl(element.getElementsByTag("img").first().attr("src"));
+                // 得到上架时间，还包含"上架時間:"字样，需要格式化
+                String dateStr = element.getElementsByClass("sub_head").first().text();
+                video.setDate(format.parse(dateStr.substring(5)));
+                videos.add(video);
             }
-            result.put("data", data);
+            result.put("data", videos);
 
             Element pagination = document.getElementsByClass("pageinfo").first();
             int total = Integer.parseInt(pagination.getElementsByTag("strong").last().text());
             result.put("total", total);
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
         return result;
     }
 
     @Override
-    public String getFileSrc(String vid) {
-        // 获取视频m3u8文件本地路径
-        String fileUrl = videoUrlDAO.getUrlByVid(vid);
-        if (StringUtils.isBlank(fileUrl)) {
-            String url = API_URL + "/video/" + vid;
-            boolean isVisitLocal = false;
-            // 获取数据库中已保存的“资源-IP-端口”对应关系，和本机localhost是否已经有关联资源
-            Map<String, SrcIpPort> srcIpPortMap = new HashMap<>();
-            List<SrcIpPort> srcIpPorts = srcIpPortDao.listSrcIpPort();
-            if (srcIpPorts != null) {
-                for (SrcIpPort srcIpPort : srcIpPorts) {
-                    if ("localhost".equals(srcIpPort.getIp())) {
-                        isVisitLocal = true;
-                    }
-                    srcIpPortMap.put(srcIpPort.getSrcUrl(), srcIpPort);
-                }
-            }
-            SrcIpPort srcIpPort = srcIpPortMap.get(url);
-            // 根据请求资源地址匹配数据库查询
-            String indexUrl;
-            if (srcIpPort != null) {
-                if ("localhost".equals(srcIpPort.getIp())) {
-                    // 本地已经访问过
-                    indexUrl = parseLocal(url, false);
-                } else {
-                    // 动态IP代理
-                    indexUrl = parseDynamic(url, srcIpPort.getIp(), srcIpPort.getPort(), wormService.listIpPort());
-                }
-            } else {
-                if (isVisitLocal) {
-                    // 随机动态IP代理
-                    indexUrl = parseDynamic(url, wormService.listIpPort());
-                } else {
-                    // 本机可首次访问
-                    indexUrl = parseLocal(url, true);
-                }
-            }
-            // 数据持久化到磁盘
-            fileUrl = saveDisk(indexUrl, filePath + "/m3u8", vid + ".m3u8");
-            // 存储对应关系至数据库
-            videoUrlDAO.saveVideoUrl(vid, fileUrl);
-        }
-        return fileUrl;
+    public String getVideoSrc(String vid) {
+        String url = apiUrl + "/video/" + vid;
+        return parseLocal(url);
     }
 
-    private String saveDisk(String srcUrl, String path, String name) {
-        try (InputStream is = StreamUtils.getInputStream(srcUrl);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-            StringBuilder builder = new StringBuilder();
-            String line;
-            try {
-                while ((line = reader.readLine()) != null) {
-                    if (line.endsWith(".ts")) {
-                        line = fileApiUrl + "?src=" + URLEncoder.encode(SRC_URL + line, "UTF-8");
-                    }
-                    builder.append(line);
-                    builder.append(System.getProperty("line.separator", "\n"));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            File file = new File(path, name);
-            FileUtils.writeStringToFile(file, builder.toString(), "UTF-8");
-            return fileServerHost + "/m3u8/" + file.getName();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private String parseLocal(String url, boolean isSave) {
+    private String parseLocal(String url) {
         try {
             Document document = Jsoup.connect(url)
                     // 模拟客户端，防止被拦截
@@ -175,18 +103,12 @@ public class JapaneseServiceImpl implements IJapaneseService {
             if (result != null) {
                 String data = result.getString("data");
                 if (!StringUtils.isEmpty(data)) {
-                    if (isSave) {
-                        srcIpPortDao.removeSrcIpPort(url);
-                        srcIpPortDao.saveSrcIpPort(new SrcIpPort(url, "localhost", 80));
-                    }
-                    return SRC_URL + data;
+                    return srcUrl + data;
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.toDetailStr(e));
         }
-        // 本地再次失败采用动态代理
-        srcIpPortDao.removeSrcIpPort(url);
         return parseDynamic(url, wormService.listIpPort());
     }
 
@@ -205,27 +127,17 @@ public class JapaneseServiceImpl implements IJapaneseService {
     }
 
     private String parseDynamic(String url, String ip, int port, JSONArray dynamicIpPort) {
-        InputStream is = wormService.getInputStreamByDynamicIpPort(url, ip, port);
-        if (is == null) {
-            srcIpPortDao.removeSrcIpPort(url);
-            removeInvalidData(ip, port, dynamicIpPort);
-            return parseDynamic(url, dynamicIpPort);
-        }
-        JSONObject result;
-        try {
-            result = JSONObject.parseObject(is, JSONObject.class);
+        try (InputStream is = StreamUtils.getInputStream(url, ip, port)) {
+            JSONObject result = JSONObject.parseObject(is, JSONObject.class);
             if (result == null || StringUtils.isEmpty(result.getString("data"))) {
-                srcIpPortDao.removeSrcIpPort(url);
                 removeInvalidData(ip, port, dynamicIpPort);
                 return parseDynamic(url, dynamicIpPort);
             }
-            SrcIpPort srcIpPort = new SrcIpPort(url, ip, port);
-            // 存储需要注意
-            srcIpPortDao.removeSrcIpPort(url);
-            srcIpPortDao.saveSrcIpPort(srcIpPort);
-            return SRC_URL + result.getString("data");
+            return srcUrl + result.getString("data");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("动态IP代理访问失败：" + url + ", " + ip + ", " + port);
+            logger.error(ExceptionUtils.toDetailStr(e));
+            removeInvalidData(ip, port, dynamicIpPort);
             return parseDynamic(url, dynamicIpPort);
         }
     }

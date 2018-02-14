@@ -14,9 +14,5 @@ public interface IJapaneseService {
      */
     JSONObject listVideo(int page, int pagesize);
 
-    /**
-     * @param vid VID
-     * @return 源地址信息
-     */
-    String getFileSrc(String vid);
+    String getVideoSrc(String vid);
 }
