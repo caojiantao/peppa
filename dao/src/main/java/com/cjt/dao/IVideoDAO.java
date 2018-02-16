@@ -1,5 +1,6 @@
 package com.cjt.dao;
 
+import com.cjt.entity.dto.VideoDTO;
 import com.cjt.entity.model.Video;
 
 import java.util.List;
@@ -10,15 +11,13 @@ import java.util.List;
  */
 public interface IVideoDAO {
 
-    List<Video> listVideo(int start, int offset);
+    List<Video> listVideo(VideoDTO dto);
 
-    int countVideo();
+    int countVideo(VideoDTO dto);
 
     int saveVideo(Video video);
 
     List<String> listVid();
 
-    int saveVideos(List<Video> videos);
-
-    int removeVideoByVid(int vid);
+    Video getVideoById(int id);
 }

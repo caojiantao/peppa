@@ -9,16 +9,16 @@
         <result column="title" property="title"/>
         <result column="poster_url" property="posterUrl"/>
         <result column="date" property="date"/>
-        <result column="indexUrl" property="indexUrl"/>
+        <result column="index_url" property="indexUrl"/>
     </resultMap>
 
     <select id="listVideo" resultMap="videoMap">
         SELECT *
         FROM video
-        LIMIT #{start}, #{limit}
+        LIMIT #{start}, #{offset}
     </select>
 
-    <select id="coutVideo" resultType="int">
+    <select id="countVideo" resultType="int">
         SELECT COUNT(*)
         FROM video
     </select>
@@ -29,19 +29,14 @@
         VALUES (#{vid}, #{title}, #{posterUrl}, #{date}, #{indexUrl})
     </insert>
 
-    <insert id="saveVideos">
-        INSERT INTO video (vid, title, poster_url, date, index_url) VALUES
-        <foreach collection="list" item="video" separator=",">
-            (#{video.vid}, #{video.title}, #{video.posterUrl}, #{video.date}, #{video.indexUrl})
-        </foreach>
-    </insert>
-
     <select id="listVid" resultType="String">
-        SELECT vid FROM video
+        SELECT vid
+        FROM video
     </select>
 
-    <delete id="removeVideoByVid" parameterType="int">
-        DELETE FROM video
-        WHERE vid = #{vid}
-    </delete>
+    <select id="getVideoById" resultMap="videoMap">
+        SELECT *
+        FROM video
+        WHERE id = #{id}
+    </select>
 </mapper>
