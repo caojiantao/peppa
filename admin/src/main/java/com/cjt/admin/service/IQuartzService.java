@@ -27,5 +27,11 @@ public interface IQuartzService {
 
     boolean updateQuartz(Quartz quartz);
 
+    boolean pauseQuartzById(int id);
+
+    boolean resumeQuartzById(int id);
+
     boolean removeQuartzById(int id);
+
+    Quartz getQuartzById(int id);
 }

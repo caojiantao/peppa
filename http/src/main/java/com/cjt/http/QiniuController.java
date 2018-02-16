@@ -36,8 +36,8 @@ public class QiniuController extends BaseController {
     }
 
     @GetMapping("/buckets/{bucket}/files")
-    public Object listFiles(@PathVariable("bucket") String bucket, String prefix, int page, int pagesize) {
-        return qiniuService.listFiles(bucket, prefix, page, pagesize);
+    public Object listFiles(@PathVariable("bucket") String bucket, String prefix) {
+        return qiniuService.listFiles(bucket, prefix);
     }
 
     @DeleteMapping("/buckets/{bucket}/files")

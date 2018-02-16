@@ -58,14 +58,15 @@ public class QiniuServiceImpl implements IQiniuService {
     }
 
     @Override
-    public JSONObject listFiles(String bucket, String prefix, int page, int pagesize) {
+    public JSONObject listFiles(String bucket, String prefix) {
         Configuration cfg = new Configuration(Zone.zone0());
         Auth auth = Auth.create(accessKey, secretKey);
         BucketManager bucketManager = new BucketManager(auth, cfg);
-        BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(bucket, prefix, pagesize, "");
+        BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(bucket, prefix, 1000, "");
         List<FileInfo> infos = new ArrayList<>();
         int total;
-        while (fileListIterator.hasNext()) {
+        // 注意无须遍历全部
+        if (fileListIterator.hasNext()) {
             //处理获取的file list结果
             FileInfo[] items = fileListIterator.next();
             infos.addAll(Arrays.asList(items));

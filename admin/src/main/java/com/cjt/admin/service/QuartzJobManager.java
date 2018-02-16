@@ -1,5 +1,6 @@
 package com.cjt.admin.service;
 
+import com.cjt.common.util.ExceptionUtils;
 import com.cjt.entity.model.job.Quartz;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -54,7 +55,7 @@ public class QuartzJobManager {
                 pauseJob(job);
             }
         } catch (SchedulerException | ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.toDetailStr(e));
         }
     }
 
@@ -64,7 +65,7 @@ public class QuartzJobManager {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
             logger.error("【" + job.getDesc() + "】暂停失败", e);
-            e.printStackTrace();
+            logger.error(ExceptionUtils.toDetailStr(e));
         }
     }
 
@@ -74,7 +75,7 @@ public class QuartzJobManager {
             scheduler.resumeTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
             logger.error("【" + job.getDesc() + "】恢复失败", e);
-            e.printStackTrace();
+            logger.error(ExceptionUtils.toDetailStr(e));
         }
     }
 
@@ -85,7 +86,7 @@ public class QuartzJobManager {
             scheduler.unscheduleJob(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
             logger.error("【" + job.getDesc() + "】移除失败", e);
-            e.printStackTrace();
+            logger.error(ExceptionUtils.toDetailStr(e));
         }
     }
 }

@@ -9,7 +9,7 @@ public interface IQiniuService {
 
     String uploadFile(byte[] byptes, String bucket, String key);
 
-    JSONObject listFiles(String bucket, String prefix, int page, int pagesize);
+    JSONObject listFiles(String bucket, String prefix);
 
     boolean removeFile(String bucket, String key);
 

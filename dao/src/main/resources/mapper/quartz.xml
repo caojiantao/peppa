@@ -32,19 +32,20 @@
     </select>
 
     <insert id="saveQuartz" parameterType="com.cjt.entity.model.job.Quartz"
-        useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO quartz (`name`, `group`, cron_expre, `desc`, `job_class`)
-        VALUES (#{name}, #{group}, #{cronExpre}, #{desc}, #{jobClass})
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO quartz (`name`, `group`, `cron_expre`, `status`, `desc`, `job_class`)
+        VALUES (#{name}, #{group}, #{cronExpre}, #{status}, #{desc}, #{jobClass})
     </insert>
 
     <update id="updateQuartz" parameterType="com.cjt.entity.model.job.Quartz">
         UPDATE quartz
-        <trim prefix="SET" suffix="WHERE id = #{id}">
-            `name` = #{name},
-            `group` = #{group},
-            `cron_expre` = #{cronExpre},
-            `desc` = #{desc},
-            `job_class` = #{jobClass}
+        <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
+            <if test='name!=null'>`name` = #{name},</if>
+            <if test='group!=null'>`group` = #{group},</if>
+            <if test='status!=null'>`status` = #{status},</if>
+            <if test='cronExpre!=null'>`cron_expre` = #{cronExpre},</if>
+            <if test='desc!=null'>`desc` = #{desc},</if>
+            <if test='jobClass!=null'>`job_class` = #{jobClass},</if>
         </trim>
     </update>
 

@@ -7,6 +7,7 @@ import com.cjt.common.util.JsonUtils;
 import com.cjt.dao.IQuartzDAO;
 import com.cjt.entity.dto.QuartzDTO;
 import com.cjt.entity.model.job.Quartz;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
@@ -48,8 +49,40 @@ public class QuartzServiceImpl implements IQuartzService, InitializingBean {
 
     @Override
     public boolean updateQuartz(Quartz quartz) {
+        String cron = quartz.getCronExpre();
         if (quartzDao.updateQuartz(quartz) > 0) {
-            quartzJobManager.addJob(quartz);
+            // 根据cron表达式区分更新的动作（更新、暂停、继续）
+            if (StringUtils.isNotBlank(cron)) {
+                quartzJobManager.addJob(quartz);
+            } else {
+                quartz = quartzDao.getQuartzById(quartz.getId());
+                boolean status = quartz.getStatus();
+                if (status) {
+                    quartzJobManager.resumeJob(quartz);
+                } else {
+                    quartzJobManager.pauseJob(quartz);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean pauseQuartzById(int id) {
+        Quartz quartz = quartzDao.getQuartzById(id);
+        if (quartz != null) {
+            quartzJobManager.pauseJob(quartz);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean resumeQuartzById(int id) {
+        Quartz quartz = quartzDao.getQuartzById(id);
+        if (quartz != null) {
+            quartzJobManager.resumeJob(quartz);
             return true;
         }
         return false;
@@ -58,10 +91,15 @@ public class QuartzServiceImpl implements IQuartzService, InitializingBean {
     @Override
     public boolean removeQuartzById(int id) {
         Quartz quartz = quartzDao.getQuartzById(id);
-        if (quartzDao.removeQuartzById(id) > 0){
+        if (quartzDao.removeQuartzById(id) > 0) {
             quartzJobManager.removeJob(quartz);
         }
         return false;
+    }
+
+    @Override
+    public Quartz getQuartzById(int id) {
+        return quartzDao.getQuartzById(id);
     }
 
     /**
