@@ -3,6 +3,7 @@ package com.cjt.admin.controller;
 import com.cjt.entity.model.security.User;
 import com.cjt.service.security.IUserService;
 import com.cjt.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +19,14 @@ import java.util.Map;
 @RequestMapping("/session")
 public class SessionController extends BaseController {
 
-    @Resource
+    @Autowired
     private IUserService userService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Value("${token_secret}")
     private String tokenSecret;
-
-    @Resource
-    private TokenService tokenService;
 
     /**
      * 登录创建会话

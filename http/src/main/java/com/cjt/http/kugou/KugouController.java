@@ -2,6 +2,7 @@ package com.cjt.http.kugou;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.service.http.service.ISongService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,11 +18,11 @@ import java.net.URLEncoder;
 @RequestMapping("/kugou")
 public class KugouController {
 
-    @Resource
+    @Autowired
     private ISongService songService;
 
     @RequestMapping("/songs")
-    public JSONObject listSongPage(String keyword, int page, int pagesize) throws UnsupportedEncodingException {
+    public JSONObject listSongPage(String keyword, int page, int pagesize) {
         return songService.listSong(keyword, page, pagesize);
     }
 

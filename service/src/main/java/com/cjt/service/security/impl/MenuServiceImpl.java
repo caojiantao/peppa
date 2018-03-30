@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class MenuServiceImpl implements IMenuService {
 
-    @Resource
+    @Autowired
     private IMenuDAO menuDAO;
 
     @Autowired
