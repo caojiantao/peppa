@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLDecoder;
 
 /**
@@ -21,13 +22,15 @@ public class FileController {
 
     @GetMapping("")
     public void getTsInputStream(String src, HttpServletResponse response) {
+        // 强制下载
+        response.setContentType("application/force-download");
         try (InputStream is = StreamUtils.getInputStream(URLDecoder.decode(src, "UTF-8"));
              BufferedInputStream bis = new BufferedInputStream(is);
-             ServletOutputStream sos = response.getOutputStream()) {
+             OutputStream os = response.getOutputStream()) {
             byte[] buffers = new byte[1024 * 1024];
             int len;
             while ((len = bis.read(buffers)) != -1) {
-                sos.write(buffers, 0, len);
+                os.write(buffers, 0, len);
             }
         } catch (IOException e) {
             e.printStackTrace();
