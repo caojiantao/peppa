@@ -15,8 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/quartzs")
 public class QuartzController extends BaseController {
 
+    private final IQuartzService quartzService;
+
     @Autowired
-    private IQuartzService quartzService;
+    public QuartzController(IQuartzService quartzService) {
+        this.quartzService = quartzService;
+    }
 
     @GetMapping("")
     public Object listQuartz(QuartzDTO dto) {

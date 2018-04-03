@@ -1,13 +1,14 @@
 package com.cjt.admin.controller;
 
 import com.cjt.entity.model.security.User;
-import com.cjt.service.security.IUserService;
 import com.cjt.service.TokenService;
+import com.cjt.service.security.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,14 +20,18 @@ import java.util.Map;
 @RequestMapping("/session")
 public class SessionController extends BaseController {
 
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     @Value("${token_secret}")
     private String tokenSecret;
+
+    @Autowired
+    public SessionController(IUserService userService, TokenService tokenService) {
+        this.userService = userService;
+        this.tokenService = tokenService;
+    }
 
     /**
      * 登录创建会话

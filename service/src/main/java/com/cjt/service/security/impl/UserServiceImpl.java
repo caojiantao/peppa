@@ -30,16 +30,20 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements IUserService {
 
-    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
-    @Autowired
-    private IUserDAO userDAO;
+    private final IUserDAO userDAO;
 
-    @Autowired
-    private IUserRolesDao userRolesDao;
+    private final IUserRolesDao userRolesDao;
 
     @Value("${password_secret}")
     private String passwordSecret;
+
+    @Autowired
+    public UserServiceImpl(IUserDAO userDAO, IUserRolesDao userRolesDao) {
+        this.userDAO = userDAO;
+        this.userRolesDao = userRolesDao;
+    }
 
     /**
      * 对密码进行加密

@@ -22,13 +22,17 @@ import java.util.List;
 @Service
 public class QuartzServiceImpl implements IQuartzService, InitializingBean {
 
-    private Logger logger = LogManager.getLogger(QuartzServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(QuartzServiceImpl.class);
+
+    private final QuartzJobManager quartzJobManager;
+
+    private final IQuartzDAO quartzDao;
 
     @Autowired
-    private QuartzJobManager quartzJobManager;
-
-    @Autowired
-    private IQuartzDAO quartzDao;
+    public QuartzServiceImpl(QuartzJobManager quartzJobManager, IQuartzDAO quartzDao) {
+        this.quartzJobManager = quartzJobManager;
+        this.quartzDao = quartzDao;
+    }
 
     @Override
     public JSONObject listQuartz(QuartzDTO dto) {

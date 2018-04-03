@@ -16,8 +16,12 @@ import java.util.List;
 @RequestMapping("/menus")
 public class MenuController extends BaseController {
 
+    private final IMenuService menuService;
+
     @Autowired
-    private IMenuService menuService;
+    public MenuController(IMenuService menuService) {
+        this.menuService = menuService;
+    }
 
     @GetMapping("/{id}")
     public Object getMenuBy(@PathVariable("id") int id) {

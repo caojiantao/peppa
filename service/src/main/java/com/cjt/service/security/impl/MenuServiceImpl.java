@@ -10,7 +10,6 @@ import com.cjt.service.security.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +19,18 @@ import java.util.List;
 @Service
 public class MenuServiceImpl implements IMenuService {
 
-    @Autowired
-    private IMenuDAO menuDAO;
+    private final IMenuDAO menuDAO;
+
+    private final IUserService userService;
+
+    private final IRoleService roleService;
 
     @Autowired
-    private IUserService userService;
-
-    @Autowired
-    private IRoleService roleService;
+    public MenuServiceImpl(IMenuDAO menuDAO, IUserService userService, IRoleService roleService) {
+        this.menuDAO = menuDAO;
+        this.userService = userService;
+        this.roleService = roleService;
+    }
 
     @Override
     public List<Menu> listMenu() {

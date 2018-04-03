@@ -2,8 +2,7 @@ package com.cjt.admin.exception;
 
 /**
  * @author caojiantao
- * @create 2017-08-05 14:10:20
- * @desc 异常测试类
+ * @since  2017-08-05 14:10:20
  */
 public class MyException extends Exception {
 

@@ -19,11 +19,15 @@ import java.util.List;
 @Service
 public class RoleServiceImpl implements IRoleService {
 
-    @Autowired
-    private IRoleDAO roleDAO;
+    private final IRoleDAO roleDAO;
+
+    private final IRoleMenusDAO roleMenusDAO;
 
     @Autowired
-    private IRoleMenusDAO roleMenusDAO;
+    public RoleServiceImpl(IRoleDAO roleDAO, IRoleMenusDAO roleMenusDAO) {
+        this.roleDAO = roleDAO;
+        this.roleMenusDAO = roleMenusDAO;
+    }
 
     @Override
     public List<Role> listRoleByUserId(long userId) {

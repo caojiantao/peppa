@@ -3,12 +3,9 @@ package com.cjt.http.kugou;
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.service.http.service.ISongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 /**
  * @author caojiantao
@@ -21,12 +18,12 @@ public class KugouController {
     @Autowired
     private ISongService songService;
 
-    @RequestMapping("/songs")
+    @GetMapping("/songs")
     public JSONObject listSongPage(String keyword, int page, int pagesize) {
         return songService.listSong(keyword, page, pagesize);
     }
 
-    @RequestMapping("/songs/play")
+    @GetMapping("/songs/play")
     public JSONObject getSongPlay(String fileHash, String albumId) {
         return songService.getSongPlay(fileHash, albumId);
     }

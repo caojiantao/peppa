@@ -21,14 +21,18 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController extends BaseController {
 
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
+
+    private final IMenuService menuService;
+
+    private final IRoleService roleService;
 
     @Autowired
-    private IMenuService menuService;
-
-    @Autowired
-    private IRoleService roleService;
+    public UserController(IUserService userService, IMenuService menuService, IRoleService roleService) {
+        this.userService = userService;
+        this.menuService = menuService;
+        this.roleService = roleService;
+    }
 
     @GetMapping("/{id}")
     public Object getUser(@PathVariable("id") Long id) {

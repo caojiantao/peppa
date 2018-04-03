@@ -20,11 +20,15 @@ import java.util.List;
 @RequestMapping("/roles")
 public class RoleController extends BaseController {
 
-    @Autowired
-    private IRoleService roleService;
+    private final IRoleService roleService;
+
+    private final IMenuService menuService;
 
     @Autowired
-    private IMenuService menuService;
+    public RoleController(IRoleService roleService, IMenuService menuService) {
+        this.roleService = roleService;
+        this.menuService = menuService;
+    }
 
     @GetMapping("/{id}")
     public Role getRoleById(@PathVariable("id") int id) {

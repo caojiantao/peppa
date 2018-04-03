@@ -5,8 +5,7 @@ import java.io.StringWriter;
 
 /**
  * @author caojiantao
- * @create 2017-08-11 00:37:25
- * @desc 异常工具类
+ * @since  2017-08-11 00:37:25
  */
 public class ExceptionUtils {
 

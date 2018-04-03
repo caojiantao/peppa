@@ -14,10 +14,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class QuartzJobManager {
 
-    private Logger logger = LogManager.getLogger(QuartzJobManager.class);
+    private final Logger logger = LogManager.getLogger(QuartzJobManager.class);
+
+    private final Scheduler scheduler;
 
     @Autowired
-    private Scheduler scheduler;
+    public QuartzJobManager(Scheduler scheduler) {
+        this.scheduler = scheduler;
+    }
 
     /**
      * 添加定时任务
