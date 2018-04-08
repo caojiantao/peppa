@@ -1,4 +1,4 @@
-package com.cjt.dao.system;
+package com.cjt.service.system;
 
 import com.cjt.entity.model.system.DictSet;
 import com.cjt.entity.model.system.DictValue;
@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author caojiantao
  */
-public interface IDictionaryDAO {
+public interface IDictionaryService {
 
     /* ---------------------------- 字典集操作 ---------------------------- */
 
@@ -17,24 +17,25 @@ public interface IDictionaryDAO {
      * 新增字典集
      *
      * @param set 字典集
+     * @return 操作成功与否
      */
-    void saveDictSet(DictSet set);
+    boolean saveDictSet(DictSet set);
 
     /**
      * 删除指定字典集
      *
      * @param id 字典集ID
-     * @return 影响行数
+     * @return 操作成功与否
      */
-    int removeDictSetById(int id);
+    boolean removeDictSetById(int id);
 
     /**
      * 更新字典集
      *
      * @param set 字典集
-     * @return 影响行数
+     * @return 操作成功与否
      */
-    int updateDictSet(DictSet set);
+    boolean updateDictSet(DictSet set);
 
     /**
      * 获取指定字典集
@@ -66,24 +67,25 @@ public interface IDictionaryDAO {
      * 新增字典值
      *
      * @param set 字典值
+     * @return 操作成功与否
      */
-    void saveDictValue(DictValue set);
+    boolean saveDictValue(DictValue set);
 
     /**
      * 删除指定字典值
      *
      * @param id 字典值ID
-     * @return 影响行数
+     * @return 操作成功与否
      */
-    int removeDictValueById(int id);
+    boolean removeDictValueById(int id);
 
     /**
      * 更新字典值
      *
      * @param set 字典值
-     * @return 影响行数
+     * @return 操作成功与否
      */
-    int updateDictValue(DictValue set);
+    boolean updateDictValue(DictValue set);
 
     /**
      * 获取指定字典值

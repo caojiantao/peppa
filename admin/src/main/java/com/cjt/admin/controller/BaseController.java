@@ -1,6 +1,7 @@
 package com.cjt.admin.controller;
 
 import com.cjt.common.util.ExceptionUtils;
+import com.cjt.entity.dto.ResultDTO;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,5 +43,13 @@ public class BaseController {
         logger.error(ExceptionUtils.toDetailStr(ex));
         // 注意setStatus和sendError的区别
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    }
+
+    protected ResultDTO success(String msg) {
+        return new ResultDTO(true, msg);
+    }
+
+    protected ResultDTO failure(String msg) {
+        return new ResultDTO(false, msg);
     }
 }
