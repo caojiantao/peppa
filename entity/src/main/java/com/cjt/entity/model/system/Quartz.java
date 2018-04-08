@@ -1,4 +1,4 @@
-package com.cjt.entity.model.job;
+package com.cjt.entity.model.system;
 
 /**
  * 定时计划基本信息

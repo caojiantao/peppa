@@ -2,7 +2,7 @@ package com.cjt.admin.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.entity.dto.QuartzDTO;
-import com.cjt.entity.model.job.Quartz;
+import com.cjt.entity.model.system.Quartz;
 
 /**
  * @author caojiantao

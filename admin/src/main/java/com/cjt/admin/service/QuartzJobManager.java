@@ -1,7 +1,7 @@
 package com.cjt.admin.service;
 
 import com.cjt.common.util.ExceptionUtils;
-import com.cjt.entity.model.job.Quartz;
+import com.cjt.entity.model.system.Quartz;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.quartz.*;

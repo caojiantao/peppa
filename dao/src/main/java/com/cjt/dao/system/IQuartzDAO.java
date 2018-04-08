@@ -1,7 +1,7 @@
-package com.cjt.dao;
+package com.cjt.dao.system;
 
 import com.cjt.entity.dto.BasePageDTO;
-import com.cjt.entity.model.job.Quartz;
+import com.cjt.entity.model.system.Quartz;
 
 import java.util.List;
 
