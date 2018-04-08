@@ -1,9 +1,9 @@
 package com.cjt.admin.controller.system;
 
 import com.cjt.admin.controller.BaseController;
-import com.cjt.admin.service.IQuartzService;
 import com.cjt.entity.dto.QuartzDTO;
 import com.cjt.entity.model.system.Quartz;
+import com.cjt.service.system.IQuartzService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

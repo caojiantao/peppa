@@ -1,4 +1,4 @@
-package com.cjt.admin.service;
+package com.cjt.service.system;
 
 import com.cjt.common.util.ExceptionUtils;
 import com.cjt.entity.model.system.Quartz;

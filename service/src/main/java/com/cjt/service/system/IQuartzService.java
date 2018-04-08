@@ -1,4 +1,4 @@
-package com.cjt.admin.service;
+package com.cjt.service.system;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.entity.dto.QuartzDTO;

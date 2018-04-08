@@ -1,4 +1,4 @@
-package com.cjt.admin.service;
+package com.cjt.service.system;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.annotation.Autowired;
