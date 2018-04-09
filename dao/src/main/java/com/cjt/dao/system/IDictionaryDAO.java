@@ -1,10 +1,10 @@
 package com.cjt.dao.system;
 
+import com.cjt.entity.dto.DictionaryDTO;
 import com.cjt.entity.model.system.DictSet;
 import com.cjt.entity.model.system.DictValue;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author caojiantao
@@ -47,18 +47,18 @@ public interface IDictionaryDAO {
     /**
      * 获取指定条件下的字典集集合
      *
-     * @param map 条件
+     * @param dto 条件
      * @return 字典集集合
      */
-    List<DictSet> listDictSet(Map<String, Object> map);
+    List<DictSet> listDictSet(DictionaryDTO dto);
 
     /**
      * 获取指定条件下的字典集集合大小
      *
-     * @param map 条件
+     * @param dto 条件
      * @return 字典集集合大小
      */
-    int countDictSet(Map<String, Object> map);
+    int countDictSet(DictionaryDTO dto);
 
     /* ---------------------------- 字典值操作 ---------------------------- */
 
@@ -96,16 +96,16 @@ public interface IDictionaryDAO {
     /**
      * 获取指定条件下的字典值集合
      *
-     * @param map 条件
+     * @param dto 条件
      * @return 字典值集合
      */
-    List<DictValue> listDictValue(Map<String, Object> map);
+    List<DictValue> listDictValue(DictionaryDTO dto);
 
     /**
      * 获取指定条件下的字典值集合大小
      *
-     * @param map 条件
+     * @param dto 条件
      * @return 字典值集合大小
      */
-    int countDictValue(Map<String, Object> map);
+    int countDictValue(DictionaryDTO dto);
 }

@@ -1,6 +1,7 @@
 package com.cjt.service.system.impl;
 
 import com.cjt.dao.system.IDictionaryDAO;
+import com.cjt.entity.dto.DictionaryDTO;
 import com.cjt.entity.model.system.DictSet;
 import com.cjt.entity.model.system.DictValue;
 import com.cjt.service.system.IDictionaryService;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author caojiantao
@@ -45,13 +45,13 @@ public class DictionaryServiceImpl implements IDictionaryService {
     }
 
     @Override
-    public List<DictSet> listDictSet(Map<String, Object> map) {
-        return dictionaryDAO.listDictSet(map);
+    public List<DictSet> listDictSet(DictionaryDTO dto) {
+        return dictionaryDAO.listDictSet(dto);
     }
 
     @Override
-    public int countDictSet(Map<String, Object> map) {
-        return dictionaryDAO.countDictSet(map);
+    public int countDictSet(DictionaryDTO dto) {
+        return dictionaryDAO.countDictSet(dto);
     }
 
     @Override
@@ -76,12 +76,12 @@ public class DictionaryServiceImpl implements IDictionaryService {
     }
 
     @Override
-    public List<DictValue> listDictValue(Map<String, Object> map) {
-        return dictionaryDAO.listDictValue(map);
+    public List<DictValue> listDictValue(DictionaryDTO dto) {
+        return dictionaryDAO.listDictValue(dto);
     }
 
     @Override
-    public int countDictValue(Map<String, Object> map) {
-        return dictionaryDAO.countDictValue(map);
+    public int countDictValue(DictionaryDTO dto) {
+        return dictionaryDAO.countDictValue(dto);
     }
 }

@@ -3,21 +3,24 @@ package com.cjt.admin.controller.system;
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.admin.controller.BaseController;
 import com.cjt.common.util.JsonUtils;
+import com.cjt.entity.dto.DictionaryDTO;
 import com.cjt.entity.dto.ResultDTO;
 import com.cjt.entity.model.system.DictSet;
 import com.cjt.entity.model.system.DictValue;
 import com.cjt.service.system.IDictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author caojiantao
  */
 @RestController
-@RequestMapping("/dictionaries")
+@RequestMapping("/dictionary")
 public class DictionaryController extends BaseController {
 
     private final IDictionaryService dictionaryService;
@@ -28,9 +31,9 @@ public class DictionaryController extends BaseController {
     }
 
     @GetMapping("/listDictSetByPage")
-    public JSONObject listDictSetByPage(@RequestParam Map<String, Object> map) {
-        List<DictSet> dictSets = dictionaryService.listDictSet(map);
-        int total = dictionaryService.countDictSet(map);
+    public JSONObject listDictSetByPage(DictionaryDTO dto) {
+        List<DictSet> dictSets = dictionaryService.listDictSet(dto);
+        int total = dictionaryService.countDictSet(dto);
         return JsonUtils.toPageData(dictSets, total);
     }
 
@@ -55,9 +58,9 @@ public class DictionaryController extends BaseController {
     }
 
     @GetMapping("/listDictValueByPage")
-    public JSONObject listDictValueByPage(@RequestParam Map<String, Object> map) {
-        List<DictValue> dictValues = dictionaryService.listDictValue(map);
-        int total = dictionaryService.countDictValue(map);
+    public JSONObject listDictValueByPage(DictionaryDTO dto) {
+        List<DictValue> dictValues = dictionaryService.listDictValue(dto);
+        int total = dictionaryService.countDictValue(dto);
         return JsonUtils.toPageData(dictValues, total);
     }
 }

@@ -87,6 +87,9 @@ public class AuthenticationFilter implements Filter {
         return "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 
+    /**
+     * 是否为合法请求，具备有效认证头header
+     */
     private boolean isValidRequest(HttpServletRequest request) {
         String tokenStr = request.getHeader(tokenName);
         String username = tokenService.parseToken(tokenStr);

@@ -59,11 +59,6 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath*:spring/spring-*.xml</param-value>
         </init-param>
-        <!-- 默认环境配置 -->
-        <init-param>
-            <param-name>spring.profiles.default</param-name>
-            <param-value>dev</param-value>
-        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

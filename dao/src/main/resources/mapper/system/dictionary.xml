@@ -37,22 +37,21 @@
         WHERE id = #{id}
     </select>
 
-    <select id="listDictSet" parameterType="map" resultMap="setMap">
+    <select id="listDictSet" parameterType="com.cjt.entity.dto.DictionaryDTO" resultMap="setMap">
         SELECT * FROM dict_set
         <trim prefix="WHERE" prefixOverrides="AND">
-            <if test='code!=null'>AND `code` = #{code},</if>
+            <if test='code!=null'>AND `code` = #{code}</if>
         </trim>
         <if test="start!=null and offset!=null">
             LIMIT #{start}, #{offset}
         </if>
     </select>
 
-    <select id="countDictSet" parameterType="map" resultType="int">
-        SELECT COUNT(*)
+    <select id="countDictSet" parameterType="com.cjt.entity.dto.DictionaryDTO" resultType="int">
+        SELECT COUNT(*) FROM dict_set
         <trim prefix="WHERE" prefixOverrides="AND">
-            <if test='code!=null'>AND `code` = #{code},</if>
+            <if test='code!=null'>AND `code` = #{code}</if>
         </trim>
-        FROM dict_set
     </select>
 
     <!-- 字典值操作 -->
@@ -93,21 +92,20 @@
         WHERE id = #{id}
     </select>
 
-    <select id="listDictValue" parameterType="map" resultMap="valueMap">
+    <select id="listDictValue" parameterType="com.cjt.entity.dto.DictionaryDTO" resultMap="valueMap">
         SELECT * FROM dict_value
         <trim prefix="WHERE" prefixOverrides="AND">
-            <if test='name!=null'>AND `name` = #{name},</if>
+            <if test='setId!=null'>AND set_id = #{setId}</if>
         </trim>
         <if test="start!=null and offset!=null">
             LIMIT #{start}, #{offset}
         </if>
     </select>
 
-    <select id="countDictValue" parameterType="map" resultType="int">
-        SELECT COUNT(*)
+    <select id="countDictValue" parameterType="com.cjt.entity.dto.DictionaryDTO" resultType="int">
+        SELECT COUNT(*) FROM dict_value
         <trim prefix="WHERE" prefixOverrides="AND">
-            <if test='name!=null'>AND `name` = #{name},</if>
+            <if test='setId!=null'>AND set_id = #{setId}</if>
         </trim>
-        FROM dict_value
     </select>
 </mapper>
