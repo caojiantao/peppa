@@ -63,4 +63,24 @@ public class DictionaryController extends BaseController {
         int total = dictionaryService.countDictValue(dto);
         return JsonUtils.toPageData(dictValues, total);
     }
+
+    @GetMapping("/getDictValueById")
+    public DictValue getDictValueById(int id) {
+        return dictionaryService.getDictValueById(id);
+    }
+
+    @PostMapping("/saveDictValue")
+    public ResultDTO saveDictValue(DictValue value) {
+        return dictionaryService.saveDictValue(value) ? success("保存字典值成功") : failure("保存字典值失败");
+    }
+
+    @PostMapping("/updateDictValue")
+    public ResultDTO updateDictValue(DictValue value) {
+        return dictionaryService.updateDictValue(value) ? success("更新字典值成功") : failure("更新字典值失败");
+    }
+
+    @PostMapping("/removeDictValueById")
+    public ResultDTO removeDictValueById(int id) {
+        return dictionaryService.removeDictValueById(id) ? success("删除字典值成功") : failure("删除字典值失败");
+    }
 }
