@@ -1,4 +1,4 @@
-package com.cjt.service.system;
+package com.cjt.quartz;
 
 public interface IQuartzExecuteService {
 

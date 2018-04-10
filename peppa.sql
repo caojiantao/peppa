@@ -183,3 +183,11 @@ CREATE TABLE `user_roles` (
 -- Records of user_roles
 -- ----------------------------
 INSERT INTO `user_roles` VALUES ('1', '1', '1');
+
+DROP TABLE IF EXISTS `quartz_execute`;
+CREATE TABLE `quartz_execute` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `job_class` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_job_class` (`job_class`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=224 DEFAULT CHARSET=utf8;

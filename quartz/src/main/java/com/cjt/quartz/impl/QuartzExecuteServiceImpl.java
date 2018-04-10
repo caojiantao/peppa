@@ -1,7 +1,7 @@
-package com.cjt.service.system.impl;
+package com.cjt.quartz.impl;
 
 import com.cjt.dao.system.IQuartzExecuteDAO;
-import com.cjt.service.system.IQuartzExecuteService;
+import com.cjt.quartz.IQuartzExecuteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

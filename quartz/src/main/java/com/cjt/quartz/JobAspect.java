@@ -1,4 +1,4 @@
-package com.cjt.service.system;
+package com.cjt.quartz;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,7 +23,7 @@ public class JobAspect {
         this.executeService = executeService;
     }
 
-    @Around("execution(* com.cjt.service.system.job..*.execute(..))")
+    @Around("execution(* com.cjt.quartz.job..*.execute(..))")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         String jobClass = ((JobExecutionContext) args[0]).getJobDetail().getJobClass().getName();

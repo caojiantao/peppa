@@ -1,12 +1,12 @@
-package com.cjt.service.system.impl;
+package com.cjt.quartz.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cjt.common.util.JsonUtils;
 import com.cjt.dao.system.IQuartzDAO;
 import com.cjt.entity.dto.QuartzDTO;
 import com.cjt.entity.model.system.Quartz;
-import com.cjt.service.system.IQuartzService;
-import com.cjt.service.system.QuartzJobManager;
+import com.cjt.quartz.IQuartzService;
+import com.cjt.quartz.QuartzJobManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;

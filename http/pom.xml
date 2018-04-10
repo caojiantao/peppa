@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>peppa</artifactId>
-    <groupId>com.cjt.peppa</groupId>
+    <groupId>com.cjt</groupId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -12,7 +12,7 @@
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
-      <groupId>com.cjt.peppa</groupId>
+      <groupId>com.cjt</groupId>
       <artifactId>service</artifactId>
       <version>${project.version}</version>
     </dependency>
