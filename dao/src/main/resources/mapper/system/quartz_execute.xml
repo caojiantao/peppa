@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.system.IQuartzExecuteDAO">
+
+    <insert id="saveExecute">
+        INSERT INTO quartz_execute (job_class) VALUES (#{jobClass})
+    </insert>
+
+    <delete id="removeExecuteByJobClass" parameterType="String">
+        DELETE FROM quartz_execute
+        WHERE job_class = #{jobClass}
+    </delete>
+</mapper>

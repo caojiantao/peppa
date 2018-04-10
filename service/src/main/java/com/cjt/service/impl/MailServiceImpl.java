@@ -22,14 +22,18 @@ import java.util.Map;
 @Service
 public class MailServiceImpl implements IMailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
-    @Autowired
-    private FreeMarkerConfig freeMarkerConfig;
+    private final FreeMarkerConfig freeMarkerConfig;
 
     @Value("${mail.username}")
     private String from;
+
+    @Autowired
+    public MailServiceImpl(JavaMailSender mailSender, FreeMarkerConfig freeMarkerConfig) {
+        this.mailSender = mailSender;
+        this.freeMarkerConfig = freeMarkerConfig;
+    }
 
     @Override
     public boolean sendEmailByVelocityEngine(String subject, String[] toAddrs, Map<String, Object> modelMap) {
