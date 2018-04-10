@@ -83,4 +83,9 @@ public class DictionaryController extends BaseController {
     public ResultDTO removeDictValueById(int id) {
         return dictionaryService.removeDictValueById(id) ? success("删除字典值成功") : failure("删除字典值失败");
     }
+
+    @RequestMapping("/listDictSetOpt")
+    public Object listDictSetOpt() {
+        return dictionaryService.listDictSet(null);
+    }
 }

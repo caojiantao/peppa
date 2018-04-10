@@ -40,7 +40,7 @@
     <select id="listDictSet" parameterType="com.cjt.entity.dto.DictionaryDTO" resultMap="setMap">
         SELECT * FROM dict_set
         <trim prefix="WHERE" prefixOverrides="AND">
-            <if test='code!=null'>AND `code` = #{code}</if>
+            <if test='code!=null and code!=""'>AND `code` = #{code}</if>
         </trim>
         <if test="start!=null and offset!=null">
             LIMIT #{start}, #{offset}
@@ -73,6 +73,11 @@
     <delete id="removeDictValueById" parameterType="int">
         DELETE FROM dict_value
         WHERE id = #{id}
+    </delete>
+
+    <delete id="removeDictValueBySetId" parameterType="int">
+        DELETE FROM dict_value
+        WHERE set_id = #{setId}
     </delete>
 
     <update id="updateDictValue" parameterType="com.cjt.entity.model.system.DictValue">

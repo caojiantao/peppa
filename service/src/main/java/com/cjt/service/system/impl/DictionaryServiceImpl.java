@@ -7,6 +7,7 @@ import com.cjt.entity.model.system.DictValue;
 import com.cjt.service.system.IDictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,8 +30,10 @@ public class DictionaryServiceImpl implements IDictionaryService {
         return set.getId() != null;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean removeDictSetById(int id) {
+        dictionaryDAO.removeDictValueBySetId(id);
         return dictionaryDAO.removeDictSetById(id) > 0;
     }
 
@@ -63,6 +66,11 @@ public class DictionaryServiceImpl implements IDictionaryService {
     @Override
     public boolean removeDictValueById(int id) {
         return dictionaryDAO.removeDictValueById(id) > 0;
+    }
+
+    @Override
+    public boolean removeDictValueBySetId(int setId) {
+        return dictionaryDAO.removeDictValueBySetId(setId) > 0;
     }
 
     @Override

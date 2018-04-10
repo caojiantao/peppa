@@ -78,6 +78,14 @@ public interface IDictionaryDAO {
     int removeDictValueById(int id);
 
     /**
+     * 删除指定字典值
+     *
+     * @param setId 字典集ID
+     * @return 影响行数
+     */
+    int removeDictValueBySetId(int setId);
+
+    /**
      * 更新字典值
      *
      * @param set 字典值

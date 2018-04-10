@@ -80,6 +80,14 @@ public interface IDictionaryService {
     boolean removeDictValueById(int id);
 
     /**
+     * 删除指定字典值
+     *
+     * @param setId 字典集ID
+     * @return 操作成功与否
+     */
+    boolean removeDictValueBySetId(int setId);
+
+    /**
      * 更新字典值
      *
      * @param set 字典值
