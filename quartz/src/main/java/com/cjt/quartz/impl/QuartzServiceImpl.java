@@ -106,6 +106,12 @@ public class QuartzServiceImpl implements IQuartzService, InitializingBean {
         return quartzDao.getQuartzById(id);
     }
 
+    @Override
+    public boolean executeQuartzById(int id) {
+        Quartz quartz = quartzDao.getQuartzById(id);
+        return quartzJobManager.executeJob(quartz.getJobClass());
+    }
+
     /**
      * bean初始化，加载一次
      */

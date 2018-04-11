@@ -25,10 +25,14 @@ public class JobAspect {
 
     @Around("execution(* com.cjt.quartz.job..*.execute(..))")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object[] args = joinPoint.getArgs();
-        String jobClass = ((JobExecutionContext) args[0]).getJobDetail().getJobClass().getName();
         Object result = null;
-        System.out.println("条件判断 ------------");
+        Object context = joinPoint.getArgs()[0];
+        if (context == null) {
+            // 执行上下文为空代表手动执行
+            result = joinPoint.proceed();
+            return result;
+        }
+        String jobClass = ((JobExecutionContext) context).getJobDetail().getJobClass().getName();
         if (executeService.saveExecute(jobClass)) {
             result = joinPoint.proceed();
             executeService.removeExecuteByJobClass(jobClass);

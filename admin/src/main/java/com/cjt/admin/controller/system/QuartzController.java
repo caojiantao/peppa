@@ -2,6 +2,7 @@ package com.cjt.admin.controller.system;
 
 import com.cjt.admin.controller.BaseController;
 import com.cjt.entity.dto.QuartzDTO;
+import com.cjt.entity.dto.ResultDTO;
 import com.cjt.entity.model.system.Quartz;
 import com.cjt.quartz.IQuartzService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author caojiantao
  */
 @RestController
-@RequestMapping("/quartzs")
+@RequestMapping("/quartz")
 public class QuartzController extends BaseController {
 
     private final IQuartzService quartzService;
@@ -63,5 +64,10 @@ public class QuartzController extends BaseController {
         }
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return "删除定时任务失败";
+    }
+
+    @PostMapping("/executeQuartzById")
+    public ResultDTO executeQuartzById(int id) {
+        return quartzService.executeQuartzById(id) ? success("执行成功") : failure("执行失败");
     }
 }

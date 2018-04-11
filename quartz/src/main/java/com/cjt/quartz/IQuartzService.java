@@ -64,4 +64,6 @@ public interface IQuartzService {
      * @return 定时任务信息
      */
     Quartz getQuartzById(int id);
+
+    boolean executeQuartzById(int id);
 }

@@ -6,7 +6,10 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author caojiantao
@@ -18,9 +21,12 @@ public class QuartzJobManager {
 
     private final Scheduler scheduler;
 
+    private final ApplicationContext context;
+
     @Autowired
-    public QuartzJobManager(Scheduler scheduler) {
+    public QuartzJobManager(Scheduler scheduler, ApplicationContext context) {
         this.scheduler = scheduler;
+        this.context = context;
     }
 
     /**
@@ -33,14 +39,15 @@ public class QuartzJobManager {
         try {
             Trigger trigger = scheduler.getTrigger(triggerKey);
             if (trigger == null) {
-                logger.info("【" + job.getDesc() + "】添加");
                 // 新建一个job
                 JobDetail jobDetail = JobBuilder.newJob((Class<? extends Job>) Class.forName(job.getJobClass()))
                         .withIdentity(job.getName(), job.getGroup())
                         .withDescription(job.getDesc())
                         .build();
                 // 新建一个trigger
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpre());
+                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpre())
+                        // 定时任务错过处理策略，避免resume时再次执行trigger
+                        .withMisfireHandlingInstructionDoNothing();
                 trigger = TriggerBuilder.newTrigger()
                         .withIdentity(triggerKey)
                         .withSchedule(scheduleBuilder)
@@ -48,7 +55,8 @@ public class QuartzJobManager {
                 // scheduler设置job和trigger
                 scheduler.scheduleJob(jobDetail, trigger);
             } else {
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpre());
+                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpre())
+                        .withMisfireHandlingInstructionDoNothing();
                 TriggerBuilder builder = trigger.getTriggerBuilder().withIdentity(triggerKey);
                 trigger = builder.withSchedule(scheduleBuilder).build();
                 // 根据trigger key重新设置trigger
@@ -64,33 +72,39 @@ public class QuartzJobManager {
     }
 
     public void pauseJob(Quartz job) {
-        logger.info("【" + job.getDesc() + "】暂停");
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
-            logger.error("【" + job.getDesc() + "】暂停失败", e);
             logger.error(ExceptionUtils.toDetailStr(e));
         }
     }
 
     public void resumeJob(Quartz job) {
-        logger.info("【" + job.getDesc() + "】恢复");
         try {
             scheduler.resumeTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
-            logger.error("【" + job.getDesc() + "】恢复失败", e);
             logger.error(ExceptionUtils.toDetailStr(e));
         }
     }
 
     public void removeJob(Quartz job) {
-        logger.info("【" + job.getDesc() + "】移除");
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
             scheduler.unscheduleJob(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
-            logger.error("【" + job.getDesc() + "】移除失败", e);
             logger.error(ExceptionUtils.toDetailStr(e));
+        }
+    }
+
+    public boolean executeJob(String clazz) {
+        try {
+            Class<?> jobClass = Class.forName(clazz);
+            Object job = context.getBean(jobClass);
+            jobClass.getDeclaredMethod("execute", JobExecutionContext.class).invoke(job, (Object) null);
+            return true;
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            logger.error(ExceptionUtils.toDetailStr(e));
+            return false;
         }
     }
 }
