@@ -1,6 +1,6 @@
 package com.cjt.http;
 
-import com.cjt.common.util.StreamUtils;
+import com.cjt.common.util.HttpUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +23,7 @@ public class FileController {
     public void getTsInputStream(String src, HttpServletResponse response) {
         // 强制下载
         response.setContentType("application/force-download");
-        try (InputStream is = StreamUtils.getInputStream(URLDecoder.decode(src, "UTF-8"));
+        try (InputStream is = HttpUtils.connect(URLDecoder.decode(src, "UTF-8")).execute();
              BufferedInputStream bis = new BufferedInputStream(is);
              OutputStream os = response.getOutputStream()) {
             byte[] buffers = new byte[1024 * 1024];
