@@ -29,6 +29,9 @@ public class MailServiceImpl implements IMailService {
     @Value("${mail.username}")
     private String from;
 
+    @Value("${mail.filename}")
+    private String templateName;
+
     @Autowired
     public MailServiceImpl(JavaMailSender mailSender, FreeMarkerConfig freeMarkerConfig) {
         this.mailSender = mailSender;
@@ -38,7 +41,7 @@ public class MailServiceImpl implements IMailService {
     @Override
     public boolean sendEmailByVelocityEngine(String subject, String[] toAddrs, Map<String, Object> modelMap) {
         try {
-            Template template = freeMarkerConfig.getConfiguration().getTemplate("");
+            Template template = freeMarkerConfig.getConfiguration().getTemplate(templateName);
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, modelMap);
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");

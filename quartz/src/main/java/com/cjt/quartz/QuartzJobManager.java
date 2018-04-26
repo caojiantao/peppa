@@ -71,6 +71,9 @@ public class QuartzJobManager {
         }
     }
 
+    /**
+     * 暂停定时任务
+     */
     public void pauseJob(Quartz job) {
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
@@ -79,6 +82,9 @@ public class QuartzJobManager {
         }
     }
 
+    /**
+     * 继续定时任务
+     */
     public void resumeJob(Quartz job) {
         try {
             scheduler.resumeTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
@@ -87,6 +93,9 @@ public class QuartzJobManager {
         }
     }
 
+    /**
+     * 移除定时任务
+     */
     public void removeJob(Quartz job) {
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
@@ -96,6 +105,9 @@ public class QuartzJobManager {
         }
     }
 
+    /**
+     * 执行定时任务
+     */
     public boolean executeJob(String clazz) {
         try {
             Class<?> jobClass = Class.forName(clazz);

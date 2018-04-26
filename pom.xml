@@ -221,12 +221,16 @@
             </activation>
             <properties>
                 <profiles.active>dev</profiles.active>
+                <log.level>info</log.level>
+                <log.path>D:/log</log.path>
             </properties>
         </profile>
         <profile>
             <id>pro</id>
             <properties>
                 <profiles.active>pro</profiles.active>
+                <log.level>warn</log.level>
+                <log.path>/Users/caojiantao</log.path>
             </properties>
         </profile>
     </profiles>
