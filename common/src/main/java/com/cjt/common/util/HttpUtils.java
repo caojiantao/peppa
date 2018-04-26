@@ -108,7 +108,7 @@ public class HttpUtils {
 
     private InputStream doHttp() throws IOException {
         url += GET.equalsIgnoreCase(method) ? getParamStr(data) : "";
-        HttpURLConnection connection = (proxy == null) ? (HttpURLConnection) new URL(url).openConnection() : (HttpURLConnection) new URL(url).openConnection();
+        HttpURLConnection connection = (proxy == null) ? (HttpURLConnection) new URL(url).openConnection() : (HttpURLConnection) new URL(url).openConnection(proxy);
         connection.setConnectTimeout(timeout);
         connection.setRequestMethod(method);
         headers.forEach(connection::addRequestProperty);
