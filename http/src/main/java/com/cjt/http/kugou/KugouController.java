@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/kugou")
 public class KugouController {
 
+    private final ISongService songService;
+
     @Autowired
-    private ISongService songService;
+    public KugouController(ISongService songService) {
+        this.songService = songService;
+    }
 
     @GetMapping("/songs")
     public JSONObject listSongPage(String keyword, int page, int pagesize) {
@@ -26,5 +30,15 @@ public class KugouController {
     @GetMapping("/songs/play")
     public JSONObject getSongPlay(String fileHash, String albumId) {
         return songService.getSongPlay(fileHash, albumId);
+    }
+
+    @GetMapping("/mvs")
+    public JSONObject listMv(String keyword, int page, int pagesize) {
+        return songService.listMv(keyword, page, pagesize);
+    }
+
+    @GetMapping("/mvs/play")
+    public JSONObject getMvPlay(String hash) {
+        return songService.getMvPlay(hash);
     }
 }
