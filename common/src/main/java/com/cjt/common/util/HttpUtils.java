@@ -133,12 +133,15 @@ public class HttpUtils {
         return execute();
     }
 
-    private String getParamStr(Map<String, String> data) {
+    private String getParamStr(Map<String, String> data) throws UnsupportedEncodingException {
         if (!data.isEmpty()) {
             StringBuilder builder = new StringBuilder();
             Set<Map.Entry<String, String>> entries = data.entrySet();
             builder.append("?");
-            data.forEach((key, value) -> builder.append(key).append("=").append(value).append("&"));
+            for (Map.Entry<String, String> entry : entries) {
+                // value encode，避免特殊字符
+                builder.append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue(), UTF_8)).append("&");
+            }
             return builder.substring(0, builder.length() - 1);
         }
         return "";
@@ -151,7 +154,7 @@ public class HttpUtils {
     }
 
     public static String getStringFromInputStream(InputStream is) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, UTF_8));
         StringBuilder builder = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {

@@ -7,7 +7,6 @@ import com.cjt.common.util.HttpUtils;
 import com.cjt.common.util.JsonUtils;
 import com.cjt.service.http.service.ISongService;
 import org.apache.log4j.Logger;
-import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
