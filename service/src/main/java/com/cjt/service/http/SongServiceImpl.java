@@ -50,7 +50,8 @@ public class SongServiceImpl implements ISongService {
                 .data("r", "play/getdata")
                 .data("hash", fileHash)
                 .data("album_id", albumId)
-                .get()) {
+                .get()
+                .getInputStream()) {
             play = JSONObject.parseObject(HttpUtils.getStringFromInputStream(is), JSONObject.class);
         } catch (IOException e) {
             logger.error(ExceptionUtils.toDetailStr(e));
@@ -68,7 +69,8 @@ public class SongServiceImpl implements ISongService {
         JSONObject play = null;
         String key = DigestUtils.md5DigestAsHex((hash + mvSalt).getBytes());
         try (InputStream is = HttpUtils.connect(mvPlay + "/cmd=100&hash=" + hash + "&key=" + key + "&ext=mp4")
-                .get()) {
+                .get()
+                .getInputStream()) {
             play = JSONObject.parseObject(HttpUtils.getStringFromInputStream(is), JSONObject.class);
         } catch (IOException e) {
             logger.error(ExceptionUtils.toDetailStr(e));
@@ -84,7 +86,8 @@ public class SongServiceImpl implements ISongService {
                 .data("page", String.valueOf(page))
                 .data("pagesize", String.valueOf(pagesize))
                 .data("platform", "WebFilter")
-                .get()) {
+                .get()
+                .getInputStream()) {
             JSONObject object = JSONObject.parseObject(HttpUtils.getStringFromInputStream(is), JSONObject.class);
             // 获取歌曲list
             songs = object.getJSONObject("data").getJSONArray("lists");

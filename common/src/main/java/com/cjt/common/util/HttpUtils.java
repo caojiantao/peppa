@@ -59,6 +59,11 @@ public class HttpUtils {
         return this;
     }
 
+    public HttpUtils header(Map<String, String> map) {
+        this.headers = map;
+        return this;
+    }
+
     public HttpUtils cookie(String key, String value) {
         cookies.put(key, value);
         return this;
@@ -90,45 +95,43 @@ public class HttpUtils {
         return this;
     }
 
-    public InputStream execute() throws IOException {
+    public HttpURLConnection execute() {
         if (callback != null) {
-            new Thread(() -> {
-                try {
-                    InputStream is = doHttp();
-                    callback.handle(is);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            new Thread(() -> callback.handle(doHttp())).start();
             return null;
         } else {
             return doHttp();
         }
     }
 
-    private InputStream doHttp() throws IOException {
-        url += GET.equalsIgnoreCase(method) ? getParamStr(data) : "";
-        HttpURLConnection connection = (proxy == null) ? (HttpURLConnection) new URL(url).openConnection() : (HttpURLConnection) new URL(url).openConnection(proxy);
-        connection.setConnectTimeout(timeout);
-        connection.setRequestMethod(method);
-        headers.forEach(connection::addRequestProperty);
-        connection.addRequestProperty(COOKIE, getCookieStr(cookies));
-        if (POST.equalsIgnoreCase(method)) {
-            connection.setDoOutput(true);
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), UTF_8));
-            writer.write(getParamStr(data));
-            writer.flush();
-            writer.close();
+    private HttpURLConnection doHttp() {
+        HttpURLConnection connection = null;
+        try {
+            url += GET.equalsIgnoreCase(method) ? getParamStr(data) : "";
+            connection = (proxy == null) ? (HttpURLConnection) new URL(url).openConnection() : (HttpURLConnection) new URL(url).openConnection(proxy);
+            connection.setConnectTimeout(timeout);
+            connection.setRequestMethod(method);
+            headers.forEach(connection::addRequestProperty);
+            connection.addRequestProperty(COOKIE, getCookieStr(cookies));
+            if (POST.equalsIgnoreCase(method)) {
+                connection.setDoOutput(true);
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), UTF_8));
+                writer.write(getParamStr(data));
+                writer.flush();
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return connection.getInputStream();
+        return connection;
     }
 
-    public InputStream get() throws IOException {
+    public HttpURLConnection get() {
         this.method = GET;
         return execute();
     }
 
-    public InputStream post() throws IOException {
+    public HttpURLConnection post() {
         this.method = POST;
         return execute();
     }
@@ -166,12 +169,6 @@ public class HttpUtils {
 
     public interface Callback {
 
-        /**
-         * 请求回调处理
-         *
-         * @param is 输入流
-         * @throws IOException 请求异常
-         */
-        void handle(InputStream is) throws IOException;
+        void handle(HttpURLConnection connection);
     }
 }
