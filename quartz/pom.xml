@@ -9,7 +9,7 @@
     <artifactId>quartz</artifactId>
     <packaging>jar</packaging>
 
-    <name>service</name>
+    <name>quartz</name>
     <url>http://maven.apache.org</url>
 
     <properties>
