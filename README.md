@@ -31,10 +31,6 @@ maven
 
 其中admin、core和web是war包形式，可以对外发布，其他则都是jar包形式，提供依赖。
 
-依赖图：
-
-![image](https://github.com/caojiantao/ssm/blob/master/dependencies.png?raw=true)
-
 ### 特性支持
 
 1. 静态资源与拦截器、restFul接口共存；
