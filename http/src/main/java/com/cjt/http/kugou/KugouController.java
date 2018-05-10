@@ -24,7 +24,7 @@ public class KugouController {
     }
 
     @GetMapping("/songs")
-    public JSONObject listSongPage(String keyword, @RequestParam(value = "1", required = false) int page, @RequestParam(value = "20", required = false) int pagesize) {
+    public JSONObject listSongPage(String keyword, @RequestParam(defaultValue = "1", required = false) int page, @RequestParam(defaultValue = "20", required = false) int pagesize) {
         return songService.listSong(keyword, page, pagesize);
     }
 
@@ -34,7 +34,7 @@ public class KugouController {
     }
 
     @GetMapping("/mvs")
-    public JSONObject listMv(String keyword, @RequestParam(value = "1", required = false) int page, @RequestParam(value = "20", required = false) int pagesize) {
+    public JSONObject listMv(String keyword, @RequestParam(defaultValue = "1", required = false) int page, @RequestParam(defaultValue = "20", required = false) int pagesize) {
         return songService.listMv(keyword, page, pagesize);
     }
 
