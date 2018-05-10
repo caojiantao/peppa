@@ -14,7 +14,6 @@
         <module>api</module>
         <module>core</module>
         <module>entity</module>
-        <module>http</module>
         <module>quartz</module>
     </modules>
     <name>peppa</name>
@@ -43,7 +42,6 @@
         <common-lang3.version>3.4</common-lang3.version>
         <jsoup.version>1.8.3</jsoup.version>
         <httpclient.version>4.5.4</httpclient.version>
-        <qiniu.version>7.2.0</qiniu.version>
     </properties>
 
     <dependencies>
@@ -192,12 +190,6 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.qiniu</groupId>
-            <artifactId>qiniu-java-sdk</artifactId>
-            <version>${qiniu.version}</version>
         </dependency>
 
         <dependency>
