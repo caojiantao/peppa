@@ -5,6 +5,7 @@ import com.cjt.service.http.service.ISongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,7 +24,7 @@ public class KugouController {
     }
 
     @GetMapping("/songs")
-    public JSONObject listSongPage(String keyword, int page, int pagesize) {
+    public JSONObject listSongPage(String keyword, @RequestParam(value = "1", required = false) int page, @RequestParam(value = "20", required = false) int pagesize) {
         return songService.listSong(keyword, page, pagesize);
     }
 
@@ -33,7 +34,7 @@ public class KugouController {
     }
 
     @GetMapping("/mvs")
-    public JSONObject listMv(String keyword, int page, int pagesize) {
+    public JSONObject listMv(String keyword, @RequestParam(value = "1", required = false) int page, @RequestParam(value = "20", required = false) int pagesize) {
         return songService.listMv(keyword, page, pagesize);
     }
 
