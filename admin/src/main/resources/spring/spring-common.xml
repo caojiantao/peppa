@@ -22,12 +22,12 @@
         </property>
     </bean>
 
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <bean class="com.cjt.admin.interceptor.PermissionInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
+    <!--<mvc:interceptors>-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/**"/>-->
+            <!--<bean class="com.cjt.admin.interceptor.PermissionInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
 
     <!-- fastJson转换配置 -->
     <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">

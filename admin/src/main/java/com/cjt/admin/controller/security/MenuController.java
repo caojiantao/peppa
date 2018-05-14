@@ -24,7 +24,7 @@ public class MenuController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public Object getMenuBy(@PathVariable("id") int id) {
+    public Object getMenuById(@PathVariable("id") int id) {
         Menu menu = menuService.getMenuById(id);
         if (menu == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

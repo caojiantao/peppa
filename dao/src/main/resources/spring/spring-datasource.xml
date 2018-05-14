@@ -9,8 +9,24 @@
             http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
     <!-- 数据库连接基础属性 -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-          destroy-method="close">
+    <bean id="dataSource" class="com.cjt.dao.db.DynamicDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <entry key="master" value-ref="master"/>
+                <entry key="slave" value-ref="slave"/>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="master"/>
+    </bean>
+
+    <bean id="master" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc_driver}"/>
+        <property name="username" value="${jdbc_username}"/>
+        <property name="password" value="${jdbc_password}"/>
+        <property name="url" value="${jdbc_url}"/>
+    </bean>
+
+    <bean id="slave" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc_driver}"/>
         <property name="username" value="${jdbc_username}"/>
         <property name="password" value="${jdbc_password}"/>
