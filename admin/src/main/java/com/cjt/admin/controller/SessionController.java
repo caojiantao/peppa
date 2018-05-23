@@ -37,7 +37,7 @@ public class SessionController extends BaseController {
      * 登录创建会话
      */
     @PostMapping(value = {"", "/"})
-    private Object login(String username, String password, boolean rememberMe) {
+    private Object login(String username, String password, boolean rememberMe, HttpServletResponse response) {
         User user = userService.login(username, password);
         if (user != null) {
             String token = tokenService.getToken(username, rememberMe);

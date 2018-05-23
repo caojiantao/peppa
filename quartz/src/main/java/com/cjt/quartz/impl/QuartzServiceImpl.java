@@ -1,7 +1,7 @@
 package com.cjt.quartz.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjt.common.util.JsonUtils;
+import com.caojiantao.common.util.JsonUtils;
 import com.cjt.dao.system.IQuartzDAO;
 import com.cjt.entity.dto.QuartzDTO;
 import com.cjt.entity.model.system.Quartz;

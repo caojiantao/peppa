@@ -30,7 +30,7 @@ public class QuartzController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public Object getQuartzById(@PathVariable("id") int id) {
+    public Object getQuartzById(@PathVariable("id") int id, HttpServletResponse response) {
         Quartz quartz = quartzService.getQuartzById(id);
         if (quartz == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -39,7 +39,7 @@ public class QuartzController extends BaseController {
     }
 
     @PostMapping("")
-    public Object saveQuartz(Quartz quartz) {
+    public Object saveQuartz(Quartz quartz, HttpServletResponse response) {
         if (quartzService.saveQuartz(quartz)) {
             response.setStatus(HttpServletResponse.SC_CREATED);
             return quartz;
@@ -49,7 +49,7 @@ public class QuartzController extends BaseController {
     }
 
     @PutMapping("")
-    public Object updateQuartz(Quartz quartz) {
+    public Object updateQuartz(Quartz quartz, HttpServletResponse response) {
         if (quartzService.updateQuartz(quartz)) {
             return quartz;
         }
@@ -58,7 +58,7 @@ public class QuartzController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public Object removeQuartz(@PathVariable("id") int id) {
+    public Object removeQuartz(@PathVariable("id") int id, HttpServletResponse response) {
         if (quartzService.removeQuartzById(id)) {
             return null;
         }

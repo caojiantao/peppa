@@ -1,7 +1,7 @@
 package com.cjt.quartz;
 
-import com.cjt.common.util.ExceptionUtils;
 import com.cjt.entity.model.system.Quartz;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.quartz.*;
@@ -67,7 +67,7 @@ public class QuartzJobManager {
                 pauseJob(job);
             }
         } catch (SchedulerException | ClassNotFoundException e) {
-            logger.error(ExceptionUtils.toDetailStr(e));
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -78,7 +78,7 @@ public class QuartzJobManager {
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
-            logger.error(ExceptionUtils.toDetailStr(e));
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -89,7 +89,7 @@ public class QuartzJobManager {
         try {
             scheduler.resumeTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
-            logger.error(ExceptionUtils.toDetailStr(e));
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -101,7 +101,7 @@ public class QuartzJobManager {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
             scheduler.unscheduleJob(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
-            logger.error(ExceptionUtils.toDetailStr(e));
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -115,7 +115,7 @@ public class QuartzJobManager {
             jobClass.getDeclaredMethod("execute", JobExecutionContext.class).invoke(job, (Object) null);
             return true;
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            logger.error(ExceptionUtils.toDetailStr(e));
+            logger.error(ExceptionUtils.getStackTrace(e));
             return false;
         }
     }

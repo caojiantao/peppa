@@ -36,7 +36,7 @@ public class RoleController extends BaseController {
     }
 
     @GetMapping("/{id}/menus")
-    public Object listMenuByRoleId(@PathVariable("id") int id) {
+    public Object listMenuByRoleId(@PathVariable("id") int id, HttpServletResponse response) {
         List<Menu> menus = menuService.listMenuByRoleId(id);
         if (menus == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -50,7 +50,7 @@ public class RoleController extends BaseController {
     }
 
     @PostMapping("")
-    public Object saveRole(Role role, @RequestParam("menuIds") List<Integer> menuIds) {
+    public Object saveRole(Role role, @RequestParam("menuIds") List<Integer> menuIds, HttpServletResponse response) {
         if (roleService.saveRole(role, menuIds)) {
             response.setStatus(HttpServletResponse.SC_CREATED);
             return role;
@@ -60,7 +60,7 @@ public class RoleController extends BaseController {
     }
 
     @PutMapping("")
-    public Object updateRole(Role role, @RequestParam("menuIds") List<Integer> menuIds) {
+    public Object updateRole(Role role, @RequestParam("menuIds") List<Integer> menuIds, HttpServletResponse response) {
         if (roleService.updateRole(role, menuIds)) {
             return role;
         }
@@ -69,7 +69,7 @@ public class RoleController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public Object removeRole(@PathVariable("id") int id) {
+    public Object removeRole(@PathVariable("id") int id, HttpServletResponse response) {
         if (roleService.removeRole(id)) {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return null;

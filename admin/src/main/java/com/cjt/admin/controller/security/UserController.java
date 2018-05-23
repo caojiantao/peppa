@@ -35,7 +35,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public Object getUser(@PathVariable("id") Long id) {
+    public Object getUser(@PathVariable("id") Long id, HttpServletResponse response) {
         User user = userService.getUserByUserId(id);
         if (user == null) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
@@ -45,7 +45,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/{id}/menus")
-    public Object getUserMenu(@PathVariable("id") Long id) {
+    public Object getUserMenu(@PathVariable("id") Long id, HttpServletResponse response) {
         List<Menu> menus = menuService.listMenuByUserId(id);
         if (menus == null) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
@@ -55,7 +55,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping(value = {"", "/"})
-    public Object getUser(UserDTO userDTO) {
+    public Object getUser(UserDTO userDTO, HttpServletResponse response) {
         if ((userDTO.getStart() == null) && (userDTO.getOffset() == null)) {
             List<User> users = userService.getUserByDTO(userDTO);
             if (users == null || users.isEmpty()) {
@@ -74,7 +74,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("")
-    public Object saveUser(User user, @RequestParam("roleIds") List<Integer> roleIds) {
+    public Object saveUser(User user, @RequestParam("roleIds") List<Integer> roleIds, HttpServletResponse response) {
         if (userService.saveUser(user, roleIds)) {
             response.setStatus(HttpServletResponse.SC_CREATED);
             return user;
@@ -85,7 +85,7 @@ public class UserController extends BaseController {
     }
 
     @PutMapping(value = {"", "/"})
-    public Object updateUser(User user, @RequestParam("roleIds") List<Integer> roleIds) {
+    public Object updateUser(User user, @RequestParam("roleIds") List<Integer> roleIds, HttpServletResponse response) {
         if (userService.updateUser(user, roleIds)) {
             return user;
         }
@@ -95,7 +95,7 @@ public class UserController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public Object removeUserById(@PathVariable("id") long id) {
+    public Object removeUserById(@PathVariable("id") long id, HttpServletResponse response) {
         if (userService.removeUserById(id)) {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return null;

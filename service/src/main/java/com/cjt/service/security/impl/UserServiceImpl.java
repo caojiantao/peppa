@@ -2,8 +2,7 @@ package com.cjt.service.security.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.cjt.common.util.ExceptionUtils;
-import com.cjt.common.util.JsonUtils;
+import com.caojiantao.common.util.JsonUtils;
 import com.cjt.dao.security.IUserDAO;
 import com.cjt.dao.security.IUserRolesDao;
 import com.cjt.entity.dto.UserDTO;
@@ -11,7 +10,9 @@ import com.cjt.entity.model.security.User;
 import com.cjt.service.security.IUserService;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class UserServiceImpl implements IUserService {
             byte[] bytes = algorithm.sign(password.getBytes(CharEncoding.UTF_8));
             return Hex.encodeHexString(bytes);
         } catch (UnsupportedEncodingException e) {
-            logger.error(ExceptionUtils.toDetailStr(e));
+            logger.error(ExceptionUtils.getStackTrace(e));
             return null;
         }
     }

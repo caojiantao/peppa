@@ -1,6 +1,6 @@
 package com.cjt.dao.db;
 
-import com.cjt.common.util.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -43,7 +43,7 @@ public class DataSourceAspect {
                 dataSource.setDataSourceKey(data.target().getKey());
             }
         } catch (Exception e) {
-            logger.error(ExceptionUtils.toDetailStr(e));
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
 

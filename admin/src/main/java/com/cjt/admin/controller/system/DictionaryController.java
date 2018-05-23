@@ -1,8 +1,8 @@
 package com.cjt.admin.controller.system;
 
 import com.alibaba.fastjson.JSONObject;
+import com.caojiantao.common.util.JsonUtils;
 import com.cjt.admin.controller.BaseController;
-import com.cjt.common.util.JsonUtils;
 import com.cjt.entity.dto.DictionaryDTO;
 import com.cjt.entity.dto.ResultDTO;
 import com.cjt.entity.model.system.DictSet;

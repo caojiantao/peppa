@@ -1,7 +1,7 @@
 package com.cjt.service.security.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjt.common.util.JsonUtils;
+import com.caojiantao.common.util.JsonUtils;
 import com.cjt.dao.security.IRoleDAO;
 import com.cjt.dao.security.IRoleMenusDAO;
 import com.cjt.entity.dto.RoleDTO;

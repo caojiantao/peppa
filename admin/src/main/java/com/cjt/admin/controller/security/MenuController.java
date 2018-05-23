@@ -24,7 +24,7 @@ public class MenuController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public Object getMenuById(@PathVariable("id") int id) {
+    public Object getMenuById(@PathVariable("id") int id, HttpServletResponse response) {
         Menu menu = menuService.getMenuById(id);
         if (menu == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -34,7 +34,7 @@ public class MenuController extends BaseController {
     }
 
     @GetMapping(value = {"", "/"})
-    public Object listMenu() {
+    public Object listMenu(HttpServletResponse response) {
         List<Menu> menus = menuService.listMenu();
         if (menus == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -44,7 +44,7 @@ public class MenuController extends BaseController {
     }
 
     @PostMapping("")
-    public Object insertMenu(Menu menu) {
+    public Object insertMenu(Menu menu, HttpServletResponse response) {
         if (menuService.saveMenu(menu)) {
             response.setStatus(HttpServletResponse.SC_CREATED);
             return menu;
@@ -54,7 +54,7 @@ public class MenuController extends BaseController {
     }
 
     @PutMapping("")
-    public Object updateMenu(Menu menu) {
+    public Object updateMenu(Menu menu, HttpServletResponse response) {
         if (menuService.updateMenu(menu)) {
             return menu;
         } else {
@@ -64,7 +64,7 @@ public class MenuController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public Object removeMenuById(@PathVariable("id") int id) {
+    public Object removeMenuById(@PathVariable("id") int id, HttpServletResponse response) {
         if (menuService.removeMenuById(id)) {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return null;
