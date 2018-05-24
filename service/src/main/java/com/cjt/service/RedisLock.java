@@ -1,8 +1,6 @@
 package com.cjt.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 import java.util.Collections;
@@ -11,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author caojiantao
  */
-@Component
 public class RedisLock {
 
     private static final String LOCK_SUCCESS = "OK";
@@ -24,7 +21,6 @@ public class RedisLock {
      */
     private final Jedis jedis;
 
-    @Autowired
     public RedisLock(JedisConnectionFactory jedisConnectionFactory) {
         this.jedis = jedisConnectionFactory.getConnection().getNativeConnection();
     }
