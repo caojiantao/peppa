@@ -8,17 +8,17 @@
             http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <!-- jedis 配置 -->
-    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+    <!--<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${redis.maxTotal}"/>
         <property name="maxIdle" value="${redis.maxIdle}"/>
         <property name="maxWaitMillis" value="${redis.maxWait}"/>
-        <!-- testOnBorrow:向调用者输出“链接”资源时，是否检测是有有效，如果无效则从连接池中移除，并尝试获取继续获取。默认为false。建议保持默认值. -->
-        <!-- testOnReturn:向连接池“归还”链接时，是否检测“链接”对象的有效性。默认为false。建议保持默认值. -->
-        <!-- testWhileIdle:向调用者输出“链接”对象时，是否检测它的空闲超时；默认为false。如果“链接”空闲超时，将会被移除。建议保持默认值. -->
-        <!-- whenExhaustedAction:当“连接池”中active数量达到阀值时，即“链接”资源耗尽时，连接池需要采取的手段, 默认为1(0:抛出异常。1:阻塞，直到有可用链接资源。2:强制创建新的链接资源) -->
+        &lt;!&ndash; testOnBorrow:向调用者输出“链接”资源时，是否检测是有有效，如果无效则从连接池中移除，并尝试获取继续获取。默认为false。建议保持默认值. &ndash;&gt;
+        &lt;!&ndash; testOnReturn:向连接池“归还”链接时，是否检测“链接”对象的有效性。默认为false。建议保持默认值. &ndash;&gt;
+        &lt;!&ndash; testWhileIdle:向调用者输出“链接”对象时，是否检测它的空闲超时；默认为false。如果“链接”空闲超时，将会被移除。建议保持默认值. &ndash;&gt;
+        &lt;!&ndash; whenExhaustedAction:当“连接池”中active数量达到阀值时，即“链接”资源耗尽时，连接池需要采取的手段, 默认为1(0:抛出异常。1:阻塞，直到有可用链接资源。2:强制创建新的链接资源) &ndash;&gt;
     </bean>
 
-    <!-- redis服务器中心 -->
+    &lt;!&ndash; redis服务器中心 &ndash;&gt;
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" destroy-method="destroy">
         <property name="hostName" value="${redis.host}"/>
         <property name="port" value="${redis.port}"/>
@@ -30,13 +30,13 @@
 
     <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
-        <!-- 开启事务 -->
+        &lt;!&ndash; 开启事务 &ndash;&gt;
         <property name="enableTransactionSupport" value="true"/>
     </bean>
 
-    <!-- 启用缓存注解 -->
+    &lt;!&ndash; 启用缓存注解 &ndash;&gt;
     <cache:annotation-driven/>
     <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
         <constructor-arg name="redisOperations" ref="redisTemplate"/>
-    </bean>
+    </bean>-->
 </beans>
