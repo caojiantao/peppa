@@ -1,6 +1,9 @@
 package com.cjt.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.jedis.JedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 import java.util.Collections;
@@ -9,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author caojiantao
  */
+@Component
 public class RedisLock {
 
     private static final String LOCK_SUCCESS = "OK";
@@ -19,10 +23,11 @@ public class RedisLock {
     /**
      * Redis原生连接，采用自动注入初始化
      */
-    private final Jedis jedis;
+    private final JedisConnectionFactory jedisConnectionFactory;
 
+    @Autowired
     public RedisLock(JedisConnectionFactory jedisConnectionFactory) {
-        this.jedis = jedisConnectionFactory.getConnection().getNativeConnection();
+        this.jedisConnectionFactory = jedisConnectionFactory;
     }
 
     /**
@@ -35,7 +40,11 @@ public class RedisLock {
      * @return 是否加锁成功
      */
     public boolean tryLock(String lockKey, String requestId, long expireTime, TimeUnit timeUnit) {
-        return LOCK_SUCCESS.equals(jedis.set(lockKey, requestId, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, timeUnit.toMillis(expireTime)));
+        JedisConnection connection = jedisConnectionFactory.getConnection();
+        Jedis jedis = connection.getNativeConnection();
+        boolean result = LOCK_SUCCESS.equals(jedis.set(lockKey, requestId, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, timeUnit.toMillis(expireTime)));
+        connection.close();
+        return result;
     }
 
     /**
@@ -48,6 +57,10 @@ public class RedisLock {
     public boolean releaseLock(String lockKey, String requestId) {
         // Lua代码，一次性执行保证原子性，避免并发问题
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-        return RELEASE_SUCCESS.equals(jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId)));
+        JedisConnection connection = jedisConnectionFactory.getConnection();
+        Jedis jedis = connection.getNativeConnection();
+        boolean result = RELEASE_SUCCESS.equals(jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId)));
+        connection.close();
+        return result;
     }
 }

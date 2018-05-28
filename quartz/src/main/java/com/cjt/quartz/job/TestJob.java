@@ -13,6 +13,6 @@ public class TestJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.error("测试任务执行");
+        logger.info("测试任务执行");
     }
 }
