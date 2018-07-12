@@ -6,10 +6,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author caojiantao
@@ -21,12 +18,9 @@ public class QuartzJobManager {
 
     private final Scheduler scheduler;
 
-    private final ApplicationContext context;
-
     @Autowired
-    public QuartzJobManager(Scheduler scheduler, ApplicationContext context) {
+    public QuartzJobManager(Scheduler scheduler) {
         this.scheduler = scheduler;
-        this.context = context;
     }
 
     /**
@@ -67,7 +61,7 @@ public class QuartzJobManager {
                 pauseJob(job);
             }
         } catch (SchedulerException | ClassNotFoundException e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
+            logger.error(job.getJobClass() + "添加报错：" + ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -78,7 +72,7 @@ public class QuartzJobManager {
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
+            logger.error(job.getJobClass() + "暂停报错：" + ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -89,33 +83,31 @@ public class QuartzJobManager {
         try {
             scheduler.resumeTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
         } catch (SchedulerException e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
+            logger.error(job.getJobClass() + "继续报错：" + ExceptionUtils.getStackTrace(e));
         }
     }
 
     /**
      * 移除定时任务
      */
-    public void removeJob(Quartz job) {
+    public void removeJob(Quartz quartz) {
         try {
-            scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
-            scheduler.unscheduleJob(TriggerKey.triggerKey(job.getName(), job.getGroup()));
+            scheduler.pauseTrigger(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
+            scheduler.unscheduleJob(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
         } catch (SchedulerException e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
+            logger.error(quartz.getJobClass() + "移除报错：" + ExceptionUtils.getStackTrace(e));
         }
     }
 
     /**
-     * 执行定时任务
+     * 手动执行定时任务
      */
-    public boolean executeJob(String clazz) {
+    public boolean executeJob(Quartz quartz) {
         try {
-            Class<?> jobClass = Class.forName(clazz);
-            Object job = context.getBean(jobClass);
-            jobClass.getDeclaredMethod("execute", JobExecutionContext.class).invoke(job, (Object) null);
+            scheduler.triggerJob(new JobKey(quartz.getName(), quartz.getGroup()));
             return true;
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
+        } catch (SchedulerException e) {
+            logger.error(quartz.getJobClass() + "手动执行报错：" + ExceptionUtils.getStackTrace(e));
             return false;
         }
     }
