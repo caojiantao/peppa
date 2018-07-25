@@ -30,18 +30,15 @@ public class TokenService {
     @Value("${token_maxAge}")
     private long maxAge;
 
-    @Value("${token_username}")
-    private String tokenUsername;
-
     /**
      * 生成token（注意注意：key为exp必须为非负数！！！）
      */
-    public String getToken(String username, boolean rememberMe) {
+    public String getToken(int id, boolean rememberMe) {
         String token = "";
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTCreator.Builder builder = JWT.create();
-            builder.withClaim(tokenUsername, username);
+            builder.withClaim("userId", id);
             if (rememberMe) {
                 builder.withExpiresAt(new Date(System.currentTimeMillis() + maxAge));
             }
@@ -55,18 +52,18 @@ public class TokenService {
     /**
      * 解析token，得到username
      */
-    public String parseToken(String token) {
-        String username = "";
+    public int parseToken(String token) {
+        int userId = 0;
         if (StringUtils.isNotBlank(token)) {
             try {
                 Algorithm algorithm = Algorithm.HMAC256(secret);
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT jwt = verifier.verify(token);
-                username = jwt.getClaim(tokenUsername).asString();
+                userId = jwt.getClaim("userId").asInt();
             } catch (JWTVerificationException | UnsupportedEncodingException e) {
                 logger.error(ExceptionUtils.getStackTrace(e));
             }
         }
-        return username;
+        return userId;
     }
 }

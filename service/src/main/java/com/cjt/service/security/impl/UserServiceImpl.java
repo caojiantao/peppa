@@ -1,26 +1,19 @@
 package com.cjt.service.security.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.auth0.jwt.algorithms.Algorithm;
+import com.caojiantao.common.encrypt.Md5Utils;
 import com.caojiantao.common.util.JsonUtils;
 import com.cjt.dao.security.IUserDAO;
 import com.cjt.dao.security.IUserRolesDao;
 import com.cjt.entity.dto.UserDTO;
 import com.cjt.entity.model.security.User;
 import com.cjt.service.security.IUserService;
-import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -30,8 +23,6 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements IUserService {
-
-    private final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
     private final IUserDAO userDAO;
 
@@ -47,17 +38,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * 对密码进行加密
+     * 对密码进行MD5私盐不可逆加密
      */
     private String encryptPassword(String password) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(passwordSecret);
-            byte[] bytes = algorithm.sign(password.getBytes(CharEncoding.UTF_8));
-            return Hex.encodeHexString(bytes);
-        } catch (UnsupportedEncodingException e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
-            return null;
-        }
+        return Md5Utils.md5(password, passwordSecret);
     }
 
     @Override

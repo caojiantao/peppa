@@ -2,16 +2,13 @@ package com.cjt.admin.controller.security;
 
 import com.cjt.admin.controller.BaseController;
 import com.cjt.entity.dto.UserDTO;
-import com.cjt.entity.model.security.Menu;
 import com.cjt.entity.model.security.User;
 import com.cjt.service.security.IMenuService;
 import com.cjt.service.security.IRoleService;
 import com.cjt.service.security.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -35,34 +32,19 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public Object getUser(@PathVariable("id") Long id, HttpServletResponse response) {
-        User user = userService.getUserByUserId(id);
-        if (user == null) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return NOT_FOUND;
-        }
-        return user;
+    public Object getUser(@PathVariable("id") Long id) {
+        return userService.getUserByUserId(id);
     }
 
     @GetMapping("/{id}/menus")
-    public Object getUserMenu(@PathVariable("id") Long id, HttpServletResponse response) {
-        List<Menu> menus = menuService.listMenuByUserId(id);
-        if (menus == null) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return NOT_FOUND;
-        }
-        return menus;
+    public Object getUserMenu(@PathVariable("id") Long id) {
+        return success("操作成功", menuService.listMenuByUserId(id));
     }
 
-    @GetMapping(value = {"", "/"})
-    public Object getUser(UserDTO userDTO, HttpServletResponse response) {
+    @GetMapping("")
+    public Object getUser(UserDTO userDTO) {
         if ((userDTO.getStart() == null) && (userDTO.getOffset() == null)) {
-            List<User> users = userService.getUserByDTO(userDTO);
-            if (users == null || users.isEmpty()) {
-                response.setStatus(HttpStatus.NOT_FOUND.value());
-                return NOT_FOUND;
-            }
-            return users;
+            return userService.getUserByDTO(userDTO);
         }
         // 分页获取
         return userService.listUserByPage(userDTO);
@@ -74,33 +56,18 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("")
-    public Object saveUser(User user, @RequestParam("roleIds") List<Integer> roleIds, HttpServletResponse response) {
-        if (userService.saveUser(user, roleIds)) {
-            response.setStatus(HttpServletResponse.SC_CREATED);
-            return user;
-        }
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        return OPERATION_FAILED;
+    public Object saveUser(User user, @RequestParam("roleIds") List<Integer> roleIds) {
+        return userService.saveUser(user, roleIds) ? success("操作成功", user) : failure("操作失败请重试");
 
     }
 
-    @PutMapping(value = {"", "/"})
-    public Object updateUser(User user, @RequestParam("roleIds") List<Integer> roleIds, HttpServletResponse response) {
-        if (userService.updateUser(user, roleIds)) {
-            return user;
-        }
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        return OPERATION_FAILED;
-
+    @PutMapping("")
+    public Object updateUser(User user, @RequestParam("roleIds") List<Integer> roleIds) {
+        return userService.updateUser(user, roleIds) ? success("操作成功", user) : failure("操作失败请重试");
     }
 
     @DeleteMapping("/{id}")
-    public Object removeUserById(@PathVariable("id") long id, HttpServletResponse response) {
-        if (userService.removeUserById(id)) {
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            return null;
-        }
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        return OPERATION_FAILED;
+    public Object removeUserById(@PathVariable("id") long id) {
+        return userService.removeUserById(id) ? success("操作成功") : failure("操作失败请重试");
     }
 }

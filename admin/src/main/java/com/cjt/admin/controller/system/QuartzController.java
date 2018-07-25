@@ -5,10 +5,9 @@ import com.cjt.entity.dto.QuartzDTO;
 import com.cjt.entity.dto.ResultDTO;
 import com.cjt.entity.model.system.Quartz;
 import com.cjt.quartz.IQuartzService;
+import org.quartz.CronExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author caojiantao
@@ -30,44 +29,43 @@ public class QuartzController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public Object getQuartzById(@PathVariable("id") int id, HttpServletResponse response) {
-        Quartz quartz = quartzService.getQuartzById(id);
-        if (quartz == null) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
-        return quartz;
+    public Object getQuartzById(@PathVariable("id") int id) {
+        return quartzService.getQuartzById(id);
     }
 
     @PostMapping("")
-    public Object saveQuartz(Quartz quartz, HttpServletResponse response) {
-        if (quartzService.saveQuartz(quartz)) {
-            response.setStatus(HttpServletResponse.SC_CREATED);
-            return quartz;
+    public Object saveQuartz(Quartz quartz) {
+        if (CronExpression.isValidExpression(quartz.getCronExpre())) {
+            if (quartzService.saveQuartz(quartz)) {
+                return success("操作成功", quartz);
+            } else {
+                return failure("操作失败请重试");
+            }
+        } else {
+            return failure("时间表达式不合法");
         }
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        return "添加定时任务失败";
     }
 
     @PutMapping("")
-    public Object updateQuartz(Quartz quartz, HttpServletResponse response) {
-        if (quartzService.updateQuartz(quartz)) {
-            return quartz;
+    public Object updateQuartz(Quartz quartz) {
+        if (CronExpression.isValidExpression(quartz.getCronExpre())) {
+            if (quartzService.updateQuartz(quartz)) {
+                return success("操作成功", quartz);
+            } else {
+                return failure("操作失败请重试");
+            }
+        } else {
+            return failure("时间表达式不合法");
         }
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        return "更新定时任务失败";
     }
 
     @DeleteMapping("/{id}")
-    public Object removeQuartz(@PathVariable("id") int id, HttpServletResponse response) {
-        if (quartzService.removeQuartzById(id)) {
-            return null;
-        }
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        return "删除定时任务失败";
+    public Object removeQuartz(@PathVariable("id") int id) {
+        return quartzService.removeQuartzById(id) ? success("操作成功") : failure("操作失败请重试");
     }
 
     @PostMapping("/executeQuartzById")
     public ResultDTO executeQuartzById(int id) {
-        return quartzService.executeQuartzById(id) ? success("执行成功") : failure("执行失败");
+        return quartzService.executeQuartzById(id) ? success("操作成功") : failure("操作失败请重试");
     }
 }

@@ -44,17 +44,17 @@ public class DictionaryController extends BaseController {
 
     @PostMapping("/saveDictSet")
     public ResultDTO saveDictSet(DictSet set) {
-        return dictionaryService.saveDictSet(set) ? success("保存字典集成功") : failure("保存字典集失败");
+        return dictionaryService.saveDictSet(set) ? success("操作成功", set) : failure("操作失败请重试");
     }
 
     @PostMapping("/updateDictSet")
     public ResultDTO updateDictSet(DictSet set) {
-        return dictionaryService.updateDictSet(set) ? success("更新字典集成功") : failure("更新字典集失败");
+        return dictionaryService.updateDictSet(set) ? success("操作成功", set) : failure("操作失败请重试");
     }
 
     @PostMapping("/removeDictSetById")
     public ResultDTO removeDictSetById(int id) {
-        return dictionaryService.removeDictSetById(id) ? success("删除字典集成功") : failure("删除字典集失败");
+        return dictionaryService.removeDictSetById(id) ?  success("操作成功") : failure("操作失败请重试");
     }
 
     @GetMapping("/listDictValueByPage")
@@ -71,17 +71,17 @@ public class DictionaryController extends BaseController {
 
     @PostMapping("/saveDictValue")
     public ResultDTO saveDictValue(DictValue value) {
-        return dictionaryService.saveDictValue(value) ? success("保存字典值成功") : failure("保存字典值失败");
+        return dictionaryService.saveDictValue(value) ? success("操作成功", value) : failure("操作失败请重试");
     }
 
     @PostMapping("/updateDictValue")
     public ResultDTO updateDictValue(DictValue value) {
-        return dictionaryService.updateDictValue(value) ? success("更新字典值成功") : failure("更新字典值失败");
+        return dictionaryService.updateDictValue(value) ? success("操作成功", value) : failure("操作失败请重试");
     }
 
     @PostMapping("/removeDictValueById")
     public ResultDTO removeDictValueById(int id) {
-        return dictionaryService.removeDictValueById(id) ? success("删除字典值成功") : failure("删除字典值失败");
+        return dictionaryService.removeDictValueById(id) ? success("操作成功") : failure("操作失败请重试");
     }
 
     @RequestMapping("/listDictSetOpt")

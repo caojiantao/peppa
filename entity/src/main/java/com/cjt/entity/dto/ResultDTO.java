@@ -1,40 +1,16 @@
 package com.cjt.entity.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /**
  * @author caojiantao
  */
-public class ResultDTO {
+@Data
+@AllArgsConstructor
+public class ResultDTO<T> {
 
     private Boolean success;
-
+    private T data;
     private String msg;
-
-    public ResultDTO(Boolean success, String msg) {
-        this.success = success;
-        this.msg = msg;
-    }
-
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    @Override
-    public String toString() {
-        return "ResultDTO{" +
-                "success=" + success +
-                ", msg='" + msg + '\'' +
-                '}';
-    }
 }

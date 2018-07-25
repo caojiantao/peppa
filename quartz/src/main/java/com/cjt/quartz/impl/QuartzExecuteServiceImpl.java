@@ -21,7 +21,6 @@ public class QuartzExecuteServiceImpl implements IQuartzExecuteService {
     @Override
     public boolean saveExecute(String jobClass) {
         try {
-            // 依靠唯一性索引解决定时任务集群部署问题
             executeDAO.saveExecute(jobClass);
         } catch (Exception e) {
             return false;

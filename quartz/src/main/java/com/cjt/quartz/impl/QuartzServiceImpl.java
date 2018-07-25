@@ -96,7 +96,7 @@ public class QuartzServiceImpl implements IQuartzService, InitializingBean {
     public boolean removeQuartzById(int id) {
         Quartz quartz = quartzDao.getQuartzById(id);
         if (quartzDao.removeQuartzById(id) > 0) {
-            quartzJobManager.removeJob(quartz);
+            quartzJobManager.removeQuartz(quartz);
         }
         return false;
     }

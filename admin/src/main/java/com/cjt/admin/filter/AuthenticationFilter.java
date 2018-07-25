@@ -1,6 +1,13 @@
 package com.cjt.admin.filter;
 
+import com.alibaba.fastjson.JSON;
+import com.caojiantao.common.util.CollectionUtils;
+import com.cjt.entity.dto.ResultDTO;
+import com.cjt.entity.model.security.Role;
 import com.cjt.service.TokenService;
+import com.cjt.service.security.IRoleService;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +18,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,13 +28,18 @@ import java.util.List;
  */
 public class AuthenticationFilter implements Filter {
 
-    private static final String TOKEN_HEADER_NAME = "X-Token";
-
-    private String tokenName = TOKEN_HEADER_NAME;
-
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private IRoleService roleService;
+
+    @Getter
+    @Setter
+    private String tokenName;
+
+    @Getter
+    @Setter
     private List<String> excludePaths;
 
     @Override
@@ -39,13 +52,12 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         setCors(httpResponse);
+        // 请求过滤
         if (isExcluded(httpRequest) || isPreflight(httpRequest) || isValidRequest(httpRequest)) {
             chain.doFilter(request, response);
         } else {
-            String errorMsg = "无权访问";
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpResponse.setContentType("application/json;charset=utf-8");
-            httpResponse.getWriter().write(errorMsg);
+            httpResponse.getWriter().write(JSON.toJSONString(new ResultDTO<>(false, null, "无权访问")));
         }
     }
 
@@ -67,7 +79,7 @@ public class AuthenticationFilter implements Filter {
      * 是否不进行处理
      */
     private boolean isExcluded(HttpServletRequest request) {
-        if (excludePaths != null && !excludePaths.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(excludePaths)) {
             String requestUrl = request.getRequestURI();
             PathMatcher matcher = new AntPathMatcher();
             for (String excludePath : excludePaths) {
@@ -88,27 +100,15 @@ public class AuthenticationFilter implements Filter {
     }
 
     /**
-     * 是否为合法请求，具备有效认证头header
+     * 是否为合法请求，具备有效认证头header，且当前账号权限正常
      */
     private boolean isValidRequest(HttpServletRequest request) {
         String tokenStr = request.getHeader(tokenName);
-        String username = tokenService.parseToken(tokenStr);
-        return StringUtils.isNotBlank(username);
-    }
-
-    public List<String> getExcludePaths() {
-        return excludePaths;
-    }
-
-    public void setExcludePaths(List<String> excludePaths) {
-        this.excludePaths = excludePaths;
-    }
-
-    public String getTokenName() {
-        return tokenName;
-    }
-
-    public void setTokenName(String tokenName) {
-        this.tokenName = tokenName;
+        int userId = tokenService.parseToken(tokenStr);
+        if (userId != 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

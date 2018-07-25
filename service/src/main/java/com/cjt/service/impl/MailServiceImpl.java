@@ -39,7 +39,7 @@ public class MailServiceImpl implements IMailService {
     }
 
     @Override
-    public boolean sendEmailByVelocityEngine(String subject, String[] toAddrs, Map<String, Object> modelMap) {
+    public boolean sendEmailByTemplate(String subject, String[] toAddrs, Map<String, Object> modelMap) {
         try {
             Template template = freeMarkerConfig.getConfiguration().getTemplate(templateName);
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, modelMap);

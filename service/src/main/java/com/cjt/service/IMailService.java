@@ -15,5 +15,5 @@ public interface IMailService {
      * @param modelMap vm渲染参数map
      * @return 发送邮件成功状态
      */
-    boolean sendEmailByVelocityEngine(String subject, String[] toAddrs, Map<String, Object> modelMap);
+    boolean sendEmailByTemplate(String subject, String[] toAddrs, Map<String, Object> modelMap);
 }

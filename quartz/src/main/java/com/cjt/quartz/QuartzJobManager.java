@@ -27,19 +27,20 @@ public class QuartzJobManager {
      * 添加定时任务
      */
     @SuppressWarnings("unchecked")
-    public void addJob(Quartz job) {
+    public void addJob(Quartz quartz) {
         // 根据name和group获取trigger key，判断是否已经存在该trigger
-        TriggerKey triggerKey = TriggerKey.triggerKey(job.getName(), job.getGroup());
+        TriggerKey triggerKey = TriggerKey.triggerKey(quartz.getName(), quartz.getGroup());
         try {
             Trigger trigger = scheduler.getTrigger(triggerKey);
             if (trigger == null) {
-                // 新建一个job
-                JobDetail jobDetail = JobBuilder.newJob((Class<? extends Job>) Class.forName(job.getJobClass()))
-                        .withIdentity(job.getName(), job.getGroup())
-                        .withDescription(job.getDesc())
+                // 新建一个job，并将ID作为携带数据
+                JobDetail jobDetail = JobBuilder.newJob((Class<? extends Job>) Class.forName(quartz.getJobClass()))
+                        .withIdentity(quartz.getName(), quartz.getGroup())
+                        .withDescription(quartz.getDesc())
+                        .usingJobData("id", quartz.getId())
                         .build();
                 // 新建一个trigger
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpre())
+                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartz.getCronExpre())
                         // 定时任务错过处理策略，避免resume时再次执行trigger
                         .withMisfireHandlingInstructionDoNothing();
                 trigger = TriggerBuilder.newTrigger()
@@ -49,7 +50,7 @@ public class QuartzJobManager {
                 // scheduler设置job和trigger
                 scheduler.scheduleJob(jobDetail, trigger);
             } else {
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpre())
+                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartz.getCronExpre())
                         .withMisfireHandlingInstructionDoNothing();
                 TriggerBuilder builder = trigger.getTriggerBuilder().withIdentity(triggerKey);
                 trigger = builder.withSchedule(scheduleBuilder).build();
@@ -57,45 +58,49 @@ public class QuartzJobManager {
                 scheduler.rescheduleJob(triggerKey, trigger);
             }
             // job状态暂停
-            if (!job.getStatus()) {
-                pauseJob(job);
+            if (!quartz.getStatus()) {
+                pauseJob(quartz);
             }
         } catch (SchedulerException | ClassNotFoundException e) {
-            logger.error(job.getJobClass() + "添加报错：" + ExceptionUtils.getStackTrace(e));
+            logger.error(quartz.getJobClass() + "添加报错：" + ExceptionUtils.getStackTrace(e));
         }
     }
 
     /**
      * 暂停定时任务
      */
-    public void pauseJob(Quartz job) {
+    public void pauseJob(Quartz quartz) {
         try {
-            scheduler.pauseTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
+            scheduler.pauseTrigger(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
         } catch (SchedulerException e) {
-            logger.error(job.getJobClass() + "暂停报错：" + ExceptionUtils.getStackTrace(e));
+            logger.error(quartz.getJobClass() + "暂停报错：" + ExceptionUtils.getStackTrace(e));
         }
     }
 
     /**
      * 继续定时任务
      */
-    public void resumeJob(Quartz job) {
+    public void resumeJob(Quartz quartz) {
         try {
-            scheduler.resumeTrigger(TriggerKey.triggerKey(job.getName(), job.getGroup()));
+            scheduler.resumeTrigger(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
         } catch (SchedulerException e) {
-            logger.error(job.getJobClass() + "继续报错：" + ExceptionUtils.getStackTrace(e));
+            logger.error(quartz.getJobClass() + "继续报错：" + ExceptionUtils.getStackTrace(e));
         }
     }
 
     /**
      * 移除定时任务
      */
-    public void removeJob(Quartz quartz) {
+    public void removeQuartz(Quartz quartz) {
+        removeQuartz(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
+    }
+
+    public void removeQuartz(TriggerKey key) {
         try {
-            scheduler.pauseTrigger(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
-            scheduler.unscheduleJob(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
+            scheduler.pauseTrigger(key);
+            scheduler.unscheduleJob(key);
         } catch (SchedulerException e) {
-            logger.error(quartz.getJobClass() + "移除报错：" + ExceptionUtils.getStackTrace(e));
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
 
