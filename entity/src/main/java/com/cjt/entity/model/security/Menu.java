@@ -15,4 +15,5 @@ public class Menu {
     private Integer parentId;
     private String href;
     private String iconClass;
+    private Integer order;
 }

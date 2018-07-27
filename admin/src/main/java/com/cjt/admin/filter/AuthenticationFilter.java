@@ -72,7 +72,7 @@ public class AuthenticationFilter implements Filter {
     private void setCors(HttpServletResponse response) {
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "*");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "X-Token");
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*");
     }
 
     /**

@@ -28,6 +28,10 @@ public class BaseController {
         return new ResultDTO<>(true, null, msg);
     }
 
+    protected <T> ResultDTO success(T data) {
+        return new ResultDTO<>(true, data, "操作成功");
+    }
+
     protected <T> ResultDTO success(String msg, T data) {
         return new ResultDTO<>(true, data, msg);
     }

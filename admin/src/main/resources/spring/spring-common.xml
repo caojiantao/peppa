@@ -54,6 +54,10 @@
                 <property name="fastJsonConfig" ref="fastJsonConfig"/>
             </bean>
         </mvc:message-converters>
+        <!-- 自定义入参绑定 -->
+        <mvc:argument-resolvers>
+            <bean class="com.cjt.admin.resolve.EntityArgumentResolver"/>
+        </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
     <!-- 注解扫描，基础包配置 -->

@@ -50,7 +50,7 @@ public class TokenService {
     }
 
     /**
-     * 解析token，得到username
+     * 解析token，得到userId
      */
     public int parseToken(String token) {
         int userId = 0;

@@ -50,14 +50,6 @@ public interface IMenuService {
     boolean saveMenu(Menu menu);
 
     /**
-     * 修改菜单信息
-     *
-     * @param menu 修改的菜单信息
-     * @return 成功与否
-     */
-    boolean updateMenu(Menu menu);
-
-    /**
      * 删除指定ID的菜单
      *
      * @param id 菜单ID

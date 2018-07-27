@@ -3,52 +3,49 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.security.IMenuDAO">
 
-    <resultMap id="menuMap" type="com.cjt.entity.model.security.Menu">
-        <id column="id" property="id"/>
-        <result column="name" property="name"/>
-        <result column="parent_id" property="parentId"/>
-        <result column="href" property="href"/>
-        <result column="icon_class" property="iconClass"/>
-    </resultMap>
-
-    <sql id="selectMenu">
+    <select id="getById" resultType="com.cjt.entity.model.security.Menu">
         SELECT
-        `id`,
-        `name`,
-        parent_id,
-        href,
-        icon_class
+            id,
+            name,
+            parent_id  AS parentId,
+            href,
+            icon_class AS iconClass,
+            `order`
         FROM menu
-    </sql>
-
-    <select id="getMenuById" resultMap="menuMap">
-        <include refid="selectMenu"/>
         WHERE id = #{id}
     </select>
 
-    <insert id="saveMenu" parameterType="com.cjt.entity.model.security.Menu"
+    <insert id="insert" parameterType="com.cjt.entity.model.security.Menu"
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`)
-        VALUES (#{name}, #{parentId}, #{href}, #{iconClass})
+        INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`, `order`)
+        VALUES (#{name}, #{parentId}, #{href}, #{iconClass}, #{order})
     </insert>
 
-    <update id="updateMenu" parameterType="com.cjt.entity.model.security.Menu">
+    <update id="updateById" parameterType="com.cjt.entity.model.security.Menu">
         UPDATE menu
         <trim prefix="SET" suffix="WHERE id = #{id}">
             `name` = #{name},
             `parent_id` = #{parentId},
             `href` = #{href},
-            `icon_class` = #{iconClass}
+            `icon_class` = #{iconClass},
+            `order` = #{order}
         </trim>
     </update>
 
-    <delete id="removeMenuById" parameterType="int">
+    <delete id="deleteById" parameterType="int">
         DELETE FROM menu
         WHERE `id` = #{id}
     </delete>
 
-    <select id="listMenuByRoleIds" resultMap="menuMap" parameterType="list">
-        <include refid="selectMenu"/>
+    <select id="listMenuByRoleIds" resultType="com.cjt.entity.model.security.Menu" parameterType="list">
+        SELECT
+        id,
+        name,
+        parent_id AS parentId,
+        href,
+        icon_class AS iconClass,
+        `order`
+        FROM menu
         <if test="list!=null">
             WHERE id IN
             (
@@ -59,5 +56,6 @@
             </foreach>
             )
         </if>
+        ORDER BY `order`
     </select>
 </mapper>

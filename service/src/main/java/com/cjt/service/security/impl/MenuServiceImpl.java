@@ -60,23 +60,21 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public Menu getMenuById(int id) {
-        return menuDAO.getMenuById(id);
+        return menuDAO.getById(id);
     }
 
     @Override
     public boolean saveMenu(Menu menu) {
-        menuDAO.saveMenu(menu);
-        return menu.getId() > 0;
-    }
-
-    @Override
-    public boolean updateMenu(Menu menu) {
-        return menuDAO.updateMenu(menu) > 0;
+        if (menu.getId() == null){
+            menuDAO.insert(menu);
+            return menu.getId() > 0;
+        } else {
+            return menuDAO.updateById(menu) > 0;
+        }
     }
 
     @Override
     public boolean removeMenuById(int id) {
-        return menuDAO.removeMenuById(id) > 0;
+        return menuDAO.deleteById(id) > 0;
     }
-
 }
