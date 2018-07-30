@@ -1,6 +1,8 @@
 package com.cjt.entity.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户信息DTO
@@ -8,30 +10,24 @@ import lombok.Data;
  * @author caojiantao
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO extends BasePageDTO {
 
-    private Long id;
+    private Integer id;
     private String username;
     private String password;
-
-    private UserDTO(long id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
 
     /**
      * 构造器模式，方便拓展参数
      */
     public static class Builder {
 
-        private long id;
-
+        private int id;
         private String username;
-
         private String password;
 
-        public Builder id(long id) {
+        public Builder id(int id) {
             this.id = id;
             return this;
         }
@@ -49,14 +45,5 @@ public class UserDTO extends BasePageDTO {
         public UserDTO build() {
             return new UserDTO(id, username, password);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @author caojiantao
  */
 @RestController
-@RequestMapping("/system/security/menus")
+@RequestMapping("/system/security/menu")
 public class MenuController extends BaseController {
 
     private final IMenuService menuService;
@@ -21,18 +21,18 @@ public class MenuController extends BaseController {
         this.menuService = menuService;
     }
 
-    @GetMapping("/{id}")
-    public Object getById(@PathVariable("id") int id) {
+    @GetMapping("/getMenuById")
+    public Object getMenuById(int id) {
         return success(menuService.getMenuById(id));
     }
 
-    @GetMapping("")
-    public Object list() {
-        return success(menuService.listMenu());
+    @GetMapping("/getMenus")
+    public Object getMenus() {
+        return success(menuService.getMenus());
     }
 
-    @PostMapping("")
-    public Object save(Menu menu) {
+    @PostMapping("/saveMenu")
+    public Object saveMenu(Menu menu) {
         // 字段校验
         if (StringUtils.isBlank(menu.getName())) {
             return failure("菜单名称不能为空");
@@ -44,8 +44,13 @@ public class MenuController extends BaseController {
         return menuService.saveMenu(menu) ? success("操作成功", menu) : failure("操作失败请重试");
     }
 
-    @PostMapping("/delete")
-    public Object deleteById(int id) {
-        return menuService.removeMenuById(id) ? success("操作成功") : failure("操作失败请重试");
+    @PostMapping("/deleteMenuById")
+    public Object deleteMenuById(int id) {
+        return menuService.deleteMenuById(id) ? success("操作成功") : failure("操作失败请重试");
+    }
+
+    @GetMapping("/getMenusByUserId")
+    public Object getMenusByUserId(int userId) {
+        return success(menuService.getMenusByUserId(userId));
     }
 }

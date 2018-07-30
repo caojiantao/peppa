@@ -1,26 +1,24 @@
 package com.cjt.admin.controller;
 
 import com.cjt.entity.dto.ResultDTO;
+import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author caojiantao
  */
+@Log4j
 public class BaseController {
 
-    private Logger logger = LogManager.getLogger(BaseController.class);
-
     /**
-     * 采用注解方式统一处理服务器未捕获异常（500：服务器内部错误）
+     * 采用注解方式统一处理服务器未捕获异常
      */
     @ExceptionHandler
     @ResponseBody
     public Object handleException(Exception ex) {
-        logger.error(ExceptionUtils.getStackTrace(ex));
+        log.error(ExceptionUtils.getStackTrace(ex));
         return failure("系统异常");
     }
 

@@ -1,8 +1,7 @@
 package com.cjt.service.security.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.caojiantao.common.encrypt.Md5Utils;
-import com.caojiantao.common.util.JsonUtils;
+import com.caojiantao.common.util.CollectionUtils;
 import com.cjt.dao.security.IUserDAO;
 import com.cjt.dao.security.IUserRolesDao;
 import com.cjt.entity.dto.UserDTO;
@@ -50,9 +49,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User getUserByUserId(long userId) {
+    public User getUserById(int id) {
         UserDTO.Builder builder = new UserDTO.Builder();
-        List<User> users = getUserByDTO(builder.id(userId).build());
+        List<User> users = getUsers(builder.id(id).build());
         if (users == null || users.isEmpty()) {
             return null;
         } else {
@@ -61,15 +60,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> getUserByDTO(UserDTO userDto) {
-        return userDAO.getUserByDTO(userDto);
+    public List<User> getUsers(UserDTO userDTO) {
+        return userDAO.getDatas(userDTO);
     }
 
     @Override
-    public JSONObject listUserByPage(UserDTO userDTO) {
-        List<User> users = userDAO.listUser(userDTO);
-        int total = userDAO.countUser(userDTO);
-        return JsonUtils.toPageData(users, total);
+    public int getUsersTotal(UserDTO userDTO) {
+        return userDAO.getDatasTotal(userDTO);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -78,26 +75,21 @@ public class UserServiceImpl implements IUserService {
         if (StringUtils.isNotBlank(user.getPassword())) {
             user.setPassword(encryptPassword(user.getPassword()));
         }
-        userDAO.saveUser(user);
-        if (!roleIds.isEmpty()) {
+        if (user.getId() == null){
+            userDAO.insert(user);
+            if (CollectionUtils.isNotEmpty(roleIds)) {
+                userRolesDao.saveUserRoles(user.getId(), roleIds);
+            }
+            return user.getId() > 0;
+        } else {
+            userRolesDao.removeUserRoles(user.getId());
             userRolesDao.saveUserRoles(user.getId(), roleIds);
+            return userDAO.updateById(user) > 0;
         }
-        return user.getId() > 0;
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public boolean updateUser(User user, List<Integer> roleIds) {
-        if (StringUtils.isNotBlank(user.getPassword())) {
-            user.setPassword(encryptPassword(user.getPassword()));
-        }
-        userRolesDao.removeUserRoles(user.getId());
-        userRolesDao.saveUserRoles(user.getId(), roleIds);
-        return userDAO.updateUser(user) > 0;
     }
 
     @Override
-    public boolean removeUserById(Long id) {
-        return userDAO.removeUserById(id) > 0;
+    public boolean deleteUserById(int id) {
+        return userDAO.deleteById(id) > 0;
     }
 }

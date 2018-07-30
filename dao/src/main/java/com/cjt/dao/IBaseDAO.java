@@ -46,7 +46,7 @@ public interface IBaseDAO<T, Q> {
      * @param q 查询条件
      * @return 数据对象集合
      */
-    List<T> getList(Q q);
+    List<T> getDatas(Q q);
 
     /**
      * 获取指定查询条件的数据对象集合大小
@@ -54,5 +54,5 @@ public interface IBaseDAO<T, Q> {
      * @param q 查询条件
      * @return 数据对象集合大小
      */
-    int getListCount(Q q);
+    int getDatasTotal(Q q);
 }

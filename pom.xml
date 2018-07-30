@@ -211,7 +211,7 @@
             </activation>
             <properties>
                 <profiles.active>dev</profiles.active>
-                <log.level>info</log.level>
+                <log.level>debugger</log.level>
                 <log.path>${user.home}/logs</log.path>
             </properties>
         </profile>

@@ -37,7 +37,7 @@
         WHERE `id` = #{id}
     </delete>
 
-    <select id="listMenuByRoleIds" resultType="com.cjt.entity.model.security.Menu" parameterType="list">
+    <select id="getMenusByRoleIds" resultType="com.cjt.entity.model.security.Menu" parameterType="list">
         SELECT
         id,
         name,
@@ -46,7 +46,7 @@
         icon_class AS iconClass,
         `order`
         FROM menu
-        <if test="list!=null">
+        <if test="list!=null and list.size()>0">
             WHERE id IN
             (
             SELECT DISTINCT menu_id FROM role_menus

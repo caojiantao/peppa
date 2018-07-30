@@ -19,7 +19,7 @@
         </trim>
     </update>
 
-    <select id="getList" resultType="com.cjt.entity.model.security.Role" parameterType="com.cjt.entity.dto.RoleDTO">
+    <select id="getDatas" resultType="com.cjt.entity.model.security.Role" parameterType="com.cjt.entity.dto.RoleDTO">
         SELECT
         `id`,
         `name`
@@ -33,12 +33,12 @@
         </if>
     </select>
 
-    <select id="getListCount" resultType="int" parameterType="com.cjt.entity.dto.RoleDTO">
+    <select id="getDatasTotal" resultType="int" parameterType="com.cjt.entity.dto.RoleDTO">
         SELECT COUNT(*)
+        FROM role
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="name!=null and name!=''">AND `name` like CONCAT('%',#{name},'%')</if>
         </trim>
-        FROM role
     </select>
 
     <select id="getById" resultType="com.cjt.entity.model.security.Role" parameterType="int">
@@ -50,7 +50,7 @@
         WHERE id = #{id}
     </select>
 
-    <select id="listRoleByUserId" resultType="com.cjt.entity.model.security.Role" parameterType="int">
+    <select id="getRolesByUserId" resultType="com.cjt.entity.model.security.Role" parameterType="int">
         SELECT
             `id`,
             `name`

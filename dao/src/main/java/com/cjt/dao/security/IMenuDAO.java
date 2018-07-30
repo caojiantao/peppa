@@ -16,5 +16,5 @@ public interface IMenuDAO extends IBaseDAO<Menu, Object>{
      * @param roleIds 角色ID结合
      * @return 菜单集合
      */
-    List<Menu> listMenuByRoleIds(List<Integer> roleIds);
+    List<Menu> getMenusByRoleIds(List<Integer> roleIds);
 }

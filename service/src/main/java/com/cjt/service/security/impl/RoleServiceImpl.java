@@ -6,15 +6,12 @@ import com.cjt.dao.security.IMenuDAO;
 import com.cjt.dao.security.IRoleDAO;
 import com.cjt.dao.security.IRoleMenusDAO;
 import com.cjt.entity.dto.RoleDTO;
-import com.cjt.entity.model.security.Menu;
 import com.cjt.entity.model.security.Role;
 import com.cjt.service.security.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,21 +34,23 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public List<Role> listRoleByUserId(long userId) {
-        return roleDAO.listRoleByUserId(userId);
+    public List<Role> getRolesByUserId(int userId) {
+        return roleDAO.getRolesByUserId(userId);
     }
 
     @Override
-    public JSONObject listRoleByPage(RoleDTO roleDTO) {
-        List<Role> roles = roleDAO.getList(roleDTO);
-        int total = roleDAO.getListCount(roleDTO);
-        return JsonUtils.toPageData(roles, total);
+    public List<Role> getRoles(RoleDTO roleDTO) {
+        return roleDAO.getDatas(roleDTO);
+    }
+
+    @Override
+    public int getRolesTotal(RoleDTO dto) {
+        return roleDAO.getDatasTotal(dto);
     }
 
     @Override
     public Role getRoleById(int id) {
-        Role role = roleDAO.getById(id);
-        return role;
+        return roleDAO.getById(id);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -70,7 +69,7 @@ public class RoleServiceImpl implements IRoleService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean removeRole(int id) {
+    public boolean deleteRoleById(int id) {
         roleMenusDAO.removeRoleMenus(id);
         return roleDAO.deleteById(id) > 0;
     }

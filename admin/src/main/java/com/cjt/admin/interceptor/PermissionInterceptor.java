@@ -33,8 +33,8 @@ public class PermissionInterceptor implements HandlerInterceptor {
             if (method.isAnnotationPresent(Permissions.class)) {
                 Permissions permissions = method.getAnnotation(Permissions.class);
                 String[] permissionRoleNames = permissions.value();
-                long userId = Long.parseLong(String.valueOf(httpServletRequest.getAttribute("userId")));
-                List<Role> roles = roleService.listRoleByUserId(userId);
+                int userId = Integer.parseInt(String.valueOf(httpServletRequest.getAttribute("userId")));
+                List<Role> roles = roleService.getRolesByUserId(userId);
                 if (roles != null && !roles.isEmpty()) {
                     List<String> userRoleNames = new ArrayList<>();
                     for (Role role : roles) {

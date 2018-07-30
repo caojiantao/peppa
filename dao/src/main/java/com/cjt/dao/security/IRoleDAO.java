@@ -17,5 +17,5 @@ public interface IRoleDAO extends IBaseDAO<Role, RoleDTO> {
      * @param userId 用户ID
      * @return 角色集合
      */
-    List<Role> listRoleByUserId(long userId);
+    List<Role> getRolesByUserId(long userId);
 }

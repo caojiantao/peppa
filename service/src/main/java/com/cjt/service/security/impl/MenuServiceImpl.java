@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,29 +34,22 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     @Override
-    public List<Menu> listMenu() {
-        return menuDAO.listMenuByRoleIds(null);
+    public List<Menu> getMenus() {
+        return menuDAO.getMenusByRoleIds(null);
     }
 
     @Override
-    public List<Menu> listMenuByRoleId(int roleId) {
-        List<Integer> roleIds = new ArrayList<>();
-        roleIds.add(roleId);
-        return menuDAO.listMenuByRoleIds(roleIds);
+    public List<Menu> getMenusByRoleId(int roleId) {
+        return menuDAO.getMenusByRoleIds(Collections.singletonList(roleId));
     }
 
     @Override
-    public List<Menu> listMenuByUserId(Long userId) {
-        User user = userService.getUserByUserId(userId);
-        List<Role> roles = roleService.listRoleByUserId(user.getId());
+    public List<Menu> getMenusByUserId(int userId) {
+        User user = userService.getUserById(userId);
+        List<Role> roles = roleService.getRolesByUserId(user.getId());
         List<Integer> roleIds = new ArrayList<>();
-        for (Role role : roles) {
-            roleIds.add(role.getId());
-        }
-        if (roleIds.isEmpty()){
-            return null;
-        }
-        return menuDAO.listMenuByRoleIds(roleIds);
+        roles.forEach(role -> roleIds.add(role.getId()));
+        return menuDAO.getMenusByRoleIds(roleIds);
     }
 
     @Override
@@ -65,7 +59,7 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public boolean saveMenu(Menu menu) {
-        if (menu.getId() == null){
+        if (menu.getId() == null) {
             menuDAO.insert(menu);
             return menu.getId() > 0;
         } else {
@@ -74,7 +68,7 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     @Override
-    public boolean removeMenuById(int id) {
+    public boolean deleteMenuById(int id) {
         return menuDAO.deleteById(id) > 0;
     }
 }

@@ -6,6 +6,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,12 @@ public class DataSourceAspect {
         this.dataSource = dataSource;
     }
 
-    @Before(EXECUTION)
+    @Pointcut(EXECUTION)
+    public void pointCut(){
+
+    }
+
+    @Before("pointCut()")
     public void before(JoinPoint point) {
         Object target = point.getTarget();
         String method = point.getSignature().getName();
@@ -47,7 +53,7 @@ public class DataSourceAspect {
         }
     }
 
-    @After(EXECUTION)
+    @After("pointCut()")
     public void after() {
         dataSource.clearDataSourceKey();
     }
