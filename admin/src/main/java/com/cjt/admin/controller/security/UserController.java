@@ -10,11 +10,9 @@ import com.cjt.service.security.IMenuService;
 import com.cjt.service.security.IRoleService;
 import com.cjt.service.security.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,11 +33,6 @@ public class UserController extends BaseController {
         this.userService = userService;
         this.menuService = menuService;
         this.roleService = roleService;
-    }
-
-    @InitBinder
-    public void initUser(WebDataBinder binder) {
-        binder.setFieldDefaultPrefix("user.");
     }
 
     @GetMapping("/getUserById")

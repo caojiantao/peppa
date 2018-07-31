@@ -50,13 +50,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getUserById(int id) {
-        UserDTO.Builder builder = new UserDTO.Builder();
-        List<User> users = getUsers(builder.id(id).build());
-        if (users == null || users.isEmpty()) {
-            return null;
-        } else {
-            return users.get(0);
-        }
+        return userDAO.getById(id);
     }
 
     @Override

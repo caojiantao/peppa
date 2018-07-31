@@ -3,14 +3,12 @@ package com.cjt.admin.filter;
 import com.alibaba.fastjson.JSON;
 import com.caojiantao.common.util.CollectionUtils;
 import com.cjt.entity.dto.ResultDTO;
-import com.cjt.entity.model.security.Role;
 import com.cjt.service.TokenService;
-import com.cjt.service.security.IRoleService;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
@@ -18,7 +16,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,9 +27,6 @@ public class AuthenticationFilter implements Filter {
 
     @Autowired
     private TokenService tokenService;
-
-    @Autowired
-    private IRoleService roleService;
 
     @Getter
     @Setter
@@ -53,7 +47,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         setCors(httpResponse);
         // 请求过滤
-        if (isExcluded(httpRequest) || isPreflight(httpRequest) || isValidRequest(httpRequest)) {
+        if (isExcluded(httpRequest) || isPreflight(httpRequest) || isValidRequest(httpRequest, httpResponse)) {
             chain.doFilter(request, response);
         } else {
             httpResponse.setContentType("application/json;charset=utf-8");
@@ -102,12 +96,14 @@ public class AuthenticationFilter implements Filter {
     /**
      * 是否为合法请求，具备有效认证头header，且当前账号权限正常
      */
-    private boolean isValidRequest(HttpServletRequest request) {
+    private boolean isValidRequest(HttpServletRequest request, HttpServletResponse response) {
         String tokenStr = request.getHeader(tokenName);
         int userId = tokenService.parseToken(tokenStr);
-        if (userId != 0){
+        if (userId != 0) {
             return true;
         } else {
+            // 请求登录认证无效，更改状态码
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
     }

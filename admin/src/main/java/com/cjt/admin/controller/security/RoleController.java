@@ -32,11 +32,6 @@ public class RoleController extends BaseController {
         this.menuService = menuService;
     }
 
-    @InitBinder("role")
-    public void initRole(WebDataBinder binder) {
-        binder.setFieldDefaultPrefix("role.");
-    }
-
     @GetMapping("/getRoleWithMenusById")
     public Object getRoleById(int id) {
         JSONObject object = (JSONObject) JSON.toJSON(roleService.getRoleById(id));

@@ -3,11 +3,19 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.security.IUserDAO">
 
+    <select id="getById" resultType="com.cjt.entity.model.security.User" parameterType="com.cjt.entity.dto.UserDTO">
+        SELECT
+            id,
+            username,
+            nickname
+        FROM user
+        WHERE id = #{id}
+    </select>
+
     <select id="getDatas" resultType="com.cjt.entity.model.security.User" parameterType="com.cjt.entity.dto.UserDTO">
         SELECT
         id,
         username,
-        password,
         nickname
         FROM user
         <trim prefix="WHERE" prefixOverrides="AND">
@@ -52,7 +60,6 @@
         SELECT
             id,
             username,
-            password,
             nickname
         FROM user
         WHERE
