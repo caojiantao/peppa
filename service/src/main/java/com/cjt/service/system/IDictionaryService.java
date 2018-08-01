@@ -30,14 +30,6 @@ public interface IDictionaryService {
     boolean removeDictSetById(int id);
 
     /**
-     * 更新字典集
-     *
-     * @param set 字典集
-     * @return 操作成功与否
-     */
-    boolean updateDictSet(DictSet set);
-
-    /**
      * 获取指定字典集
      *
      * @param id 字典集ID
@@ -86,14 +78,6 @@ public interface IDictionaryService {
      * @return 操作成功与否
      */
     boolean removeDictValueBySetId(int setId);
-
-    /**
-     * 更新字典值
-     *
-     * @param set 字典值
-     * @return 操作成功与否
-     */
-    boolean updateDictValue(DictValue set);
 
     /**
      * 获取指定字典值

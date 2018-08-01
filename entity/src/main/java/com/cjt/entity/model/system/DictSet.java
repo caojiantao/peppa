@@ -9,6 +9,7 @@ import lombok.Data;
 public class DictSet {
 
     private Integer id;
+    private Integer parentValueId;
     private String code;
     private String name;
     private String desc;

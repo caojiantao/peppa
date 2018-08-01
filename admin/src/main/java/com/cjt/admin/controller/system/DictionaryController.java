@@ -1,6 +1,5 @@
 package com.cjt.admin.controller.system;
 
-import com.alibaba.fastjson.JSONObject;
 import com.caojiantao.common.util.JsonUtils;
 import com.cjt.admin.controller.BaseController;
 import com.cjt.entity.dto.DictionaryDTO;
@@ -31,15 +30,15 @@ public class DictionaryController extends BaseController {
     }
 
     @GetMapping("/listDictSetByPage")
-    public JSONObject listDictSetByPage(DictionaryDTO dto) {
+    public ResultDTO listDictSetByPage(DictionaryDTO dto) {
         List<DictSet> dictSets = dictionaryService.listDictSet(dto);
         int total = dictionaryService.countDictSet(dto);
-        return JsonUtils.toPageData(dictSets, total);
+        return success(JsonUtils.toPageData(dictSets, total));
     }
 
     @GetMapping("/getDictSetById")
-    public DictSet getDictSetById(int id) {
-        return dictionaryService.getDictSetById(id);
+    public ResultDTO getDictSetById(int id) {
+        return success(dictionaryService.getDictSetById(id));
     }
 
     @PostMapping("/saveDictSet")
@@ -47,36 +46,26 @@ public class DictionaryController extends BaseController {
         return dictionaryService.saveDictSet(set) ? success("操作成功", set) : failure("操作失败请重试");
     }
 
-    @PostMapping("/updateDictSet")
-    public ResultDTO updateDictSet(DictSet set) {
-        return dictionaryService.updateDictSet(set) ? success("操作成功", set) : failure("操作失败请重试");
-    }
-
     @PostMapping("/removeDictSetById")
     public ResultDTO removeDictSetById(int id) {
-        return dictionaryService.removeDictSetById(id) ?  success("操作成功") : failure("操作失败请重试");
+        return dictionaryService.removeDictSetById(id) ? success("操作成功") : failure("操作失败请重试");
     }
 
     @GetMapping("/listDictValueByPage")
-    public JSONObject listDictValueByPage(DictionaryDTO dto) {
+    public ResultDTO listDictValueByPage(DictionaryDTO dto) {
         List<DictValue> dictValues = dictionaryService.listDictValue(dto);
         int total = dictionaryService.countDictValue(dto);
-        return JsonUtils.toPageData(dictValues, total);
+        return success(JsonUtils.toPageData(dictValues, total));
     }
 
     @GetMapping("/getDictValueById")
-    public DictValue getDictValueById(int id) {
-        return dictionaryService.getDictValueById(id);
+    public ResultDTO getDictValueById(int id) {
+        return success(dictionaryService.getDictValueById(id));
     }
 
     @PostMapping("/saveDictValue")
     public ResultDTO saveDictValue(DictValue value) {
         return dictionaryService.saveDictValue(value) ? success("操作成功", value) : failure("操作失败请重试");
-    }
-
-    @PostMapping("/updateDictValue")
-    public ResultDTO updateDictValue(DictValue value) {
-        return dictionaryService.updateDictValue(value) ? success("操作成功", value) : failure("操作失败请重试");
     }
 
     @PostMapping("/removeDictValueById")
@@ -85,7 +74,7 @@ public class DictionaryController extends BaseController {
     }
 
     @RequestMapping("/listDictSetOpt")
-    public Object listDictSetOpt() {
-        return dictionaryService.listDictSet(null);
+    public ResultDTO listDictSetOpt() {
+        return success(dictionaryService.listDictSet(null));
     }
 }

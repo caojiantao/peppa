@@ -1,6 +1,7 @@
 package com.cjt.service.system.impl;
 
-import com.cjt.dao.system.IDictionaryDAO;
+import com.cjt.dao.system.IDictSetDAO;
+import com.cjt.dao.system.IDictValueDAO;
 import com.cjt.entity.dto.DictionaryDTO;
 import com.cjt.entity.model.system.DictSet;
 import com.cjt.entity.model.system.DictValue;
@@ -17,79 +18,80 @@ import java.util.List;
 @Service
 public class DictionaryServiceImpl implements IDictionaryService {
 
-    private final IDictionaryDAO dictionaryDAO;
+    private final IDictSetDAO dictSetDAO;
+
+    private final IDictValueDAO dictValueDAO;
 
     @Autowired
-    public DictionaryServiceImpl(IDictionaryDAO dictionaryDAO) {
-        this.dictionaryDAO = dictionaryDAO;
+    public DictionaryServiceImpl(IDictSetDAO dictSetDAO, IDictValueDAO dictValueDAO) {
+        this.dictSetDAO = dictSetDAO;
+        this.dictValueDAO = dictValueDAO;
     }
 
     @Override
     public boolean saveDictSet(DictSet set) {
-        dictionaryDAO.saveDictSet(set);
-        return set.getId() != null;
+        if (set.getId() == null){
+            dictSetDAO.insert(set);
+            return set.getId() != null;
+        } else {
+            return dictSetDAO.updateById(set) > 0;
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean removeDictSetById(int id) {
-        dictionaryDAO.removeDictValueBySetId(id);
-        return dictionaryDAO.removeDictSetById(id) > 0;
-    }
-
-    @Override
-    public boolean updateDictSet(DictSet set) {
-        return dictionaryDAO.updateDictSet(set) > 0;
+        dictValueDAO.deleteDictValueBySetId(id);
+        return dictSetDAO.deleteById(id) > 0;
     }
 
     @Override
     public DictSet getDictSetById(int id) {
-        return dictionaryDAO.getDictSetById(id);
+        return dictSetDAO.getById(id);
     }
 
     @Override
     public List<DictSet> listDictSet(DictionaryDTO dto) {
-        return dictionaryDAO.listDictSet(dto);
+        return dictSetDAO.getDatas(dto);
     }
 
     @Override
     public int countDictSet(DictionaryDTO dto) {
-        return dictionaryDAO.countDictSet(dto);
+        return dictSetDAO.getDatasTotal(dto);
     }
 
     @Override
     public boolean saveDictValue(DictValue value) {
-        dictionaryDAO.saveDictValue(value);
-        return value.getId() != null;
+        if (value.getId() == null){
+            dictValueDAO.insert(value);
+            return value.getId() != null;
+        } else {
+            return dictValueDAO.updateById(value) > 0;
+        }
     }
 
     @Override
     public boolean removeDictValueById(int id) {
-        return dictionaryDAO.removeDictValueById(id) > 0;
+        return dictValueDAO.deleteById(id) > 0;
     }
 
     @Override
     public boolean removeDictValueBySetId(int setId) {
-        return dictionaryDAO.removeDictValueBySetId(setId) > 0;
-    }
-
-    @Override
-    public boolean updateDictValue(DictValue value) {
-        return dictionaryDAO.updateDictValue(value) > 0;
+        return dictValueDAO.deleteDictValueBySetId(setId) > 0;
     }
 
     @Override
     public DictValue getDictValueById(int id) {
-        return dictionaryDAO.getDictValueById(id);
+        return dictValueDAO.getById(id);
     }
 
     @Override
     public List<DictValue> listDictValue(DictionaryDTO dto) {
-        return dictionaryDAO.listDictValue(dto);
+        return dictValueDAO.getDatas(dto);
     }
 
     @Override
     public int countDictValue(DictionaryDTO dto) {
-        return dictionaryDAO.countDictValue(dto);
+        return dictValueDAO.getDatasTotal(dto);
     }
 }
