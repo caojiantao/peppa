@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.system.dictionary.IDictValueDAO">
+    <insert id="insert" parameterType="com.cjt.entity.model.system.dictionary.DictValueDO" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO dict_value (set_id, name, value, `order`, `desc`)
+        VALUES (#{setId}, #{name}, #{value}, #{order}, #{desc})
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM dict_value
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteDictValueBySetId" parameterType="int">
+        DELETE FROM dict_value
+        WHERE set_id = #{setId}
+    </delete>
+
+    <update id="updateById" parameterType="com.cjt.entity.model.system.dictionary.DictValueDO">
+        UPDATE dict_value
+        <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
+            <if test='setId!=null'>`set_id` = #{setId},</if>
+            <if test='name!=null'>`name` = #{name},</if>
+            <if test='value!=null'>`value` = #{value},</if>
+            <if test='order!=null'>`order` = #{order},</if>
+            <if test='desc!=null'>`desc` = #{desc},</if>
+        </trim>
+    </update>
+
+    <select id="getById" parameterType="int" resultType="com.cjt.entity.model.system.dictionary.DictValueDO">
+        SELECT
+            id,
+            set_id AS 'setId',
+            name,
+            value,
+            `order`,
+            `desc`
+        FROM dict_value
+        WHERE id = #{id}
+    </select>
+
+    <select id="listObjects" parameterType="com.cjt.entity.dto.DictionaryDTO" resultType="com.cjt.entity.model.system.dictionary.DictValueDO">
+        SELECT
+        id,
+        set_id AS 'setId',
+        name,
+        value,
+        `order`,
+        `desc`
+        FROM dict_value
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test='setId!=null'>AND set_id = #{setId}</if>
+        </trim>
+        <if test="start!=null and offset!=null">
+            LIMIT #{start}, #{offset}
+        </if>
+        ORDER BY `order`
+    </select>
+
+    <select id="countObjects" parameterType="com.cjt.entity.dto.DictionaryDTO" resultType="int">
+        SELECT COUNT(*) FROM dict_value
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test='setId!=null'>AND set_id = #{setId}</if>
+        </trim>
+    </select>
+</mapper>

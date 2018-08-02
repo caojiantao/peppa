@@ -1,9 +1,9 @@
 package com.cjt.admin.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjt.entity.model.security.User;
+import com.cjt.entity.model.system.security.UserDO;
 import com.cjt.service.TokenService;
-import com.cjt.service.security.IUserService;
+import com.cjt.service.system.security.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +35,7 @@ public class SessionController extends BaseController {
      */
     @PostMapping("")
     private Object login(String username, String password, boolean rememberMe) {
-        User user = userService.login(username, password);
+        UserDO user = userService.login(username, password);
         if (user != null) {
             // 生成登录凭证token
             String token = tokenService.getToken(user.getId(), rememberMe);

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.system.security.IMenuDAO">
+
+    <resultMap id="baseMap" type="com.cjt.entity.model.system.security.MenuDO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="href" property="href"/>
+        <result column="icon_class" property="iconClass"/>
+        <result column="order" property="order"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <select id="getById" resultMap="baseMap">
+        SELECT
+            `id`,
+            `name`,
+            `parent_id`,
+            `href`,
+            `icon_class`,
+            `order`,
+            `gmt_create`,
+            `gmt_modified`
+        FROM menu
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.cjt.entity.model.system.security.MenuDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`, `order`, `gmt_create`)
+        VALUES (#{name}, #{parentId}, #{href}, #{iconClass}, #{order}, #{gmtCreate})
+    </insert>
+
+    <update id="updateById" parameterType="com.cjt.entity.model.system.security.MenuDO">
+        UPDATE menu
+        <trim prefix="SET" suffix="WHERE id = #{id}">
+            `name` = #{name},
+            `parent_id` = #{parentId},
+            `href` = #{href},
+            `icon_class` = #{iconClass},
+            `order` = #{order},
+            `gmt_modified` = #{gmtModified}
+        </trim>
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM menu
+        WHERE `id` = #{id}
+    </delete>
+
+    <select id="getMenusByRoleIds" resultMap="baseMap" parameterType="list">
+        SELECT
+        `id`,
+        `name`,
+        `parent_id`,
+        `href`,
+        `icon_class`,
+        `order`,
+        `gmt_create`,
+        `gmt_modified`
+        FROM menu
+        <if test="list!=null and list.size()>0">
+            WHERE id IN
+            (
+            SELECT DISTINCT menu_id FROM role_menu
+            WHERE role_id IN
+            <foreach collection="list" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+        ORDER BY `order`
+    </select>
+</mapper>

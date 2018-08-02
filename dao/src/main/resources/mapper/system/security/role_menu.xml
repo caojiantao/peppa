@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.system.security.IRoleMenuDAO">
+
+    <insert id="saveRoleMenus" parameterType="com.cjt.entity.model.system.security.RoleDO">
+        INSERT INTO role_menu (`role_id`, `menu_id`, `gmt_create`) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleId}, #{item.menuId}, #{item.gmtCreate})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByRoleId" parameterType="int">
+        DELETE FROM role_menu
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <select id="listMenuIdsByRoleId" parameterType="int">
+        SELECT menu_id
+        FROM role_menu
+        WHERE role_id = #{roleId}
+    </select>
+</mapper>

@@ -1,8 +1,9 @@
 package com.cjt.quartz;
 
-import com.alibaba.fastjson.JSONObject;
 import com.cjt.entity.dto.QuartzDTO;
-import com.cjt.entity.model.system.Quartz;
+import com.cjt.entity.model.system.quartz.QuartzDO;
+
+import java.util.List;
 
 /**
  * @author caojiantao
@@ -15,23 +16,17 @@ public interface IQuartzService {
      * @param dto 条件DTO
      * @return 定时任务集合
      */
-    JSONObject listQuartz(QuartzDTO dto);
+    List<QuartzDO> listQuartz(QuartzDTO dto);
+
+    int countQuartz(QuartzDTO dto);
 
     /**
-     * 添加定时任务
+     * 提交定时任务
      *
-     * @param quartz 定时任务
+     * @param quartzDO 定时任务
      * @return 成功与否
      */
-    boolean saveQuartz(Quartz quartz);
-
-    /**
-     * 更新定时任务
-     *
-     * @param quartz 定时任务
-     * @return 成功与否
-     */
-    boolean updateQuartz(Quartz quartz);
+    boolean saveQuartz(QuartzDO quartzDO);
 
     /**
      * 暂停定时任务
@@ -55,7 +50,7 @@ public interface IQuartzService {
      * @param id 定时任务id
      * @return 成功与否
      */
-    boolean removeQuartzById(int id);
+    boolean deleteQuartzById(int id);
 
     /**
      * 获取指定定时任务
@@ -63,7 +58,7 @@ public interface IQuartzService {
      * @param id 定时任务id
      * @return 定时任务信息
      */
-    Quartz getQuartzById(int id);
+    QuartzDO getQuartzById(int id);
 
     boolean executeQuartzById(int id);
 }

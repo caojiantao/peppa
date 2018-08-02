@@ -1,8 +1,8 @@
 package com.cjt.admin.interceptor;
 
 import com.cjt.admin.annotation.Permissions;
-import com.cjt.entity.model.security.Role;
-import com.cjt.service.security.IRoleService;
+import com.cjt.entity.model.system.security.RoleDO;
+import com.cjt.service.system.security.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -34,10 +34,10 @@ public class PermissionInterceptor implements HandlerInterceptor {
                 Permissions permissions = method.getAnnotation(Permissions.class);
                 String[] permissionRoleNames = permissions.value();
                 int userId = Integer.parseInt(String.valueOf(httpServletRequest.getAttribute("userId")));
-                List<Role> roles = roleService.getRolesByUserId(userId);
+                List<RoleDO> roles = roleService.getRolesByUserId(userId);
                 if (roles != null && !roles.isEmpty()) {
                     List<String> userRoleNames = new ArrayList<>();
-                    for (Role role : roles) {
+                    for (RoleDO role : roles) {
                         userRoleNames.add(role.getName());
                     }
                     for (String roleName : permissionRoleNames) {

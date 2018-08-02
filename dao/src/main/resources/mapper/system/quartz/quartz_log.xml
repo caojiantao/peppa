@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.system.quartz.IQuartzLogDAO">
+
+    <resultMap id="baseMap" type="com.cjt.entity.model.system.quartz.QuartzLogDO">
+        <id column="id" property="id"/>
+        <result column="quartz_id" property="quartzId"/>
+        <result column="status" property="status"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="error_msg" property="errorMsg"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <select id="getById" resultMap="baseMap">
+        SELECT
+            `id`,
+            `quartz_id`,
+            `status`,
+            `start_time`,
+            `end_time`,
+            `error_msg`,
+            `gmt_create`,
+            `gmt_modified`
+        FROM quartz_log
+        WHERE id = #{id}
+    </select>
+
+    <select id="listObjects" resultMap="baseMap">
+        SELECT
+        `id`,
+        `quartz_id`,
+        `status`,
+        `start_time`,
+        `end_time`,
+        `error_msg`,
+        `gmt_create`,
+        `gmt_modified`
+        FROM quartz_log
+        <if test="start!=null and offset!=null">
+            LIMIT #{start}, #{offset}
+        </if>
+    </select>
+
+    <select id="countObjects" resultType="int">
+        SELECT COUNT(*)
+        FROM quartz_log
+    </select>
+
+    <insert id="save" parameterType="com.cjt.entity.model.system.quartz.QuartzLogDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO quartz_log (`quartz_id`, `status`, `start_time`, `gmt_create`)
+        VALUES (#{quartzId}, #{status}, #{startTime}, #{gmtCreate})
+    </insert>
+
+    <update id="updateById" parameterType="com.cjt.entity.model.system.quartz.QuartzLogDO">
+        UPDATE quartz_log
+        <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
+            `status` = #{status},
+            `end_time` = #{endTime},
+            `error_msg` = #{errorMsg},
+            `gmt_modified` = #{gmtModified},
+        </trim>
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM quartz_log
+        WHERE id = #{id}
+    </delete>
+</mapper>

@@ -1,6 +1,6 @@
 package com.cjt.quartz.job;
 
-import com.cjt.entity.model.system.Quartz;
+import com.cjt.entity.model.system.quartz.QuartzDO;
 import com.cjt.quartz.IQuartzService;
 import com.cjt.quartz.QuartzJobManager;
 import com.cjt.service.RedisLock;
@@ -37,22 +37,22 @@ public abstract class BaseJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         int id = context.getJobDetail().getJobDataMap().getIntValue("id");
-        Quartz quartz = quartzService.getQuartzById(id);
-        if (quartz == null) {
+        QuartzDO quartzDO = quartzService.getQuartzById(id);
+        if (quartzDO == null) {
             logger.error(context.getJobDetail().getJobClass() + "已被直接删除");
             manager.removeQuartz(context.getTrigger().getKey());
         } else {
             try {
-                if ((new CronExpression(quartz.getCronExpre())).isSatisfiedBy(new Date())) {
+                if ((new CronExpression(quartzDO.getCronExpression())).isSatisfiedBy(new Date())) {
                     // 表达式与当前匹配
                     executeUniqueQuartz(context);
                 } else {
-                    logger.error("表达式[" + quartz.getCronExpre() + "]与当前时间不匹配");
+                    logger.error("表达式[" + quartzDO.getCronExpression() + "]与当前时间不匹配");
                     manager.removeQuartz(context.getTrigger().getKey());
-                    manager.addJob(quartz);
+                    manager.addJob(quartzDO);
                 }
             } catch (ParseException e) {
-                logger.error("表达式[" + quartz.getCronExpre() + "]解析错误");
+                logger.error("表达式[" + quartzDO.getCronExpression() + "]解析错误");
                 manager.removeQuartz(context.getTrigger().getKey());
             }
         }

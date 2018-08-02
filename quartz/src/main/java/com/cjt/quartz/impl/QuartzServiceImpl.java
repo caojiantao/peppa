@@ -1,10 +1,8 @@
 package com.cjt.quartz.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.caojiantao.common.util.JsonUtils;
-import com.cjt.dao.system.IQuartzDAO;
+import com.cjt.dao.system.quartz.IQuartzDAO;
 import com.cjt.entity.dto.QuartzDTO;
-import com.cjt.entity.model.system.Quartz;
+import com.cjt.entity.model.system.quartz.QuartzDO;
 import com.cjt.quartz.IQuartzService;
 import com.cjt.quartz.QuartzJobManager;
 import org.apache.commons.lang3.StringUtils;
@@ -26,57 +24,52 @@ public class QuartzServiceImpl implements IQuartzService, InitializingBean {
 
     private final QuartzJobManager quartzJobManager;
 
-    private final IQuartzDAO quartzDao;
+    private final IQuartzDAO quartzDAO;
 
     @Autowired
-    public QuartzServiceImpl(QuartzJobManager quartzJobManager, IQuartzDAO quartzDao) {
+    public QuartzServiceImpl(QuartzJobManager quartzJobManager, IQuartzDAO quartzDAO) {
         this.quartzJobManager = quartzJobManager;
-        this.quartzDao = quartzDao;
+        this.quartzDAO = quartzDAO;
     }
 
     @Override
-    public JSONObject listQuartz(QuartzDTO dto) {
-        List<Quartz> quartzs = quartzDao.listQuartz(dto);
-        int total = quartzDao.countQuartz(dto);
-        return JsonUtils.toPageData(quartzs, total);
+    public List<QuartzDO> listQuartz(QuartzDTO dto) {
+        return quartzDAO.listObjects(dto);
     }
 
     @Override
-    public boolean saveQuartz(Quartz quartz) {
-        quartzDao.saveQuartz(quartz);
-        if (quartz.getId() > 0) {
-            quartzJobManager.addJob(quartz);
-            return true;
-        }
-        return false;
+    public int countQuartz(QuartzDTO dto) {
+        return quartzDAO.countObjects(dto);
     }
 
     @Override
-    public boolean updateQuartz(Quartz quartz) {
-        String cron = quartz.getCronExpre();
-        if (quartzDao.updateQuartz(quartz) > 0) {
-            // 根据cron表达式区分更新的动作（更新、暂停、继续）
-            if (StringUtils.isNotBlank(cron)) {
-                quartzJobManager.addJob(quartz);
-            } else {
-                quartz = quartzDao.getQuartzById(quartz.getId());
-                boolean status = quartz.getStatus();
-                if (status) {
-                    quartzJobManager.resumeJob(quartz);
-                } else {
-                    quartzJobManager.pauseJob(quartz);
+    public boolean saveQuartz(QuartzDO quartzDO) {
+        if (quartzDO.getId() == null){
+            quartzDAO.insert(quartzDO);
+            if (quartzDO.getId() > 0) {
+                if (quartzDO.getStatus()) {
+                    quartzJobManager.addJob(quartzDO);
                 }
+                return true;
+            } else {
+                return false;
             }
-            return true;
+        } else {
+            if (quartzDAO.updateById(quartzDO) > 0) {
+                if (quartzDO.getStatus()) {
+                    quartzJobManager.addJob(quartzDO);
+                }
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
     @Override
     public boolean pauseQuartzById(int id) {
-        Quartz quartz = quartzDao.getQuartzById(id);
-        if (quartz != null) {
-            quartzJobManager.pauseJob(quartz);
+        QuartzDO quartzDO = quartzDAO.getById(id);
+        if (quartzDO != null) {
+            quartzJobManager.pauseJob(quartzDO);
             return true;
         }
         return false;
@@ -84,32 +77,32 @@ public class QuartzServiceImpl implements IQuartzService, InitializingBean {
 
     @Override
     public boolean resumeQuartzById(int id) {
-        Quartz quartz = quartzDao.getQuartzById(id);
-        if (quartz != null) {
-            quartzJobManager.resumeJob(quartz);
+        QuartzDO quartzDO = quartzDAO.getById(id);
+        if (quartzDO != null) {
+            quartzJobManager.resumeJob(quartzDO);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean removeQuartzById(int id) {
-        Quartz quartz = quartzDao.getQuartzById(id);
-        if (quartzDao.removeQuartzById(id) > 0) {
-            quartzJobManager.removeQuartz(quartz);
+    public boolean deleteQuartzById(int id) {
+        QuartzDO quartzDO = quartzDAO.getById(id);
+        if (quartzDAO.deleteById(id) > 0) {
+            quartzJobManager.removeQuartz(quartzDO);
         }
         return false;
     }
 
     @Override
-    public Quartz getQuartzById(int id) {
-        return quartzDao.getQuartzById(id);
+    public QuartzDO getQuartzById(int id) {
+        return quartzDAO.getById(id);
     }
 
     @Override
     public boolean executeQuartzById(int id) {
-        Quartz quartz = quartzDao.getQuartzById(id);
-        return quartzJobManager.executeJob(quartz);
+        QuartzDO quartzDO = quartzDAO.getById(id);
+        return quartzJobManager.executeJob(quartzDO);
     }
 
     /**
@@ -118,8 +111,8 @@ public class QuartzServiceImpl implements IQuartzService, InitializingBean {
     @Override
     public void afterPropertiesSet() {
         logger.info("====================【开始初始化定时任务】====================");
-        List<Quartz> tasks = quartzDao.listQuartz(null);
-        for (Quartz task : tasks) {
+        List<QuartzDO> tasks = quartzDAO.listObjects(null);
+        for (QuartzDO task : tasks) {
             quartzJobManager.addJob(task);
         }
     }

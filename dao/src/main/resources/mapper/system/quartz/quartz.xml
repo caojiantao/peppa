@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.system.quartz.IQuartzDAO">
+
+    <resultMap id="baseMap" type="com.cjt.entity.model.system.quartz.QuartzDO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="group" property="group"/>
+        <result column="cron_expression" property="cronExpression"/>
+        <result column="job_class" property="jobClass"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <select id="getById" resultMap="baseMap">
+        SELECT
+            `id`,
+            `name`,
+            `group`,
+            `cron_expression`,
+            `job_class`,
+            `gmt_create`,
+            `gmt_modified`
+        FROM quartz
+        WHERE id = #{id}
+    </select>
+
+    <select id="listObjects" resultMap="baseMap">
+        SELECT
+        `id`,
+        `name`,
+        `group`,
+        `cron_expression`,
+        `job_class`,
+        `gmt_create`,
+        `gmt_modified`
+        FROM quartz
+        <if test="start!=null and offset!=null">
+            LIMIT #{start}, #{offset}
+        </if>
+    </select>
+
+    <select id="countObjects" resultType="int">
+        SELECT COUNT(*)
+        FROM quartz
+    </select>
+
+    <insert id="save" parameterType="com.cjt.entity.model.system.quartz.QuartzDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO quartz (`name`, `group`, `cron_expre`, `status`, `desc`, `job_class`, `gmt_create`)
+        VALUES (#{name}, #{group}, #{cronExpre}, #{status}, #{desc}, #{jobClass}, #{gmtCreate})
+    </insert>
+
+    <update id="updateById" parameterType="com.cjt.entity.model.system.quartz.QuartzDO">
+        UPDATE quartz
+        <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
+            `gmt_modified` = #{gmtModified},
+            <if test='name!=null'>`name` = #{name},</if>
+            <if test='group!=null'>`group` = #{group},</if>
+            <if test='status!=null'>`status` = #{status},</if>
+            <if test='cronExpre!=null'>`cron_expre` = #{cronExpre},</if>
+            <if test='desc!=null'>`desc` = #{desc},</if>
+            <if test='jobClass!=null'>`job_class` = #{jobClass},</if>
+        </trim>
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM quartz
+        WHERE id = #{id}
+    </delete>
+</mapper>

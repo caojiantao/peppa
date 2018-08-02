@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="com.cjt.dao.system.security.IRoleDAO">
+
+    <resultMap id="baseMap" type="com.cjt.entity.model.system.security.RoleDO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.cjt.entity.model.system.security.MenuDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO role (`name`, `gmt_create`)
+        VALUES (#{name}, #{gmtCreate})
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM role
+        WHERE id = #{id}
+    </delete>
+
+    <update id="updateById" parameterType="com.cjt.entity.model.system.security.RoleDO">
+        UPDATE role
+        <trim prefix="SET" suffix="WHERE id = #{id}">
+            `name` = #{name},
+            `gmt_modified` = #{gmtModified}
+        </trim>
+    </update>
+
+    <select id="listObjects" resultMap="baseMap" parameterType="com.cjt.entity.dto.RoleDTO">
+        SELECT
+        `id`,
+        `name`,
+        `gmt_create`,
+        `gmt_modified`
+        FROM
+        role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="name!=null">AND `name` like CONCAT('%',#{name},'%')</if>
+        </trim>
+        <if test="offset!=null and offset!=0">
+            LIMIT #{start}, #{offset}
+        </if>
+    </select>
+
+    <select id="countObjects" resultType="int" parameterType="com.cjt.entity.dto.RoleDTO">
+        SELECT COUNT(*)
+        FROM role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="name!=null and name!=''">AND `name` like CONCAT('%',#{name},'%')</if>
+        </trim>
+    </select>
+
+    <select id="getById" resultMap="baseMap" parameterType="int">
+        SELECT
+            `id`,
+            `name`,
+            `gmt_create`,
+            `gmt_modified`
+        FROM
+            role
+        WHERE id = #{id}
+    </select>
+
+    <select id="getRolesByUserId" resultMap="baseMap" parameterType="int">
+        SELECT
+            `id`,
+            `name`,
+            `gmt_create`,
+            `gmt_modified`
+        FROM
+            role
+        WHERE id IN (
+            SELECT role_id
+            FROM
+                user_role
+            WHERE
+                user_id = #{userId}
+        )
+    </select>
+</mapper>
