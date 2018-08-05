@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
-<mapper namespace="com.cjt.dao.system.security.IUserRoleDao">
+<mapper namespace="com.cjt.dao.system.security.IUserRoleDAO">
 
     <insert id="saveUserRoles">
         INSERT INTO user_role (user_id, role_id) VALUES
@@ -10,12 +10,12 @@
         </foreach>
     </insert>
 
-    <delete id="deleteByUserId" parameterType="long">
+    <delete id="deleteByUserId" parameterType="int">
         DELETE FROM user_role
         WHERE user_id = #{userId}
     </delete>
 
-    <select id="listRoleIdByUserId" parameterType="long">
+    <select id="listRoleIdByUserId" parameterType="int" resultType="int">
         SELECT role_id
         FROM user_role
         WHERE user_id = #{userId}

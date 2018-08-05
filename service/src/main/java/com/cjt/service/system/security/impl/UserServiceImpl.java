@@ -3,7 +3,7 @@ package com.cjt.service.system.security.impl;
 import com.caojiantao.common.encrypt.Md5Utils;
 import com.caojiantao.common.util.CollectionUtils;
 import com.cjt.dao.system.security.IUserDAO;
-import com.cjt.dao.system.security.IUserRoleDao;
+import com.cjt.dao.system.security.IUserRoleDAO;
 import com.cjt.entity.dto.UserDTO;
 import com.cjt.entity.model.system.security.UserDO;
 import com.cjt.entity.model.system.security.UserRoleDO;
@@ -28,13 +28,13 @@ public class UserServiceImpl implements IUserService {
 
     private final IUserDAO userDAO;
 
-    private final IUserRoleDao userRolesDao;
+    private final IUserRoleDAO userRolesDao;
 
     @Value("${password_secret}")
     private String passwordSecret;
 
     @Autowired
-    public UserServiceImpl(IUserDAO userDAO, IUserRoleDao userRolesDao) {
+    public UserServiceImpl(IUserDAO userDAO, IUserRoleDAO userRolesDao) {
         this.userDAO = userDAO;
         this.userRolesDao = userRolesDao;
     }

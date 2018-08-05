@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author caojiantao
  */
-public interface IUserRoleDao {
+public interface IUserRoleDAO {
 
     List<Integer> listRoleIdByUserId(int userId);
 

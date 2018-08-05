@@ -1,6 +1,8 @@
 package com.cjt.service.system.security.impl;
 
+import com.caojiantao.common.util.CollectionUtils;
 import com.cjt.dao.system.security.IMenuDAO;
+import com.cjt.dao.system.security.IUserRoleDAO;
 import com.cjt.entity.model.system.security.MenuDO;
 import com.cjt.entity.model.system.security.RoleDO;
 import com.cjt.entity.model.system.security.UserDO;
@@ -27,11 +29,14 @@ public class MenuServiceImpl implements IMenuService {
 
     private final IRoleService roleService;
 
+    private final IUserRoleDAO userRoleDAO;
+
     @Autowired
-    public MenuServiceImpl(IMenuDAO menuDAO, IUserService userService, IRoleService roleService) {
+    public MenuServiceImpl(IMenuDAO menuDAO, IUserService userService, IRoleService roleService, IUserRoleDAO userRoleDAO) {
         this.menuDAO = menuDAO;
         this.userService = userService;
         this.roleService = roleService;
+        this.userRoleDAO = userRoleDAO;
     }
 
     @Override
@@ -47,10 +52,8 @@ public class MenuServiceImpl implements IMenuService {
     @Override
     public List<MenuDO> getMenusByUserId(int userId) {
         UserDO user = userService.getUserById(userId);
-        List<RoleDO> roles = roleService.getRolesByUserId(user.getId());
-        List<Integer> roleIds = new ArrayList<>();
-        roles.forEach(role -> roleIds.add(role.getId()));
-        return menuDAO.getMenusByRoleIds(roleIds);
+        List<Integer> roleIds = userRoleDAO.listRoleIdByUserId(userId);
+        return CollectionUtils.isEmpty(roleIds) ? null : menuDAO.getMenusByRoleIds(roleIds);
     }
 
     @Override

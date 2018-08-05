@@ -2,9 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="com.cjt.dao.system.dictionary.IDictValueDAO">
-    <insert id="insert" parameterType="com.cjt.entity.model.system.dictionary.DictValueDO" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO dict_value (set_id, name, value, `order`, `desc`)
-        VALUES (#{setId}, #{name}, #{value}, #{order}, #{desc})
+
+    <resultMap id="baseMap" type="com.cjt.entity.model.system.dictionary.DictValueDO">
+        <id column="id" property="id"/>
+        <result column="set_id" property="setId"/>
+        <result column="name" property="name"/>
+        <result column="value" property="value"/>
+        <result column="order" property="order"/>
+        <result column="desc" property="desc"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.cjt.entity.model.system.dictionary.DictValueDO" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO dict_value (set_id, name, value, `order`, `desc`, `gmt_create`)
+        VALUES (#{setId}, #{name}, #{value}, #{order}, #{desc}, #{gmtCreate})
     </insert>
 
     <delete id="deleteById" parameterType="int">
@@ -20,6 +33,7 @@
     <update id="updateById" parameterType="com.cjt.entity.model.system.dictionary.DictValueDO">
         UPDATE dict_value
         <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
+            `gmt_modified` = #{gmtModified},
             <if test='setId!=null'>`set_id` = #{setId},</if>
             <if test='name!=null'>`name` = #{name},</if>
             <if test='value!=null'>`value` = #{value},</if>
@@ -28,34 +42,38 @@
         </trim>
     </update>
 
-    <select id="getById" parameterType="int" resultType="com.cjt.entity.model.system.dictionary.DictValueDO">
+    <select id="getById" parameterType="int" resultMap="baseMap">
         SELECT
-            id,
-            set_id AS 'setId',
-            name,
-            value,
+            `id`,
+            `set_id`,
+            `name`,
+            `value`,
             `order`,
-            `desc`
+            `desc`,
+            `gmt_create`,
+            `gmt_modified`
         FROM dict_value
         WHERE id = #{id}
     </select>
 
-    <select id="listObjects" parameterType="com.cjt.entity.dto.DictionaryDTO" resultType="com.cjt.entity.model.system.dictionary.DictValueDO">
+    <select id="listObjects" parameterType="com.cjt.entity.dto.DictionaryDTO" resultMap="baseMap">
         SELECT
-        id,
-        set_id AS 'setId',
-        name,
-        value,
+        `id`,
+        `set_id`,
+        `name`,
+        `value`,
         `order`,
-        `desc`
+        `desc`,
+        `gmt_create`,
+        `gmt_modified`
         FROM dict_value
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test='setId!=null'>AND set_id = #{setId}</if>
         </trim>
+        ORDER BY `order`
         <if test="start!=null and offset!=null">
             LIMIT #{start}, #{offset}
         </if>
-        ORDER BY `order`
     </select>
 
     <select id="countObjects" parameterType="com.cjt.entity.dto.DictionaryDTO" resultType="int">

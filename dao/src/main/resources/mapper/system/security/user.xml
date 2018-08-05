@@ -72,9 +72,9 @@
 
     <select id="login" resultMap="baseMap">
         SELECT
-            id,
-            username,
-            nickname
+            `id`,
+            `username`,
+            `nickname`
         FROM user
         WHERE
             `username` = #{username}
